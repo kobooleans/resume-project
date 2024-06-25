@@ -1,0 +1,13 @@
+services:
+  db:
+    image: postgres:16.3
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: local_ks_postgres_db
+      POSTGRES_DB: resume
+      POSTGRES_USER: resume
+    ports:
+      - 15432:5432
+    volumes:
+      - ./volume/db:/var/lib/postgresql/data
+    container_name: postgresql_ks
