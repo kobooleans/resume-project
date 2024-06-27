@@ -1,8 +1,8 @@
 package com.ks.resumeproject.test.api;
 
-import com.ks.resumeproject.test.dao.Test;
-import com.ks.resumeproject.test.dao.TestMap;
+import com.ks.resumeproject.test.domain.TestDTO;
 import com.ks.resumeproject.test.service.TestService;
+import com.ks.resumeproject.test.domain.TestVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,12 +28,12 @@ public class TestController {
     @Parameter(name = "map", description = "TestMap 파라미터")
     @GetMapping("/test")
     public String test(@RequestParam Map<String, String> map){
-        Test repository = testService.selectTest();
-        TestMap param = new TestMap();
+        TestVO repository = testService.selectTest();
+        TestDTO param = new TestDTO();
 
         param.setName(map.isEmpty() ? "TEST" : map.get("name"));
-
-        return "Hello World! "+ repository.getTEST_NAME() + " Developer : " + param.getName();
+        param.setServerName(repository == null ? "RESUME PROJECT WITH LOCAL-NOSQL SERVER" : repository.getTestName());
+        return "Hello World! "+ param.getServerName() + " Developer : " + param.getName();
     }
 
 }
