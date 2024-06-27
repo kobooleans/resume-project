@@ -1,8 +1,8 @@
 package com.ks.resumeproject.test.service;
 
-import com.ks.resumeproject.test.dao.Test;
+import com.ks.resumeproject.test.domain.TestVO;
 
 public interface TestService {
 
-    public Test selectTest();
+    public TestVO selectTest();
 }

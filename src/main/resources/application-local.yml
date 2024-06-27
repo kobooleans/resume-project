@@ -3,7 +3,7 @@ spring:
     name: resume-project
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:15432/resume
+    url: jdbc:postgresql://localhost:15432/resume?charSet=UTF-8
     username: resume
     password: local_ks_postgres_db
   devtools:
@@ -20,6 +20,8 @@ server:
 
 mybatis:
   mapper-locations: classpath:mapper/**/*.xml
+  type-aliases-package: com.ks.resumeproject.**.domain
+  config-location: classpath:mybatis-config.xml
 
 springdoc:
   version: '@springdoc.version@'
@@ -35,4 +37,3 @@ springdoc:
   group-configs:
     - group: test
       paths-to-match: /test/**
-
