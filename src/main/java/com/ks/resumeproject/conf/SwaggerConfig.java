@@ -8,7 +8,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @OpenAPIDefinition(
-        info = @Info(title = "Spring Boot Swagger Application",version = "v1"))
+        info = @Info(title = "Spring Boot Swagger Application",
+                description = "Spring Boot로 개발하는 RESTful API 명세서 입니다.",
+                version = "v1"))
 @RequiredArgsConstructor
 @Configuration
 public class SwaggerConfig {
