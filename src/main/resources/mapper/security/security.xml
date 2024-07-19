@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ks.resumeproject.users.repository.SecurityMapper">
+
+    <select id="selectAccount" parameterType="java.lang.String" resultType="AccountDto">
+        <![CDATA[
+            SELECT ID
+                 , USERNAME
+                 , PASSWORD
+                 , ROLE_TYPE
+              FROM ACCOUNT
+             WHERE USERNAME = #{userId}
+               AND PASSWORD IS NOT NULL
+        ]]>
+    </select>
+
+    <select id="listRole" parameterType="java.math.BigInteger" resultType="RoleDto">
+        <![CDATA[
+            SELECT ID, ROLE_TYPE, ROLE_DESC, IS_EXPRESSION, USE_YN
+              FROM ROLE
+             WHERE ID = #{id}
+               AND USE_YN = 'Y'
+        ]]>
+    </select>
+</mapper>

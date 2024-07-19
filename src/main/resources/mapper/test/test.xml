@@ -4,7 +4,7 @@
 
 <mapper namespace="com.ks.resumeproject.test.repository.TestMapper">
 
-    <select id="selectTest" resultType="TestVO">
+    <select id="selectTest" resultType="TestDto">
         <![CDATA[
             SELECT 'RESUME PROJECT WITH ' || NAME AS TEST_NAME FROM TEST
         ]]>

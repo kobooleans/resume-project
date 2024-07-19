@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ks.resumeproject.users.repository.UserMapper">
+
+    <select id="userNameCheck" parameterType="AccountDto" resultType="java.lang.String">
+        <![CDATA[
+        SELECT CASE WHEN COUNT(*) = 0 THEN 'Y' ELSE 'N' END NAME_USE_YN
+        FROM ACCOUNT
+        WHERE USERNAME = #{username}
+        ]]>
+    </select>
+
+    <insert id="signUp" parameterType="AccountDto">
+        <![CDATA[
+            INSERT INTO ACCOUNT(ID, USERNAME, PASSWORD, ROLE_TYPE)
+            SELECT MAX(ID) + 1, #{username}, #{password}, #{roleType}
+              FROM ACCOUNT
+             ORDER BY MAX(ID) DESC
+        ]]>
+    </insert>
+</mapper>

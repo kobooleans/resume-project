@@ -1,0 +1,15 @@
+package com.ks.resumeproject.users.repository;
+
+import com.ks.resumeproject.security.domain.AccountDto;
+import com.ks.resumeproject.security.domain.RoleDto;
+import org.apache.ibatis.annotations.Mapper;
+
+import java.math.BigInteger;
+import java.util.List;
+
+@Mapper
+public interface SecurityMapper {
+    AccountDto selectAccount(String userId);
+
+    List<RoleDto> listRole(BigInteger id);
+}

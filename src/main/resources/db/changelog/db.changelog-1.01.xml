@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="changelog-1.01" author="OWNER">
+        <createTable tableName="ACCOUNT">
+            <column name="ID" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="USERNAME" type="varchar2">
+                <constraints primaryKey="false"/>
+            </column>
+            <column name="PASSWORD" type="varchar2">
+                <constraints primaryKey="false"/>
+            </column>
+            <column name="ROLE_TYPE" type="varchar2">
+                <constraints primaryKey="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="RESOURCES">
+            <column name="ID" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="RESOURCE_NAME" type="varchar2">
+                <constraints primaryKey="false"/>
+            </column>
+            <column name="HTTP_METHOD" type="varchar2">
+                <constraints primaryKey="false"/>
+            </column>
+            <column name="ORDER_NUM" type="int">
+                <constraints primaryKey="false"/>
+            </column>
+            <column name="RESOURCE_TYPE" type="varchar2">
+                <constraints primaryKey="false"/>
+            </column>
+            <column name="ROLE_TYPE" type="varchar2">
+                <constraints primaryKey="false"/>
+            </column>
+            <column name="USE_YN" type="varchar2">
+                <constraints primaryKey="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="ROLE">
+            <column name="ID" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="ROLE_TYPE" type="varchar2">
+                <constraints primaryKey="false"/>
+            </column>
+            <column name="ROLE_DESC" type="varchar2">
+                <constraints primaryKey="false"/>
+            </column>
+            <column name="IS_EXPRESSION" type="varchar2">
+                <constraints primaryKey="false"/>
+            </column>
+            <column name="USE_YN" type="varchar2">
+                <constraints primaryKey="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
