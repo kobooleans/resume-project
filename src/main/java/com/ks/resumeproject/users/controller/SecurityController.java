@@ -1,0 +1,43 @@
+package com.ks.resumeproject.users.controller;
+
+import com.ks.resumeproject.security.domain.AccountDto;
+import com.ks.resumeproject.test.domain.TestDto;
+import com.ks.resumeproject.users.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api")
+@RequiredArgsConstructor
+@Tag(name = "security", description = "로그인을 제외한 회원에대한 전반적인 api (로그인은 /api/login을 기준으로 한다.)")
+public class SecurityController {
+
+    private final UserService userService;
+
+    @Operation(summary = "회원가입", description = "ROLE_USER 계정의 사용자를 등록합니다.")
+    @PostMapping(value = "/signup")
+    public String signup(@Valid @RequestBody AccountDto accountDto) {
+        userService.signUp(accountDto);
+        return "signup";
+    }
+
+
+    @Operation(summary = "로그아웃", description = "REST 형식의 로그인 정보를 지워 로그아웃합니다.")
+    @GetMapping(value = "/logout")
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
+        Authentication authentication = SecurityContextHolder.getContextHolderStrategy().getContext().getAuthentication();
+        if (authentication != null) {
+            new SecurityContextLogoutHandler().logout(request, response, authentication);
+        }
+
+        return "logout";
+    }
+}

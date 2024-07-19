@@ -24,7 +24,7 @@ server:
   port: 8080
 
 mybatis:
-  mapper-locations: classpath:mapper/**/*.xml
+  mapper-locations: classpath:/mapper/**/*.xml
   type-aliases-package: com.ks.resumeproject.**.domain
   config-location: classpath:mybatis-config.xml
 
@@ -39,6 +39,3 @@ springdoc:
     disable-swagger-default-url: true
     use-root-path: true
   show-actuator: true
-  group-configs:
-    - group: test
-      paths-to-match: /test/**
