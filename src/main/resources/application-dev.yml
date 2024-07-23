@@ -36,6 +36,6 @@ springdoc:
     disable-swagger-default-url: true
     use-root-path: true
   show-actuator: true
-  group-configs:
-    - group: test
-      paths-to-match: /test/**
+
+jwt:
+  secret: ***REMOVED***

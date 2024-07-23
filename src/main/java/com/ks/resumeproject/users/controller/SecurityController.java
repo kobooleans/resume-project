@@ -1,17 +1,20 @@
 package com.ks.resumeproject.users.controller;
 
 import com.ks.resumeproject.security.domain.AccountDto;
+import com.ks.resumeproject.security.domain.TokenDto;
 import com.ks.resumeproject.test.domain.TestDto;
 import com.ks.resumeproject.users.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,6 +24,14 @@ import org.springframework.web.bind.annotation.*;
 public class SecurityController {
 
     private final UserService userService;
+
+
+    @PostMapping("/signin")
+    public TokenDto signIn(@RequestBody AccountDto accountDto) {
+        String username = accountDto.getUsername();
+        String password = accountDto.getPassword();
+        return userService.signIn(username, password);
+    }
 
     @Operation(summary = "회원가입", description = "ROLE_USER 계정의 사용자를 등록합니다.")
     @PostMapping(value = "/signup")
@@ -40,4 +51,17 @@ public class SecurityController {
 
         return "logout";
     }
+
+    @Operation(summary = "로그아웃", description = "REST 형식의 로그인 정보를 지워 로그아웃합니다.")
+    @GetMapping(value = "/csrf-token")
+    public CsrfToken csrfToken(HttpServletRequest request, HttpServletResponse response) {
+        return (CsrfToken) request.getAttribute(CsrfToken.class.getName());
+    }
+
+
+    @GetMapping(value = "/selectUser")
+    public Authentication selectUser(HttpServletRequest request) {
+        return SecurityContextHolder.getContext().getAuthentication();
+    }
+
 }
