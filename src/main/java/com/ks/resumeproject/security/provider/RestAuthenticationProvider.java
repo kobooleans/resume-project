@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component("restAuthenticationProvider")
-public class RestAuthenticationProvider implements AuthenticationProvider {
+public class RestAuthenticationProvider {
 
     private final SecurityService securityService;
     private final PasswordEncoder passwordEncoder;
@@ -27,7 +27,6 @@ public class RestAuthenticationProvider implements AuthenticationProvider {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
         String loginId = authentication.getName();
@@ -54,7 +53,6 @@ public class RestAuthenticationProvider implements AuthenticationProvider {
         return new RestAuthenticationToken(accountContext.getAuthorities(), accountContext.getAccountDto(), null);
     }
 
-    @Override
     public boolean supports(Class<?> authentication) {
         return authentication.isAssignableFrom(RestAuthenticationToken.class);
     }
