@@ -25,7 +25,7 @@ public class SecurityController {
 
     private final UserService userService;
 
-
+    @Operation(summary = "회원가입", description = "JWT 형식의 사용자 정보를 가져옵니다.")
     @PostMapping("/signin")
     public TokenDto signIn(@RequestBody AccountDto accountDto) {
         String username = accountDto.getUsername();
@@ -41,7 +41,7 @@ public class SecurityController {
     }
 
 
-    @Operation(summary = "로그아웃", description = "REST 형식의 로그인 정보를 지워 로그아웃합니다.")
+    @Operation(summary = "로그아웃", description = "JWT 형식의 로그인 정보를 지워 로그아웃합니다.")
     @GetMapping(value = "/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
         Authentication authentication = SecurityContextHolder.getContextHolderStrategy().getContext().getAuthentication();
@@ -52,13 +52,13 @@ public class SecurityController {
         return "logout";
     }
 
-    @Operation(summary = "로그아웃", description = "REST 형식의 로그인 정보를 지워 로그아웃합니다.")
+    @Operation(summary = "사용안함", description = "REST 형식의 로그인 시 csrf 토큰을 가져옵니다.")
     @GetMapping(value = "/csrf-token")
     public CsrfToken csrfToken(HttpServletRequest request, HttpServletResponse response) {
         return (CsrfToken) request.getAttribute(CsrfToken.class.getName());
     }
 
-
+    @Operation(summary = "사용자 검증", description = "사용자 정보를 가져와 해당 유저가 존재하는지 검증합니다.")
     @GetMapping(value = "/selectUser")
     public Authentication selectUser(HttpServletRequest request) {
         return SecurityContextHolder.getContext().getAuthentication();
