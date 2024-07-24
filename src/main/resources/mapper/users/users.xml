@@ -15,7 +15,7 @@
     <insert id="signUp" parameterType="AccountDto">
         <![CDATA[
             INSERT INTO ACCOUNT(ID, USERNAME, PASSWORD, ROLE_TYPE)
-            SELECT MAX(ID) + 1, #{username}, #{password}, #{roleType}
+            SELECT COALESCE(NULLIF(MAX(ID), 0), 0) + 1, #{username}, #{password}, #{roleType}
               FROM ACCOUNT
              ORDER BY MAX(ID) DESC
         ]]>
