@@ -10,4 +10,5 @@ public class AccountDto {
     private String username;
     private String password;
     private String roleType;
+    private String randomId;
 }

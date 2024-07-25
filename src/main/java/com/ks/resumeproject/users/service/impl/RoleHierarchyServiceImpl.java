@@ -25,18 +25,25 @@ public class RoleHierarchyServiceImpl implements RoleHierarchyService {
 
         List<HierarchyDto> hierarchyDtos = securityMapper.listHierarchy();
 
-        Iterator<HierarchyDto> itr = hierarchyDtos.iterator();
+
         StringBuilder hierarchyRole = new StringBuilder();
 
-        while (itr.hasNext()) {
-            HierarchyDto roleHierarchy = itr.next();
-            if (roleHierarchy.getParentId() != null) {
-                hierarchyRole.append(roleHierarchy.getParentType());
-                hierarchyRole.append(" > ");
-                hierarchyRole.append(roleHierarchy.getRoleType());
-                hierarchyRole.append("\n");
+        if(!hierarchyDtos.isEmpty()){
+
+            Iterator<HierarchyDto> itr = hierarchyDtos.iterator();
+
+            while (itr.hasNext()) {
+                HierarchyDto roleHierarchy = itr.next();
+                if (roleHierarchy.getParentId() != null) {
+                    hierarchyRole.append(roleHierarchy.getParentType());
+                    hierarchyRole.append(" > ");
+                    hierarchyRole.append(roleHierarchy.getRoleType());
+                    hierarchyRole.append("\n");
+                }
             }
         }
+
+
 
         return hierarchyRole.toString();
     }

@@ -20,4 +20,23 @@
              ORDER BY MAX(ID) DESC
         ]]>
     </insert>
+
+    <select id="getAccountId" parameterType="AccountDto" resultType="java.math.BigInteger">
+        SELECT ID
+          FROM ACCOUNT
+         WHERE USERNAME = #{username}
+    </select>
+
+    <insert id="insertPage" parameterType="PageDto">
+        INSERT
+          INTO ACCOUNT_MY_PAGE(ID, USERNAME, RANDOM_ID, ACCOUNT_ID, PAGE_ID, PAGE_DESCRIPTION, USE_YN)
+        SELECT COALESCE(NULLIF(MAX(ID), 0), 0) + 1
+             , #{username}
+             , #{randomId}
+             , #{accountId}
+             , #{pageId}
+             , #{pageDescription}
+             , #{useYn}
+          FROM ACCOUNT_MY_PAGE
+    </insert>
 </mapper>

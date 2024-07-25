@@ -5,14 +5,101 @@
                                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
     <changeSet id="changelog-1.0" author="OWNER">
-        <createTable tableName="TEST">
-            <column name="SEQ" type="bigint" autoIncrement="true">
+        <createTable tableName="ACCOUNT">
+            <column name="ID" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="NAME" type="varchar2">
+            <column name="USERNAME" type="varchar2">
                 <constraints primaryKey="false"/>
             </column>
-            <column name="REG_DATE" type="timestamp">
+            <column name="PASSWORD" type="varchar2">
+                <constraints primaryKey="false"/>
+            </column>
+            <column name="ROLE_TYPE" type="varchar2">
+                <constraints primaryKey="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="RESOURCES">
+            <column name="ID" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="RESOURCE_NAME" type="varchar2">
+                <constraints primaryKey="false"/>
+            </column>
+            <column name="HTTP_METHOD" type="varchar2">
+                <constraints primaryKey="false"/>
+            </column>
+            <column name="ORDER_NUM" type="int">
+                <constraints primaryKey="false"/>
+            </column>
+            <column name="RESOURCE_TYPE" type="varchar2">
+                <constraints primaryKey="false"/>
+            </column>
+            <column name="USE_YN" type="varchar2">
+                <constraints primaryKey="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="ROLE">
+            <column name="ID" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="ROLE_TYPE" type="varchar2">
+                <constraints primaryKey="false"/>
+            </column>
+            <column name="ROLE_DESC" type="varchar2">
+                <constraints primaryKey="false"/>
+            </column>
+            <column name="IS_EXPRESSION" type="varchar2">
+                <constraints primaryKey="false"/>
+            </column>
+            <column name="USE_YN" type="varchar2">
+                <constraints primaryKey="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="ROLE_HIERARCHY">
+            <column name="ID" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="ROLE_TYPE" type="bigint">
+                <constraints primaryKey="false"/>
+            </column>
+            <column name="PARENT_ID" type="bigint">
+                <constraints primaryKey="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="ROLE_RESOURCES">
+            <column name="RESOURCE_ID" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="ROLE_ID" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="ACCOUNT_MY_PAGE">
+            <column name = "ID" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name = "USERNAME" type="varchar2">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name = "RANDOM_ID" type="varchar2">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name = "ACCOUNT_ID" type="bigint">
+                <constraints primaryKey="false"/>
+            </column>
+            <column name = "PAGE_ID" type="bigint">
+                <constraints primaryKey="false"/>
+            </column>
+            <column name = "PAGE_DESCRIPTION" type="varchar2">
+                <constraints primaryKey="false"/>
+            </column>
+            <column name = "USE_YN" type="varchar2">
                 <constraints primaryKey="false"/>
             </column>
         </createTable>
