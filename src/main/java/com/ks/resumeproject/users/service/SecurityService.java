@@ -2,6 +2,7 @@ package com.ks.resumeproject.users.service;
 
 
 import com.ks.resumeproject.security.domain.AccountDto;
+import com.ks.resumeproject.security.domain.ResourceDto;
 import com.ks.resumeproject.security.domain.RoleDto;
 import com.ks.resumeproject.security.domain.TokenDto;
 
@@ -14,5 +15,6 @@ public interface SecurityService {
 
     List<RoleDto> listRole(BigInteger userId);
 
+    List<ResourceDto> listResources();
 
 }

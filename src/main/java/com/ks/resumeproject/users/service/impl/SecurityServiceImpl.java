@@ -1,6 +1,7 @@
 package com.ks.resumeproject.users.service.impl;
 
 import com.ks.resumeproject.security.domain.AccountDto;
+import com.ks.resumeproject.security.domain.ResourceDto;
 import com.ks.resumeproject.security.domain.RoleDto;
 import com.ks.resumeproject.security.domain.TokenDto;
 import com.ks.resumeproject.security.provider.TokenProvider;
@@ -32,6 +33,11 @@ public class SecurityServiceImpl implements SecurityService {
     @Override
     public List<RoleDto> listRole(BigInteger id) {
         return securityMapper.listRole(id);
+    }
+
+    @Override
+    public List<ResourceDto> listResources() {
+        return securityMapper.listResources();
     }
 
 

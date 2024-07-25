@@ -24,4 +24,30 @@
                AND USE_YN = 'Y'
         ]]>
     </select>
+    
+    <select id="listResources" resultType="ResourceDto">
+        <![CDATA[
+            SELECT RESOURCE_NAME
+                 , ROLE_TYPE
+              FROM RESOURCES A
+              JOIN ROLE_RESOURCES B
+                ON A.ID = B.RESOURCE_ID
+              JOIN ROLE C
+                ON B.ROLE_ID = C.ID
+             WHERE C.USE_YN = 'Y'
+               AND A.USE_YN = 'Y'
+          ]]>
+    </select>
+
+    <select id="listHierarchy" resultType="HierarchyDto">
+        <![CDATA[
+        SELECT A.ID
+             , A.ROLE_TYPE
+             , B.ID AS PARENT_ID
+             , B.ROLE_TYPE AS PARENT_TYPE
+          FROM ROLE_HIERARCHY A
+          LEFT OUTER JOIN ROLE_HIERARCHY B
+            ON A.PARENT_ID = B.ID
+        ]]>
+    </select>
 </mapper>

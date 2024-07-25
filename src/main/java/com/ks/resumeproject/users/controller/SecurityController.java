@@ -2,6 +2,7 @@ package com.ks.resumeproject.users.controller;
 
 import com.ks.resumeproject.security.domain.AccountDto;
 import com.ks.resumeproject.security.domain.TokenDto;
+import com.ks.resumeproject.security.manager.CustomDynamicAuthorizationManager;
 import com.ks.resumeproject.test.domain.TestDto;
 import com.ks.resumeproject.users.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,8 +25,9 @@ import org.springframework.web.bind.annotation.*;
 public class SecurityController {
 
     private final UserService userService;
+    private final CustomDynamicAuthorizationManager manager;
 
-    @Operation(summary = "회원가입", description = "JWT 형식의 사용자 정보를 가져옵니다.")
+    @Operation(summary = "로그인", description = "JWT 형식의 사용자 정보를 가져옵니다.")
     @PostMapping("/signin")
     public TokenDto signIn(@RequestBody AccountDto accountDto) {
         String username = accountDto.getUsername();
@@ -53,7 +55,7 @@ public class SecurityController {
     }
 
     @Operation(summary = "사용안함", description = "REST 형식의 로그인 시 csrf 토큰을 가져옵니다.")
-    @GetMapping(value = "/csrf-token")
+    @GetMapping(value = "/csrfToken")
     public CsrfToken csrfToken(HttpServletRequest request, HttpServletResponse response) {
         return (CsrfToken) request.getAttribute(CsrfToken.class.getName());
     }
@@ -62,6 +64,29 @@ public class SecurityController {
     @GetMapping(value = "/selectUser")
     public Authentication selectUser(HttpServletRequest request) {
         return SecurityContextHolder.getContext().getAuthentication();
+    }
+
+    @Operation(summary = "인가 및 권한 재 설정을 위한 get method", description = "get 형식으로 url 호출 시 인가 및 권한을 재 업로드합니다.")
+    @GetMapping(value = "/reAuthorization")
+    public String selectAuthReMapping(HttpServletRequest request) {
+        manager.mapping();
+
+        return "Success ReMapping";
+    }
+
+    @GetMapping(value= "/testAdmin")
+    public String testAdmin(HttpServletRequest request) {
+        return "Admin Test";
+    }
+
+    @GetMapping(value= "/testManager")
+    public String testManager(HttpServletRequest request) {
+        return "Manager Test";
+    }
+
+    @GetMapping(value= "/testUser")
+    public String testUser(HttpServletRequest request) {
+        return "User Test";
     }
 
 }
