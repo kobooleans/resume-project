@@ -44,8 +44,9 @@ public class TokenProvider {
 
         long now = (new Date()).getTime();
 
-        // Access Token 생성
-        Date accessTokenExpiresIn = new Date(now + 86400000);
+        /** timeout 시간 1시간으로 설정 */
+        Date accessTokenExpiresIn = new Date(now + 1000 * 60 * 60);
+
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim("auth", authorities)
@@ -55,7 +56,8 @@ public class TokenProvider {
 
         // Refresh Token 생성
         String refreshToken = Jwts.builder()
-                .expiration(new Date(now + 86400000))
+                /** timeout 시간 1시간으로 설정 */
+                .expiration(accessTokenExpiresIn)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
