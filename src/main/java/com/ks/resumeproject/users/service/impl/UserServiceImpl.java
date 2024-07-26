@@ -33,6 +33,11 @@ public class UserServiceImpl implements UserService {
     private WebUtil webUtil;
 
     @Override
+    public boolean checkUsername(AccountDto accountDto) {
+        return userMapper.userNameCheck(accountDto).equals("Y");
+    }
+
+    @Override
     public void signUp(AccountDto accountDto) {
         // 패스워드 재검증
         if(accountDto.getPassword() == null || accountDto.getPassword().isEmpty()){
@@ -77,5 +82,7 @@ public class UserServiceImpl implements UserService {
 
         return jwtTokenProvider.generateToken(authentication);
     }
+
+
 
 }
