@@ -63,7 +63,7 @@
             <column name="ID" type="bigint">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="ROLE_TYPE" type="bigint">
+            <column name="ROLE_TYPE" type="varchar2">
                 <constraints primaryKey="false"/>
             </column>
             <column name="PARENT_ID" type="bigint">
