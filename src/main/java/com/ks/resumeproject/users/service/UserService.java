@@ -7,4 +7,6 @@ public interface UserService {
     void signUp(AccountDto accountDto);
 
     TokenDto signIn(String username, String password);
+
+    boolean checkUsername(AccountDto accountDto);
 }

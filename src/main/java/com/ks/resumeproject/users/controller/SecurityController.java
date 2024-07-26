@@ -35,6 +35,12 @@ public class SecurityController {
         return userService.signIn(username, password);
     }
 
+    @Operation(summary = "회원가입 아이디 중복검사", description = "ROLE_USER 계정의 사용자의 username의 중복여부를 확인합니다.")
+    @PostMapping(value = "/signup/checkUsername")
+    public boolean checkUsername(@Valid @RequestBody AccountDto accountDto) {
+        return userService.checkUsername(accountDto);
+    }
+
     @Operation(summary = "회원가입", description = "ROLE_USER 계정의 사용자를 등록합니다.")
     @PostMapping(value = "/signup")
     public String signup(@Valid @RequestBody AccountDto accountDto) {
