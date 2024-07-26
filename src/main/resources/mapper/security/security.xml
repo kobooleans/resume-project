@@ -6,13 +6,18 @@
 
     <select id="selectAccount" parameterType="java.lang.String" resultType="AccountDto">
         <![CDATA[
-            SELECT ID
-                 , USERNAME
-                 , PASSWORD
-                 , ROLE_TYPE
-              FROM ACCOUNT
-             WHERE USERNAME = #{userId}
-               AND PASSWORD IS NOT NULL
+            SELECT A.ID
+                 , A.USERNAME
+                 , A.PASSWORD
+                 , A.ROLE_TYPE
+                 , B.RANDOM_ID
+              FROM ACCOUNT A
+              LEFT OUTER JOIN ACCOUNT_MY_PAGE B
+                ON A.USERNAME = B.USERNAME
+               AND B.USE_YN = 'Y'
+               AND B.PAGE_DESCRIPTION = 'MAIN'
+             WHERE A.USERNAME = #{userId}
+               AND A.PASSWORD IS NOT NULL
         ]]>
     </select>
 

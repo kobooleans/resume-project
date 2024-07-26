@@ -1,5 +1,6 @@
 package com.ks.resumeproject.security.provider;
 
+import com.ks.resumeproject.security.domain.AccountContext;
 import com.ks.resumeproject.security.domain.TokenDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -66,6 +67,7 @@ public class TokenProvider {
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .tokenExpiresIn(accessTokenExpiresIn.getTime())
+                .randomId(((AccountContext)authentication.getPrincipal()).getAccountDto().getRandomId())
                 .build();
     }
 
