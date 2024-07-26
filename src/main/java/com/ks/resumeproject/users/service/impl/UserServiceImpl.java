@@ -3,10 +3,11 @@ package com.ks.resumeproject.users.service.impl;
 import com.ks.resumeproject.security.domain.AccountContext;
 import com.ks.resumeproject.security.domain.AccountDto;
 import com.ks.resumeproject.security.domain.TokenDto;
-import com.ks.resumeproject.security.exception.CustomAuthenticationException;
 import com.ks.resumeproject.security.provider.TokenProvider;
+import com.ks.resumeproject.users.domain.PageDto;
 import com.ks.resumeproject.users.repository.UserMapper;
 import com.ks.resumeproject.users.service.UserService;
+import com.ks.resumeproject.util.WebUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -18,8 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.math.BigInteger;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +30,7 @@ public class UserServiceImpl implements UserService {
     private final TokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
+    private WebUtil webUtil;
 
     @Override
     public void signUp(AccountDto accountDto) {
@@ -42,7 +43,21 @@ public class UserServiceImpl implements UserService {
         if(userMapper.userNameCheck(accountDto).equals("Y")){
             accountDto.setRoleType("ROLE_USER");
             accountDto.setPassword(passwordEncoder.encode(accountDto.getPassword()));
+
+            PageDto pageDto = new PageDto();
+
             userMapper.signUp(accountDto);
+
+            // 기본 Main 페이지 생성
+            pageDto.setUsername(accountDto.getUsername());
+            pageDto.setRandomId(webUtil.addRandomVal());
+            pageDto.setAccountId(userMapper.getAccountId(accountDto));
+            pageDto.setPageId(new BigInteger("0"));
+            pageDto.setPageDescription("MAIN");
+            pageDto.setUseYn("Y");
+
+            userMapper.insertPage(pageDto);
+
         }else{
             throw new AuthenticationServiceException("Username is duplicated");
         }
