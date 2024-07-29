@@ -7,7 +7,7 @@ spring:
     username: admin
     password: admin
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-    url: jdbc:log4jdbc:postgresql://43.201.249.27:5432/resume?charSet=UTF-8
+    url: jdbc:log4jdbc:postgresql://localhost:15432/resume?charSet=UTF-8
   devtools:
     restart:
       enabled: true
