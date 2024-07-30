@@ -29,6 +29,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
+
 @EnableWebSecurity
 @Configuration
 @RequiredArgsConstructor
@@ -63,9 +65,7 @@ public class SecurityConfig {
     public CorsConfigurationSource configurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        String allowedValue = activeProfile.equals("local") ? "http://localhost:5173/" : "http://study.koboolean.site:2023/";
-
-        configuration.addAllowedOrigin(allowedValue);
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173/","http://study.koboolean.site:2023/", "http://192.168.45.161:2023/"));
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
         configuration.setAllowCredentials(true);
