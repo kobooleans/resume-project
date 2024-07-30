@@ -8,6 +8,7 @@ import com.ks.resumeproject.security.handler.RestAuthenticationFailureHandler;
 import com.ks.resumeproject.security.handler.RestAuthenticationSuccessHandler;
 import com.ks.resumeproject.security.provider.TokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -36,6 +37,9 @@ public class SecurityConfig {
     private final AuthorizationManager<RequestAuthorizationContext> authorizationManager;
     private final TokenProvider tokenProvider;
 
+    @Value("${spring.profiles.active}")
+    private String activeProfile;
+
     @Bean
     public SecurityFilterChain restSecurityFilterChain(HttpSecurity http) throws Exception {
 
@@ -58,7 +62,10 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource configurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("http://localhost:5173/");
+
+        String allowedValue = activeProfile.equals("local") ? "http://localhost:5173/" : "http://study.koboolean.site:2023/";
+
+        configuration.addAllowedOrigin(allowedValue);
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
         configuration.setAllowCredentials(true);
