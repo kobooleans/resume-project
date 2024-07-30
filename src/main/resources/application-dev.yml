@@ -7,7 +7,7 @@ spring:
     username: resume
     password: local_ks_postgres_db
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-    url: jdbc:log4jdbc:postgresql://localhost:15432/resume?charSet=UTF-8
+    url: jdbc:log4jdbc:postgresql://192.168.45.161:15432/resume?charSet=UTF-8
   devtools:
     restart:
       enabled: true
