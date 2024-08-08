@@ -21,6 +21,16 @@
         ]]>
     </select>
 
+    <select id="selectUserAccount" parameterType="java.lang.String" resultType="AccountDto">
+        <![CDATA[
+        SELECT A.ID
+             , A.USERNAME
+             , A.ROLE_TYPE
+        FROM ACCOUNT A
+        WHERE A.USERNAME = #{userId}
+        ]]>
+    </select>
+
     <select id="listRole" parameterType="java.math.BigInteger" resultType="RoleDto">
         <![CDATA[
             SELECT ID, ROLE_TYPE, ROLE_DESC, IS_EXPRESSION, USE_YN
