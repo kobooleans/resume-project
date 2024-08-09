@@ -1,6 +1,7 @@
 package com.ks.resumeproject.security.provider;
 
 import com.ks.resumeproject.security.domain.AccountContext;
+import com.ks.resumeproject.security.domain.AccountDto;
 import com.ks.resumeproject.security.domain.TokenDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -17,10 +18,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.math.BigInteger;
 import java.security.Key;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -48,9 +48,14 @@ public class TokenProvider {
         /** timeout 시간 1시간으로 설정 */
         Date accessTokenExpiresIn = new Date(now + 1000 * 60 * 60);
 
+        AccountDto accountDto = ((AccountContext)authentication.getPrincipal()).getAccountDto();
+
+        accountDto.setPassword(null);
+
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim("auth", authorities)
+                .claim("account", accountDto) // account 추가 반영
                 .setExpiration(accessTokenExpiresIn)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
@@ -85,9 +90,11 @@ public class TokenProvider {
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
 
-        // UserDetails 객체를 만들어서 Authentication return
-        // UserDetails: interface, User: UserDetails를 구현한 class
-        UserDetails principal = new User(claims.getSubject(), "", authorities);
+        // jwt token 내에서 존재하는 AccountDto 정보 재정의 후 principal에 넣기
+        LinkedHashMap map = (LinkedHashMap) claims.get("account");
+        AccountDto accountDto = new AccountDto( new BigInteger(map.get("id").toString()) , map.get("username").toString(), null, map.get("roleType").toString(), map.get("randomId").toString());
+
+        UserDetails principal = new AccountContext(accountDto , (List<GrantedAuthority>) authorities);
         return new UsernamePasswordAuthenticationToken(principal, "", authorities);
     }
 
