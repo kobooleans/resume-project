@@ -39,4 +39,16 @@
              , #{useYn}
           FROM ACCOUNT_MY_PAGE
     </insert>
+
+    <select id="pageList" parameterType="java.math.BigInteger" resultType="AccountMyPageDto">
+        <![CDATA[
+            SELECT ID
+                 , RANDOM_ID
+                 , PAGE_ID
+                 , PAGE_DESCRIPTION
+            FROM ACCOUNT_MY_PAGE
+            WHERE ACCOUNT_ID = #{id}
+              AND USE_YN = 'Y'
+        ]]>
+    </select>
 </mapper>

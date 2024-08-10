@@ -43,7 +43,7 @@ public class RestAuthenticationProvider {
             String roleType = accountDto.getRoleType();
             roles.add(new SimpleGrantedAuthority(roleType));
 
-            accountContext = new AccountContext(accountDto, roles);
+            accountContext = new AccountContext(accountDto, roles, null);
         }
 
         if(accountContext == null || !passwordEncoder.matches(password, accountContext.getPassword())){

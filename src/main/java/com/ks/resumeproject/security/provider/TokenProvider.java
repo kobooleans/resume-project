@@ -3,6 +3,7 @@ package com.ks.resumeproject.security.provider;
 import com.ks.resumeproject.security.domain.AccountContext;
 import com.ks.resumeproject.security.domain.AccountDto;
 import com.ks.resumeproject.security.domain.TokenDto;
+import com.ks.resumeproject.users.domain.AccountMyPageDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -37,11 +38,8 @@ public class TokenProvider {
     }
 
     // Member 정보를 가지고 AccessToken, RefreshToken을 생성하는 메서드
-    public TokenDto generateToken(Authentication authentication) {
+    public TokenDto generateToken(Authentication authentication, List<AccountMyPageDto> accountMyPageDto) {
         // 권한 가져오기
-        String authorities = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
 
         long now = (new Date()).getTime();
 
@@ -54,7 +52,8 @@ public class TokenProvider {
 
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
-                .claim("auth", authorities)
+                .claim("auth", accountDto.getRoleType())
+                .claim("accountMyPage", accountMyPageDto)
                 .claim("account", accountDto) // account 추가 반영
                 .setExpiration(accessTokenExpiresIn)
                 .signWith(key, SignatureAlgorithm.HS256)
@@ -94,7 +93,7 @@ public class TokenProvider {
         LinkedHashMap map = (LinkedHashMap) claims.get("account");
         AccountDto accountDto = new AccountDto( new BigInteger(map.get("id").toString()) , map.get("username").toString(), null, map.get("roleType").toString(), map.get("randomId").toString());
 
-        UserDetails principal = new AccountContext(accountDto , (List<GrantedAuthority>) authorities);
+        UserDetails principal = new AccountContext(accountDto , (List<GrantedAuthority>) authorities, (List<AccountMyPageDto>) claims.get("accountMyPage"));
         return new UsernamePasswordAuthenticationToken(principal, "", authorities);
     }
 

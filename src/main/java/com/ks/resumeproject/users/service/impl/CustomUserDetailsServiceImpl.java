@@ -2,7 +2,9 @@ package com.ks.resumeproject.users.service.impl;
 
 import com.ks.resumeproject.security.domain.AccountContext;
 import com.ks.resumeproject.security.domain.AccountDto;
+import com.ks.resumeproject.users.domain.AccountMyPageDto;
 import com.ks.resumeproject.users.repository.SecurityMapper;
+import com.ks.resumeproject.users.repository.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,6 +24,7 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
 
     private final SecurityMapper securityMapper;
     private final PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
 
     @Override
     public AccountContext loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -36,7 +39,9 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
             String roleType = accountDto.getRoleType();
             roles.add(new SimpleGrantedAuthority(roleType));
 
-            accountContext = new AccountContext(accountDto, roles);
+            List<AccountMyPageDto> accountMyPageDto = userMapper.pageList(accountDto.getId());
+
+            accountContext = new AccountContext(accountDto, roles, accountMyPageDto);
         }
 
         return accountContext;
