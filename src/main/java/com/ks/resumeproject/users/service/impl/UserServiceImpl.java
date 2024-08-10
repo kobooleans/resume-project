@@ -4,6 +4,7 @@ import com.ks.resumeproject.security.domain.AccountContext;
 import com.ks.resumeproject.security.domain.AccountDto;
 import com.ks.resumeproject.security.domain.TokenDto;
 import com.ks.resumeproject.security.provider.TokenProvider;
+import com.ks.resumeproject.users.domain.AccountMyPageDto;
 import com.ks.resumeproject.users.domain.PageDto;
 import com.ks.resumeproject.users.repository.UserMapper;
 import com.ks.resumeproject.users.service.UserService;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -75,12 +77,13 @@ public class UserServiceImpl implements UserService {
 
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
-
         if(authentication == null || !passwordEncoder.matches(password, ((AccountContext)authentication.getPrincipal()).getPassword())){
             throw new BadCredentialsException("Invalid password");
         }
 
-        return jwtTokenProvider.generateToken(authentication);
+        List<AccountMyPageDto> accountMyPageDto = userMapper.pageList(new BigInteger(((AccountContext)authentication.getPrincipal()).getAccountDto().getId().toString()));
+
+        return jwtTokenProvider.generateToken(authentication, accountMyPageDto);
     }
 
 

@@ -3,7 +3,9 @@ package com.ks.resumeproject.portfolio.service.impl;
 import com.ks.resumeproject.portfolio.domain.CategoryDto;
 import com.ks.resumeproject.portfolio.repository.PortfolioMapper;
 import com.ks.resumeproject.portfolio.service.PortfolioService;
+import com.ks.resumeproject.security.domain.AccountContext;
 import com.ks.resumeproject.security.domain.AccountDto;
+import com.ks.resumeproject.security.util.SecurityUtil;
 import com.ks.resumeproject.users.service.SecurityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -32,13 +34,12 @@ public class PortfolioServiceImpl implements PortfolioService {
 
     @Override
     public void insertCategory(CategoryDto categoryDto) {
-        /*사용자 Id가 없는 경우를 대비해 토큰에 있는 username을 가지고 온다.
+        /*사용자 Id가 없는 경우를 대비해 토큰에 있는 id를 가지고 온다.
         * 토큰의 암호화를 풀기위해 SecurityContextHolder 사용 */
-        String username = ((User)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+        AccountContext accountContext = SecurityUtil.getAccount();
 
         if(categoryDto.getId() == null){
-            AccountDto account = securityService.selectUserAccount(username);
-            categoryDto.setId(account.getId());
+            categoryDto.setId(accountContext.getAccountDto().getId());
         }
 
         portfolioMapper.insertCategory(categoryDto);
