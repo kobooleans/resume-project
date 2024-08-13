@@ -11,4 +11,8 @@ public interface PortfolioMapper {
     List<CategoryDto> categoryList(AccountDto accountDto);
 
     void insertCategory(CategoryDto categoryDto);
+
+    void updateCategory(CategoryDto categoryDto);
+
+    void deleteCategory(CategoryDto categoryDto);
 }
