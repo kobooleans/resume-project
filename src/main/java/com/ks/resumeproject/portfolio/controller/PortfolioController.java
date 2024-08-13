@@ -17,7 +17,7 @@ import java.math.BigInteger;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/portfolio")
 @RequiredArgsConstructor
 @Tag(name = "portfolio", description = "프토폴리오 등록.수정.삭제, 파일등록, 카테고리 등록 등 포트폴리오 전반적 api")
 public class PortfolioController {

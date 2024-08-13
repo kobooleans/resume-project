@@ -14,6 +14,11 @@ public class AccountDto {
     private String randomId;
     private BigInteger fileId;
 
+
+    public AccountDto(){
+
+    }
+
     public AccountDto(BigInteger id, String username, String password, String roleType, String randomId) {
         this.id = id;
         this.username = username;

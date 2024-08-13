@@ -27,7 +27,7 @@
              , A.USERNAME
              , A.ROLE_TYPE
         FROM ACCOUNT A
-        WHERE A.USERNAME = #{userId}
+        WHERE A.USERNAME = #{username}
         ]]>
     </select>
 
