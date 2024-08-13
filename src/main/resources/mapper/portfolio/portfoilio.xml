@@ -34,4 +34,20 @@
             ORDER BY MAX(CATEGORY_ID) DESC
         ]]>
     </insert>
+
+    <update id="updateCategory" parameterType="CategoryDto">
+        UPDATE CATEGORY
+           SET CATEGORY_NM	= #{categoryNm}
+         WHERE CATEGORY_ID	= #{categoryId}
+           AND ID			= #{id}
+           AND RANDOM_ID	= #{randomId}
+        ;
+    </update>
+
+    <delete id="deleteCategory" parameterType="CategoryDto">
+        DELETE FROM CATEGORY
+         WHERE CATEGORY_ID	= #{categoryId}
+           AND ID			= #{id}
+           AND RANDOM_ID	= #{randomId}
+    </delete>
 </mapper>

@@ -32,9 +32,22 @@ public class PortfolioController {
 
     @Operation(summary = "카테고리 등록", description = "카테고리 정보를 저장한다.")
     @PostMapping("/addCategory")
-    public String categoryInsert(@RequestBody CategoryDto categoryDto){
+    public String insertCategory(@RequestBody CategoryDto categoryDto){
         portfolioService.insertCategory(categoryDto);
         return "success";
     }
 
+    @Operation(summary = "카테고리 수정", description = "카테고리 정보를 수정한다.")
+    @PostMapping("/updateCategory")
+    public String updateCategory(@RequestBody CategoryDto categoryDto){
+        portfolioService.updateCategory(categoryDto);
+        return "success";
+    }
+
+    @Operation(summary = "카테고리 삭제", description = "카테고리 정보를 삭제한다.")
+    @PostMapping("/deleteCategory")
+    public String deleteCategory(@RequestBody CategoryDto categoryDto){
+        portfolioService.deleteCategory(categoryDto);
+        return "success";
+    }
 }

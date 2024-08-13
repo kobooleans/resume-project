@@ -44,4 +44,30 @@ public class PortfolioServiceImpl implements PortfolioService {
 
         portfolioMapper.insertCategory(categoryDto);
     }
+
+    @Override
+    public void updateCategory(CategoryDto categoryDto) {
+        /*사용자 Id가 없는 경우를 대비해 토큰에 있는 id를 가지고 온다.
+         * 토큰의 암호화를 풀기위해 SecurityContextHolder 사용 */
+        AccountContext accountContext = SecurityUtil.getAccount();
+
+        if(categoryDto.getId() == null){
+            categoryDto.setId(accountContext.getAccountDto().getId());
+        }
+
+        portfolioMapper.updateCategory(categoryDto);
+    }
+
+    @Override
+    public void deleteCategory(CategoryDto categoryDto) {
+        /*사용자 Id가 없는 경우를 대비해 토큰에 있는 id를 가지고 온다.
+         * 토큰의 암호화를 풀기위해 SecurityContextHolder 사용 */
+        AccountContext accountContext = SecurityUtil.getAccount();
+
+        if(categoryDto.getId() == null){
+            categoryDto.setId(accountContext.getAccountDto().getId());
+        }
+
+        portfolioMapper.deleteCategory(categoryDto);
+    }
 }

@@ -10,4 +10,7 @@ public interface PortfolioService {
 
     void insertCategory(CategoryDto categoryDto);
 
+    void updateCategory(CategoryDto categoryDto);
+
+    void deleteCategory(CategoryDto categoryDto);
 }
