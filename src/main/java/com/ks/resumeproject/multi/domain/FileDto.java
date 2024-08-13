@@ -1,15 +1,15 @@
-package com.ks.resumeproject.portfolio.domain;
+package com.ks.resumeproject.multi.domain;
 
 import lombok.Data;
 
 import java.math.BigInteger;
-import java.sql.Blob;
 
 @Data
 public class FileDto {
     private BigInteger fileId;
+    private int fileSubId;
     private String fileNm;
-    private Blob file;
+    private byte[] file;
     private String fileType;
     private String useYn;
 }
