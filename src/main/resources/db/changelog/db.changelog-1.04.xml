@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="changelog-1.04" author="KOBOOLEAN">
+
+        <createTable tableName="RESUME_INFO">
+            <column name="ID" type="bigint" remarks="파일 ID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="RANDOM_ID" type="varchar2" remarks="페이지 ID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="NAME" type="varchar2" remarks="이름">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+            <column name="FIRSTNAME" type="varchar2" remarks="영문 이름">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+            <column name="LASTNAME" type="varchar2" remarks="영문 성">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+            <column name="JOB" type="varchar2" remarks="직업">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+            <column name="EMAIL" type="varchar2" remarks="이메일">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+            <column name="CALL" type="varchar2" remarks="전화번호">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+            <column name="LOCATION" type="varchar2" remarks="지역(주소)">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+</databaseChangeLog>
