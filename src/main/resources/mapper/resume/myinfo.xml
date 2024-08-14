@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ks.resumeproject.resume.repository.MyInfoMapper">
+
+    <select id="getMyInfo" parameterType="AccountDto" resultType="MyinfoDto">
+        <![CDATA[
+        SELECT ID
+             , RANDOM_ID
+             , NAME
+             , FIRSTNAME
+             , LASTNAME
+             , JOB
+             , EMAIL
+             , CALL
+             , LOCATION
+          FROM RESUME_INFO
+         WHERE ID = #{id}
+           AND RANDOM_ID = #{randomId}
+        ]]>
+    </select>
+
+    <insert id="insertMyInfo" parameterType="MyinfoDto">
+        <![CDATA[
+            INSERT INTO RESUME_INFO(ID, RANDOM_ID)
+            VALUES (#{id}, #{randomId})
+        ]]>
+    </insert>
+
+    <update id="setMyInfo" parameterType="MyinfoDto">
+        <![CDATA[
+            UPDATE RESUME_INFO
+               SET NAME = #{name}
+                 , FIRSTNAME = #{firstname}
+                 , LASTNAME = #{lastname}
+                 , JOB = #{job}
+                 , EMAIL = #{email}
+                 , CALL = #{call}
+                 , LOCATION = #{location}
+             WHERE ID = #{id}
+               AND RANDOM_ID = #{randomId}
+        ]]>
+    </update>
+</mapper>
