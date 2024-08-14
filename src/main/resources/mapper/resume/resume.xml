@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ks.resumeproject.resume.repository.ResumeMapper">
+
+    <select id="getResumeSet" parameterType="AccountDto" resultType="ResumeDto">
+        <![CDATA[
+            SELECT ID, RANDOM_ID, SKILL_YN, CAREER_YN, EDU_YN, AWARD_YN, ACTION_YN, COVER_LETTER_YN
+              FROM RESUME
+             WHERE ID = #{id}
+               AND RANDOM_ID = #{randomId}
+        ]]>
+    </select>
+
+    <insert id="setResumeSet" parameterType="ResumeDto">
+        <![CDATA[
+            INSERT INTO RESUME(ID, RANDOM_ID)
+            VALUES (#{id}, #{randomId})
+        ]]>
+    </insert>
+
+    <update id="setResumeItem" parameterType="ResumeDto">
+            UPDATE RESUME
+            <if test='type == "skill"'>
+               SET skill_yn = #{skillYn}
+            </if>
+            <if test='type == "career"'>
+                SET career_yn = #{careerYn}
+            </if>
+            <if test='type == "edu"'>
+                SET edu_yn = #{eduYn}
+            </if>
+            <if test='type == "award"'>
+                SET award_yn = #{awardYn}
+            </if>
+            <if test='type == "action"'>
+                SET action_yn = #{actionYn}
+            </if>
+            <if test='type == "coverLetter"'>
+                SET COVER_LETTER_YN = #{coverLetterYn}
+            </if>
+             WHERE ID = #{id}
+               AND RANDOM_ID = #{randomId}
+    </update>
+
+</mapper>

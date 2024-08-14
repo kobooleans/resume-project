@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="changelog-1.03" author="KOBOOLEAN">
+
+        <createTable tableName="RESUME">
+            <column name="ID" type="bigint" remarks="파일 ID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="RANDOM_ID" type="varchar2" remarks="페이지 ID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="SKILL_YN" type="boolean" remarks="스킬 여부" defaultValueBoolean="false">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+            <column name="CAREER_YN" type="boolean" remarks="경력 여부" defaultValueBoolean="false">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+            <column name="EDU_YN" type="boolean" remarks="학력 여부" defaultValueBoolean="false">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+            <column name="AWARD_YN" type="boolean" remarks="수상 여부" defaultValueBoolean="false">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+            <column name="ACTION_YN" type="boolean" remarks="활동 여부" defaultValueBoolean="false">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+            <column name="COVER_LETTER_YN" type="boolean" remarks="자기소개서 여부" defaultValueBoolean="false">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+</databaseChangeLog>
