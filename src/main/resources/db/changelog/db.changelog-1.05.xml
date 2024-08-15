@@ -4,40 +4,49 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet id="changelog-1.04" author="KOBOOLEAN">
+    <changeSet id="changelog-1.05" author="KOBOOLEAN">
 
-        <createTable tableName="RESUME_INFO">
-            <column name="ID" type="bigint" remarks="파일 ID">
+        <createTable tableName="RESUME_CAREER">
+            <column name="CAREER_ID" type="bigint" remarks="경력 ID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="ID" type="bigint" remarks="사용자 ID">
                 <constraints nullable="false"/>
             </column>
-            <column name="RANDOM_ID" type="varchar2" remarks="페이지 ID">
+            <column name="RANDOM_ID" type="varchar" remarks="페이지 ID">
                 <constraints nullable="false"/>
             </column>
-            <column name="NAME" type="varchar2" remarks="이름">
+            <column name="START_DAY" type="date" remarks="시작일자">
                 <constraints primaryKey="false" nullable="true"/>
             </column>
-            <column name="FIRSTNAME" type="varchar2" remarks="영문 이름">
+            <column name="END_DAY" type="date" remarks="종료일자">
                 <constraints primaryKey="false" nullable="true"/>
             </column>
-            <column name="LASTNAME" type="varchar2" remarks="영문 성">
+            <column name="COMPANY_NAME" type="varchar" remarks="회사명">
                 <constraints primaryKey="false" nullable="true"/>
             </column>
-            <column name="JOB" type="varchar2" remarks="직업">
+            <column name="ROLE" type="varchar" remarks="직위">
                 <constraints primaryKey="false" nullable="true"/>
             </column>
-            <column name="EMAIL" type="varchar2" remarks="이메일">
+            <column name="POSITION" type="varchar" remarks="직책">
                 <constraints primaryKey="false" nullable="true"/>
             </column>
-            <column name="CALL" type="varchar2" remarks="전화번호">
+            <column name="JOB" type="varchar" remarks="직업">
                 <constraints primaryKey="false" nullable="true"/>
             </column>
-            <column name="LOCATION" type="varchar2" remarks="지역(주소)">
+            <column name="SALARY" type="varchar" remarks="연봉">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+            <column name="LOCATION" type="varchar" remarks="지역(주소)">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+            <column name="CONTENT" type="text" remarks="내용">
                 <constraints primaryKey="false" nullable="true"/>
             </column>
         </createTable>
-
-        <addForeignKeyConstraint constraintName="resume-info-fk1"
-                                 baseTableName="RESUME_INFO"
+        
+        <addForeignKeyConstraint constraintName="resume-career-fk1"
+                                 baseTableName="RESUME_CAREER"
                                  baseColumnNames="id, random_id"
                                  referencedTableName="RESUME"
                                  referencedColumnNames="id, random_id"
