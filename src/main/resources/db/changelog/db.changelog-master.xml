@@ -10,5 +10,6 @@
     <!--RESUME 관련 테이블 생성-->
     <include file="db/changelog/db.changelog-1.03.xml"/>
     <include file="db/changelog/db.changelog-1.04.xml"/>
+    <include file="db/changelog/db.changelog-1.05.xml"/>
 
 </databaseChangeLog>
