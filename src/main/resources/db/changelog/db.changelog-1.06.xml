@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="changelog-1.06" author="KDY">
+        <createTable tableName="MAIN_INFO">
+            <column name="ID" type="bigint" remarks="파일 ID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="RANDOM_ID" type="varchar2" remarks="페이지 ID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="TITLE" type="varchar2" remarks="제목">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+            <column name="SUBTITLE" type="varchar2" remarks="부제목">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+            <column name="RESUME_YN" type="BOOLEAN" remarks="이력서사용여부" defaultValueBoolean="true">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
