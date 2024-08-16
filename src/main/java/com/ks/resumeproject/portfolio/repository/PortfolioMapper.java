@@ -1,6 +1,7 @@
 package com.ks.resumeproject.portfolio.repository;
 
 import com.ks.resumeproject.portfolio.domain.CategoryDto;
+import com.ks.resumeproject.portfolio.domain.PortfolioDto;
 import com.ks.resumeproject.security.domain.AccountDto;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -15,4 +16,6 @@ public interface PortfolioMapper {
     void updateCategory(CategoryDto categoryDto);
 
     void deleteCategory(CategoryDto categoryDto);
+
+    List<PortfolioDto> portfolioList(PortfolioDto portfolioDto);
 }
