@@ -1,6 +1,7 @@
 package com.ks.resumeproject.portfolio.service.impl;
 
 import com.ks.resumeproject.portfolio.domain.CategoryDto;
+import com.ks.resumeproject.portfolio.domain.PortfolioDto;
 import com.ks.resumeproject.portfolio.repository.PortfolioMapper;
 import com.ks.resumeproject.portfolio.service.PortfolioService;
 import com.ks.resumeproject.security.domain.AccountContext;
@@ -69,5 +70,19 @@ public class PortfolioServiceImpl implements PortfolioService {
         }
 
         portfolioMapper.deleteCategory(categoryDto);
+    }
+
+    @Override
+    public List<PortfolioDto> portfolioList(PortfolioDto portfolioDto) {
+        /*사용자 Id가 없는 경우를 대비해 토큰에 있는 id를 가지고 온다.
+         * 토큰의 암호화를 풀기위해 SecurityContextHolder 사용 */
+        AccountContext accountContext = SecurityUtil.getAccount();
+
+        if(portfolioDto.getId() == null){
+            portfolioDto.setId(accountContext.getAccountDto().getId());
+        }
+
+        return portfolioMapper.portfolioList(portfolioDto);
+
     }
 }
