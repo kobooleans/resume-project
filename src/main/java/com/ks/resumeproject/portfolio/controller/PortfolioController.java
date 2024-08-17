@@ -1,6 +1,7 @@
 package com.ks.resumeproject.portfolio.controller;
 
 import com.ks.resumeproject.portfolio.domain.CategoryDto;
+import com.ks.resumeproject.portfolio.domain.PortfolioDto;
 import com.ks.resumeproject.portfolio.service.PortfolioService;
 import com.ks.resumeproject.portfolio.service.impl.PortfolioServiceImpl;
 import com.ks.resumeproject.security.domain.AccountDto;
@@ -50,4 +51,11 @@ public class PortfolioController {
         portfolioService.deleteCategory(categoryDto);
         return "success";
     }
+
+    @Operation(summary = "포트폴리오 조회", description = "포트폴리오 정보를 조회한다.")
+    @PostMapping("/portfolioList")
+    public List<PortfolioDto> portfolioList(@RequestBody PortfolioDto portfolioDto){
+        return portfolioService.portfolioList(portfolioDto);
+    }
+
 }
