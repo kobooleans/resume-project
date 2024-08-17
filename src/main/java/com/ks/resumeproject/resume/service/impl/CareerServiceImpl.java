@@ -4,10 +4,12 @@ import com.ks.resumeproject.resume.domain.CareerDto;
 import com.ks.resumeproject.resume.repository.CareerMapper;
 import com.ks.resumeproject.resume.service.CareerService;
 import com.ks.resumeproject.security.domain.AccountDto;
+import com.ks.resumeproject.security.util.SecurityUtil;
 import com.ks.resumeproject.users.service.SecurityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.util.List;
 
 @Service
@@ -28,10 +30,19 @@ public class CareerServiceImpl implements CareerService {
 
     @Override
     public void insertCareer(CareerDto careerDto) {
-        AccountDto account = securityService.selectUserAccount(careerDto.getUsername());
-        careerDto.setId(account.getId());
+        careerDto.setId(SecurityUtil.getAccount().getAccountDto().getId());
 
         careerMapper.insertCareer(careerDto);
 
+    }
+
+    @Override
+    public void updateCareer(CareerDto careerDto) {
+        careerMapper.updateCareer(careerDto);
+    }
+
+    @Override
+    public void deleteCareer(CareerDto careerDto) {
+        careerMapper.deleteCareer(careerDto);
     }
 }
