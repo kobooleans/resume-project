@@ -36,18 +36,42 @@
     </insert>
 
     <update id="updateCategory" parameterType="CategoryDto">
-        UPDATE CATEGORY
-           SET CATEGORY_NM	= #{categoryNm}
-         WHERE CATEGORY_ID	= #{categoryId}
-           AND ID			= #{id}
-           AND RANDOM_ID	= #{randomId}
-        ;
+        <![CDATA[
+            UPDATE CATEGORY
+            SET CATEGORY_NM	= #{categoryNm}
+            WHERE CATEGORY_ID	= #{categoryId}
+              AND ID			= #{id}
+              AND RANDOM_ID	= #{randomId}
+        ]]>
     </update>
 
     <delete id="deleteCategory" parameterType="CategoryDto">
-        DELETE FROM CATEGORY
-         WHERE CATEGORY_ID	= #{categoryId}
-           AND ID			= #{id}
-           AND RANDOM_ID	= #{randomId}
+        <![CDATA[
+            DELETE FROM CATEGORY
+             WHERE CATEGORY_ID	= #{categoryId}
+               AND ID			= #{id}
+               AND RANDOM_ID	= #{randomId}
+        ]]>
     </delete>
+
+    <select id="portfolioList" parameterType="PortfolioDto" resultType="PortfolioDto">
+        <![CDATA[
+            SELECT ID
+                 , RANDOM_ID
+                 , PORT_ID
+                 , TITLE
+                 , CONTENT
+                 , CATEGORY_ID
+                 , FILE_ID
+                 , START_YMD
+                 , END_YMD
+            FROM PORTFOLIO
+            WHERE ID        = #{id}
+              AND RANDOM_ID = #{randomId}
+        ]]>
+        <if test="categoryId != 0">
+              AND CATEGORY_ID = #{categoryId}
+        </if>
+    </select>
+
 </mapper>
