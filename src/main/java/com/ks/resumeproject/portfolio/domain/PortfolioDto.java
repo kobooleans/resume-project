@@ -8,6 +8,7 @@ import java.util.Date;
 @Data
 public class PortfolioDto {
     private BigInteger id;
+    private String username;
     private String randomId;
     private BigInteger portId;
     private String title;
