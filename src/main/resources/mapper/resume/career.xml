@@ -21,6 +21,7 @@
         from RESUME_CAREER
         where ID = #{id}
           and RANDOM_ID = #{randomId}
+        ORDER BY start_day
         ]]>
     </select>
 
@@ -74,5 +75,14 @@
             and career_id = #{careerId}
         ]]>
     </update>
+
+    <delete id="deleteCareer" parameterType="CareerDto">
+        <![CDATA[
+            DELETE FROM resume_career
+             WHERE ID = #{id}
+               and RANDOM_ID = #{randomId}
+               and career_id = #{careerId}
+        ]]>
+    </delete>
 
 </mapper>

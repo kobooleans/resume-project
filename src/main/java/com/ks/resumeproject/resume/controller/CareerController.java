@@ -35,4 +35,19 @@ public class CareerController {
         return "success";
     }
 
+    @Operation(summary = "이력서 경력 수정", description = "이력서에 사용되는 경럭을 수정한다.")
+    @PostMapping("/updateCareer")
+    public String updateCareer(@RequestBody CareerDto careerDto){
+        careerService.updateCareer(careerDto);
+
+        return "success";
+    }
+
+    @Operation(summary = "이력서 경력 삭제", description = "이력서에 사용되는 경럭을 삭제한다.")
+    @PostMapping("/deleteCareer")
+    public String deleteCareer(@RequestBody CareerDto careerDto){
+        careerService.deleteCareer(careerDto);
+
+        return "success";
+    }
 }

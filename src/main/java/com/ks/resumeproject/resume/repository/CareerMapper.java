@@ -11,4 +11,8 @@ public interface CareerMapper {
     List<CareerDto> getCareerList(AccountDto accountDto);
 
     void insertCareer(CareerDto careerDto);
+
+    void updateCareer(CareerDto careerDto);
+
+    void deleteCareer(CareerDto careerDto);
 }
