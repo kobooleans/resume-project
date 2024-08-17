@@ -74,13 +74,9 @@ public class PortfolioServiceImpl implements PortfolioService {
 
     @Override
     public List<PortfolioDto> portfolioList(PortfolioDto portfolioDto) {
-        /*사용자 Id가 없는 경우를 대비해 토큰에 있는 id를 가지고 온다.
-         * 토큰의 암호화를 풀기위해 SecurityContextHolder 사용 */
-        AccountContext accountContext = SecurityUtil.getAccount();
-
-        if(portfolioDto.getId() == null){
-            portfolioDto.setId(accountContext.getAccountDto().getId());
-        }
+        /*로그인 시 사용자 Id에 대한 값을 가지고 있지 않기 때문에 사용자 Id에 대한 쿼리 실행 */
+        AccountDto account = securityService.selectUserAccount(portfolioDto.getUsername());
+        portfolioDto.setId(account.getId());
 
         return portfolioMapper.portfolioList(portfolioDto);
 
