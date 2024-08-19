@@ -10,6 +10,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
     private final ObjectMapper mapper = new ObjectMapper();
@@ -19,6 +21,16 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
-        response.getWriter().write(mapper.writeValueAsString(HttpServletResponse.SC_UNAUTHORIZED));
+
+        Map<String, Object> responseData = new HashMap<>();
+        responseData.put("code", HttpServletResponse.SC_UNAUTHORIZED);
+        responseData.put("message", authException.getMessage().contains("UserDetailsService returned null") ? "자격 증명에 실패하였습니다." : authException.getMessage());
+        if(responseData.get("message").equals("자격 증명에 실패하였습니다.")){
+            responseData.put("code", "AUTH-F01");
+        }else{
+            responseData.put("code", "AUTH-F02");
+        }
+        response.getWriter().write(mapper.writeValueAsString(responseData));
+
     }
 }
