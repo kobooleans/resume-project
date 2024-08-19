@@ -24,7 +24,7 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
         Map<String, Object> responseData = new HashMap<>();
         responseData.put("code", HttpServletResponse.SC_UNAUTHORIZED);
-        responseData.put("message", authException.getMessage().contains("UserDetailsService returned null") ? "자격 증명에 실패하였습니다." : authException.getMessage());
+        responseData.put("message", authException.getMessage());
         if(responseData.get("message").equals("자격 증명에 실패하였습니다.")){
             responseData.put("code", "AUTH-F01");
         }else{
