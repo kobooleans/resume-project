@@ -23,7 +23,6 @@ import java.util.List;
 public class CustomUserDetailsServiceImpl implements UserDetailsService {
 
     private final SecurityMapper securityMapper;
-    private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
 
     @Override
@@ -32,7 +31,7 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
 
         AccountDto accountDto = securityMapper.selectAccount(username);
 
-        if(accountDto != null){
+        if(accountDto != null) {
             // TODO: 해당 부분을 통한 로그인 과정을 거치나, 해당 부분 이상여부 다시 한번 확인필요성 존재
             List<GrantedAuthority> roles = new ArrayList<>();
 
@@ -42,6 +41,9 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
             List<AccountMyPageDto> accountMyPageDto = userMapper.pageList(accountDto.getId());
 
             accountContext = new AccountContext(accountDto, roles, accountMyPageDto);
+        }else{
+            // user 정보가 없을 경우 Exception 처리가 필요하다.
+            throw new UsernameNotFoundException("username not found");
         }
 
         return accountContext;
