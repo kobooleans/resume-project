@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.math.BigInteger;
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class PortfolioDto {
@@ -17,4 +18,6 @@ public class PortfolioDto {
     private BigInteger fileId;
     private Date startYmd;
     private Date endYmd;
+    private List<PortfolioDetailDto> detailList;
+
 }

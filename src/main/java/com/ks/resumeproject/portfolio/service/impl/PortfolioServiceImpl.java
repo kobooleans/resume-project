@@ -1,6 +1,7 @@
 package com.ks.resumeproject.portfolio.service.impl;
 
 import com.ks.resumeproject.portfolio.domain.CategoryDto;
+import com.ks.resumeproject.portfolio.domain.PortfolioDetailDto;
 import com.ks.resumeproject.portfolio.domain.PortfolioDto;
 import com.ks.resumeproject.portfolio.repository.PortfolioMapper;
 import com.ks.resumeproject.portfolio.service.PortfolioService;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -82,5 +84,32 @@ public class PortfolioServiceImpl implements PortfolioService {
 
         return portfolioMapper.portfolioList(portfolioDto);
 
+    }
+
+    @Override
+    public void insertPortfolio(PortfolioDto portfolioDto) {
+        AccountContext accountContext = securityUtil.getAccount();
+
+        if(portfolioDto.getId() == null){
+            portfolioDto.setId(accountContext.getAccountDto().getId());
+        }
+
+        BigInteger maxPortId = portfolioMapper.selectMaxPortId(portfolioDto);
+
+        portfolioDto.setPortId(maxPortId);
+
+        portfolioMapper.insertPortfolio(portfolioDto);
+
+       for(PortfolioDetailDto dto : portfolioDto.getDetailList()){
+           if(!dto.getDetailTitle().isEmpty() && !dto.getDetailContent().isEmpty()){
+               dto.setPortId(maxPortId);
+               dto.setId(portfolioDto.getId());
+               dto.setRandomId(portfolioDto.getRandomId());
+               /*상세 구분이 필요 없어졌지만 not null이라서 공백 set*/
+               dto.setDetailDivision("");
+
+               portfolioMapper.insertPortfolioDetail(dto);
+           }
+       }
     }
 }

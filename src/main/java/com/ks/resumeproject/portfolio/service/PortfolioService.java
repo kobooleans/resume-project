@@ -16,4 +16,6 @@ public interface PortfolioService {
     void deleteCategory(CategoryDto categoryDto);
 
     List<PortfolioDto> portfolioList(PortfolioDto portfolioDto);
+
+    void insertPortfolio(PortfolioDto portfolioDto);
 }
