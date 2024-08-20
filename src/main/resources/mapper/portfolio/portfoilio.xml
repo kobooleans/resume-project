@@ -20,10 +20,10 @@
     <insert id="insertCategory" parameterType="CategoryDto">
         <![CDATA[
             INSERT INTO CATEGORY
-            ( CATEGORY_ID
-            , ID
-            , RANDOM_ID
-            , CATEGORY_NM)
+                 ( CATEGORY_ID
+                 , ID
+                 , RANDOM_ID
+                 , CATEGORY_NM)
             SELECT COALESCE(NULLIF(MAX(CATEGORY_ID), 0), 0) + 1
                  , #{id}
                  , #{randomId}
@@ -38,10 +38,10 @@
     <update id="updateCategory" parameterType="CategoryDto">
         <![CDATA[
             UPDATE CATEGORY
-            SET CATEGORY_NM	= #{categoryNm}
-            WHERE CATEGORY_ID	= #{categoryId}
-              AND ID			= #{id}
-              AND RANDOM_ID	= #{randomId}
+               SET CATEGORY_NM	= #{categoryNm}
+             WHERE CATEGORY_ID	= #{categoryId}
+               AND ID			= #{id}
+               AND RANDOM_ID	= #{randomId}
         ]]>
     </update>
 
@@ -72,6 +72,69 @@
         <if test="categoryId != 0">
               AND CATEGORY_ID = #{categoryId}
         </if>
+            ORDER BY PORT_ID
     </select>
 
+    <select id="selectMaxPortId" parameterType="PortfolioDto" resultType="java.math.BigInteger">
+        <![CDATA[
+            SELECT COALESCE(NULLIF(MAX(PORT_ID), 0), 0) + 1
+              FROM PORTFOLIO
+             WHERE ID 			= #{id}
+               AND RANDOM_ID 	= #{randomId}
+        ]]>
+    </select>
+
+    <insert id="insertPortfolio" parameterType="PortfolioDto">
+        <![CDATA[
+        INSERT INTO PORTFOLIO
+             ( ID
+             , RANDOM_ID
+             , PORT_ID
+             , TITLE
+             , CONTENT
+             , CATEGORY_ID
+             , FILE_ID
+             , START_YMD
+             , END_YMD
+             )
+        VALUES
+             ( #{id}
+             , #{randomId}
+             , #{portId}
+             , #{title}
+             , #{content}
+             , #{categoryId}
+             , #{fileId}
+             , #{startYmd}
+             , #{endYmd}
+             )
+        ]]>
+    </insert>
+
+    <insert id="insertPortfolioDetail" parameterType="PortfolioDetailDto">
+        <![CDATA[
+            INSERT INTO PORTFOLIO_DETAIL
+                 ( DETAIL_ID
+                 , ID
+                 , RANDOM_ID
+                 , PORT_ID
+                 , DETAIL_SEQ
+                 , DETAIL_DIVISION
+                 , DETAIL_TITLE
+                 , DETAIL_CONTENT
+                 )
+            SELECT COALESCE(NULLIF(MAX(DETAIL_ID), 0), 0) + 1
+                 , #{id}
+                 , #{randomId}
+                 , #{portId}
+                 , COALESCE(NULLIF(MAX(DETAIL_SEQ), 0), 0) + 1
+                 , #{detailDivision}
+                 , #{detailTitle}
+                 , #{detailContent}
+              FROM PORTFOLIO_DETAIL
+             WHERE ID	 		= #{id}
+               AND RANDOM_ID 	= #{randomId}
+               AND PORT_ID 		= #{portId}
+        ]]>
+    </insert>
 </mapper>

@@ -58,4 +58,11 @@ public class PortfolioController {
         return portfolioService.portfolioList(portfolioDto);
     }
 
+
+    @Operation(summary = "포트폴리오 저장", description = "포트폴리오 정보를 저장한다.")
+    @PostMapping("/addPortfolio")
+    public String insertPortfolio(@RequestBody PortfolioDto portfolioDto){
+        portfolioService.insertPortfolio(portfolioDto);
+        return "success";
+    }
 }

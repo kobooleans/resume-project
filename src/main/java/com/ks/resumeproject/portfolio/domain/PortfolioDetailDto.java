@@ -10,7 +10,7 @@ public class PortfolioDetailDto {
     private BigInteger id;
     private String randomId;
     private BigInteger portId;
-    private Number detailSeq;
+    private int detailSeq;
     private String detailDivision;
     private String detailTitle;
     private String detailContent;
