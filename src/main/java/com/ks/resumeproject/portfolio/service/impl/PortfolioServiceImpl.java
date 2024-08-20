@@ -25,6 +25,8 @@ public class PortfolioServiceImpl implements PortfolioService {
 
     private final PortfolioMapper portfolioMapper;
 
+    private final SecurityUtil securityUtil;
+
     @Override
     public List<CategoryDto> categoryList(AccountDto accountDto) {
         /*로그인 시 사용자 Id에 대한 값을 가지고 있지 않기 때문에 사용자 Id에 대한 쿼리 실행 */
@@ -37,7 +39,7 @@ public class PortfolioServiceImpl implements PortfolioService {
     public void insertCategory(CategoryDto categoryDto) {
         /*사용자 Id가 없는 경우를 대비해 토큰에 있는 id를 가지고 온다.
         * 토큰의 암호화를 풀기위해 SecurityContextHolder 사용 */
-        AccountContext accountContext = SecurityUtil.getAccount();
+        AccountContext accountContext = securityUtil.getAccount();
 
         if(categoryDto.getId() == null){
             categoryDto.setId(accountContext.getAccountDto().getId());
@@ -50,7 +52,7 @@ public class PortfolioServiceImpl implements PortfolioService {
     public void updateCategory(CategoryDto categoryDto) {
         /*사용자 Id가 없는 경우를 대비해 토큰에 있는 id를 가지고 온다.
          * 토큰의 암호화를 풀기위해 SecurityContextHolder 사용 */
-        AccountContext accountContext = SecurityUtil.getAccount();
+        AccountContext accountContext = securityUtil.getAccount();
 
         if(categoryDto.getId() == null){
             categoryDto.setId(accountContext.getAccountDto().getId());
@@ -63,7 +65,7 @@ public class PortfolioServiceImpl implements PortfolioService {
     public void deleteCategory(CategoryDto categoryDto) {
         /*사용자 Id가 없는 경우를 대비해 토큰에 있는 id를 가지고 온다.
          * 토큰의 암호화를 풀기위해 SecurityContextHolder 사용 */
-        AccountContext accountContext = SecurityUtil.getAccount();
+        AccountContext accountContext = securityUtil.getAccount();
 
         if(categoryDto.getId() == null){
             categoryDto.setId(accountContext.getAccountDto().getId());

@@ -30,6 +30,7 @@ public class SecurityController {
 
     private final UserService userService;
     private final CustomDynamicAuthorizationManager manager;
+    private final SecurityUtil securityUtil;
 
     @Operation(summary = "로그인", description = "JWT 형식의 사용자 정보를 가져옵니다.")
     @PostMapping("/signin")
@@ -57,7 +58,7 @@ public class SecurityController {
     @GetMapping(value = "/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
 
-        AccountContext accountContext = SecurityUtil.getAccount();
+        AccountContext accountContext = securityUtil.getAccount();
 
         Authentication authentication = SecurityContextHolder.getContextHolderStrategy().getContext().getAuthentication();
         if (authentication != null) {
