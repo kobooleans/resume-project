@@ -18,6 +18,7 @@ public class CareerServiceImpl implements CareerService {
 
     private final CareerMapper careerMapper;
     private final SecurityService securityService;
+    private final SecurityUtil securityUtil;
 
     @Override
     public List<CareerDto> getCareerList(AccountDto accountDto) {
@@ -30,7 +31,7 @@ public class CareerServiceImpl implements CareerService {
 
     @Override
     public void insertCareer(CareerDto careerDto) {
-        careerDto.setId(SecurityUtil.getAccount().getAccountDto().getId());
+        careerDto.setId(securityUtil.getAccount().getAccountDto().getId());
 
         careerMapper.insertCareer(careerDto);
 

@@ -1,21 +1,14 @@
 package com.ks.resumeproject.conf;
 
-import com.ks.resumeproject.security.dsl.RestApiDsl;
 import com.ks.resumeproject.security.entrypoint.RestAuthenticationEntryPoint;
 import com.ks.resumeproject.security.filter.JwtAuthenticationFilter;
-import com.ks.resumeproject.security.handler.RestAccessDeniedHandler;
-import com.ks.resumeproject.security.handler.RestAuthenticationFailureHandler;
-import com.ks.resumeproject.security.handler.RestAuthenticationSuccessHandler;
+import com.ks.resumeproject.security.handler.JwtAccessDeniedHandler;
 import com.ks.resumeproject.security.provider.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authorization.AuthorizationManager;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -23,8 +16,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -56,7 +47,7 @@ public class SecurityConfig {
                         .anyRequest().access(authorizationManager))
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(new RestAuthenticationEntryPoint())
-                        .accessDeniedHandler(new RestAccessDeniedHandler()))
+                        .accessDeniedHandler(new JwtAccessDeniedHandler()))
                 .addFilterBefore(new JwtAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

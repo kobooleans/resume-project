@@ -21,6 +21,7 @@ public class ProfileServiceImpl implements ProfileService {
 
     private final ProfileMapper profileMapper;
     private final MultiFileService multiFileService;
+    private final SecurityUtil securityUtil;
 
     @Override
     public List<FileDto> getProfile(AccountDto accountDto) {
@@ -32,7 +33,7 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public void setProfile(AccountDto accountDto) {
-        AccountContext context = SecurityUtil.getAccount();
+        AccountContext context = securityUtil.getAccount();
         AccountDto account = context.getAccountDto();
 
         account.setFileId(accountDto.getFileId());
