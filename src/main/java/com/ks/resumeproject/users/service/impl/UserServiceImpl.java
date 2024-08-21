@@ -8,7 +8,7 @@ import com.ks.resumeproject.users.domain.AccountMyPageDto;
 import com.ks.resumeproject.users.domain.PageDto;
 import com.ks.resumeproject.users.repository.UserMapper;
 import com.ks.resumeproject.users.service.UserService;
-import com.ks.resumeproject.util.WebUtil;
+import com.ks.resumeproject.util.ComUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
     private final TokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
-    private WebUtil webUtil;
+    private final ComUtil comUtil;
 
     @Override
     public boolean checkUsername(AccountDto accountDto) {
@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
 
             // 기본 Main 페이지 생성
             pageDto.setUsername(accountDto.getUsername());
-            pageDto.setRandomId(webUtil.addRandomVal());
+            pageDto.setRandomId(comUtil.addRandomVal(10));
             pageDto.setAccountId(userMapper.getAccountId(accountDto));
             pageDto.setPageId(new BigInteger("0"));
             pageDto.setPageDescription("MAIN");
