@@ -19,11 +19,22 @@ public interface PortfolioMapper {
 
     void deleteCategory(CategoryDto categoryDto);
 
-    List<PortfolioDto> portfolioList(PortfolioDto portfolioDto);
+    List<PortfolioDto> portfolioAllList(PortfolioDto portfolioDto);
 
     void insertPortfolio(PortfolioDto portfolioDto);
 
     BigInteger selectMaxPortId(PortfolioDto portfolioDto);
 
     void insertPortfolioDetail(PortfolioDetailDto portfolioDetailDto);
+
+    PortfolioDto portfolioList(PortfolioDto portfolioDto);
+
+    List<PortfolioDetailDto> portfolioDetailList(PortfolioDto portfolioDto);
+
+    void updatePortfolio(PortfolioDto portfolioDto);
+
+    void deletePortfolio(PortfolioDto portfolioDto);
+
+    void deletePortfolioDetailAll(PortfolioDto portfolioDto);
+
 }

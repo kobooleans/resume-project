@@ -54,7 +54,7 @@
         ]]>
     </delete>
 
-    <select id="portfolioList" parameterType="PortfolioDto" resultType="PortfolioDto">
+    <select id="portfolioAllList" parameterType="PortfolioDto" resultType="PortfolioDto">
         <![CDATA[
             SELECT ID
                  , RANDOM_ID
@@ -137,4 +137,73 @@
                AND PORT_ID 		= #{portId}
         ]]>
     </insert>
+
+    <select id="portfolioList" parameterType="PortfolioDto" resultType="PortfolioDto">
+        <![CDATA[
+            SELECT ID
+                 , RANDOM_ID
+                 , PORT_ID
+                 , TITLE
+                 , CONTENT
+                 , CATEGORY_ID
+                 , FILE_ID
+                 , START_YMD
+                 , END_YMD
+            FROM PORTFOLIO
+            WHERE ID 		= #{id}
+              AND RANDOM_ID = #{randomId}
+              AND PORT_ID 	= #{portId}
+        ]]>
+    </select>
+
+    <select id="portfolioDetailList" parameterType="PortfolioDto" resultType="PortfolioDetailDto">
+        <![CDATA[
+            SELECT DETAIL_ID
+                 , ID
+                 , RANDOM_ID
+                 , PORT_ID
+                 , DETAIL_SEQ
+                 , DETAIL_DIVISION
+                 , DETAIL_TITLE
+                 , DETAIL_CONTENT
+            FROM PORTFOLIO_DETAIL
+            WHERE ID 			= #{id}
+              AND RANDOM_ID 	= #{randomId}
+              AND PORT_ID 		= #{portId}
+        ]]>
+    </select>
+
+    <update id="updatePortfolio" parameterType="PortfolioDto">
+        <![CDATA[
+            UPDATE PORTFOLIO
+               SET TITLE        = #{title}
+                 , CONTENT      = #{content}
+                 , CATEGORY_ID  = #{categoryId}
+                 , FILE_ID      = #{fileId}
+                 , START_YMD    = #{startYmd}
+                 , END_YMD      = #{endYmd}
+             WHERE ID           = #{id}
+               AND RANDOM_ID    = #{randomId}
+               AND PORT_ID      = #{portId}
+        ]]>
+    </update>
+
+    <delete id="deletePortfolio" parameterType="PortfolioDto">
+        <![CDATA[
+            DELETE FROM PORTFOLIO
+             WHERE ID 			= #{id}
+               AND RANDOM_ID 	= #{randomId}
+               AND PORT_ID 		= #{portId}
+        ]]>
+    </delete>
+
+    <delete id="deletePortfolioDetailAll" parameterType="PortfolioDto">
+        <![CDATA[
+            DELETE FROM PORTFOLIO_DETAIL
+             WHERE ID 			= #{id}
+               AND RANDOM_ID	= #{randomId}
+               AND PORT_ID 		= #{portId}
+        ]]>
+    </delete>
+
 </mapper>
