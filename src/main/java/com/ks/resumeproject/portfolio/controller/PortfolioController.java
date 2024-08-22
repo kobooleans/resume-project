@@ -52,17 +52,37 @@ public class PortfolioController {
         return "success";
     }
 
-    @Operation(summary = "포트폴리오 조회", description = "포트폴리오 정보를 조회한다.")
-    @PostMapping("/portfolioList")
+    @Operation(summary = "포트폴리오 전체 조회", description = "등록되어 있는 포트폴리오 조회한다.")
+    @PostMapping("/portfolioAllList")
     public List<PortfolioDto> portfolioList(@RequestBody PortfolioDto portfolioDto){
-        return portfolioService.portfolioList(portfolioDto);
+        return portfolioService.portfolioAllList(portfolioDto);
     }
-
 
     @Operation(summary = "포트폴리오 저장", description = "포트폴리오 정보를 저장한다.")
     @PostMapping("/addPortfolio")
     public String insertPortfolio(@RequestBody PortfolioDto portfolioDto){
         portfolioService.insertPortfolio(portfolioDto);
+        return "success";
+    }
+
+    @Operation(summary = "포트폴리오 상세 조회", description = "포트폴리오 상세 정보를 조회한다.")
+    @PostMapping("/portfolioDetailList")
+    public PortfolioDto portfolioDetailList(@RequestBody PortfolioDto portfolioDto){
+        return portfolioService.portfolioDetailList(portfolioDto);
+    }
+
+
+    @Operation(summary = "포트폴리오 수정", description = "포트폴리오 정보를 수정한다.")
+    @PostMapping("/updatePortfolioDetail")
+    public String updatePortfolioDetail(@RequestBody PortfolioDto portfolioDto){
+        portfolioService.updatePortfolioDetail(portfolioDto);
+        return "success";
+    }
+
+    @Operation(summary = "포트폴리오 삭제", description = "포트폴리오 삭제한다.")
+    @PostMapping("/deletePortfolio")
+    public String deletePortfolio(@RequestBody PortfolioDto portfolioDto){
+        portfolioService.deletePortfolio(portfolioDto);
         return "success";
     }
 }

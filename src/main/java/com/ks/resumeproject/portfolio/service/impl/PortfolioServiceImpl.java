@@ -14,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -77,16 +78,17 @@ public class PortfolioServiceImpl implements PortfolioService {
     }
 
     @Override
-    public List<PortfolioDto> portfolioList(PortfolioDto portfolioDto) {
+    public List<PortfolioDto> portfolioAllList(PortfolioDto portfolioDto) {
         /*로그인 시 사용자 Id에 대한 값을 가지고 있지 않기 때문에 사용자 Id에 대한 쿼리 실행 */
         AccountDto account = securityService.selectUserAccount(portfolioDto.getUsername());
         portfolioDto.setId(account.getId());
 
-        return portfolioMapper.portfolioList(portfolioDto);
+        return portfolioMapper.portfolioAllList(portfolioDto);
 
     }
 
     @Override
+    @Transactional
     public void insertPortfolio(PortfolioDto portfolioDto) {
         AccountContext accountContext = securityUtil.getAccount();
 
@@ -111,5 +113,56 @@ public class PortfolioServiceImpl implements PortfolioService {
                portfolioMapper.insertPortfolioDetail(dto);
            }
        }
+    }
+
+    @Override
+    public PortfolioDto portfolioDetailList(PortfolioDto portfolioDto) {
+        /*로그인 시 사용자 Id에 대한 값을 가지고 있지 않기 때문에 사용자 Id에 대한 쿼리 실행 */
+        AccountDto account = securityService.selectUserAccount(portfolioDto.getUsername());
+        portfolioDto.setId(account.getId());
+
+        PortfolioDto portDto = portfolioMapper.portfolioList(portfolioDto);
+        portDto.setDetailList(portfolioMapper.portfolioDetailList(portfolioDto));
+
+        return portDto;
+    }
+
+    @Override
+    @Transactional
+    public void updatePortfolioDetail(PortfolioDto portfolioDto) {
+        AccountContext accountContext = securityUtil.getAccount();
+
+        if(portfolioDto.getId() == null){
+            portfolioDto.setId(accountContext.getAccountDto().getId());
+        }
+
+        portfolioMapper.updatePortfolio(portfolioDto);
+
+        portfolioMapper.deletePortfolioDetailAll(portfolioDto);
+
+        for(PortfolioDetailDto dto : portfolioDto.getDetailList()){
+            if(!dto.getDetailTitle().isEmpty() && !dto.getDetailContent().isEmpty()){
+                dto.setId(portfolioDto.getId());
+                dto.setRandomId(portfolioDto.getRandomId());
+                dto.setPortId(portfolioDto.getPortId());
+                /*상세 구분이 필요 없어졌지만 not null이라서 공백 set*/
+                dto.setDetailDivision("");
+
+                portfolioMapper.insertPortfolioDetail(dto);
+            }
+        }
+    }
+
+    @Override
+    @Transactional
+    public void deletePortfolio(PortfolioDto portfolioDto) {
+        AccountContext accountContext = securityUtil.getAccount();
+
+        if(portfolioDto.getId() == null){
+            portfolioDto.setId(accountContext.getAccountDto().getId());
+        }
+
+        portfolioMapper.deletePortfolioDetailAll(portfolioDto);
+        portfolioMapper.deletePortfolio(portfolioDto);
     }
 }
