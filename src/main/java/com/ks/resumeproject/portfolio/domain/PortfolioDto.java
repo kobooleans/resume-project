@@ -15,6 +15,7 @@ public class PortfolioDto {
     private String title;
     private String content;
     private BigInteger categoryId;
+    private String categoryNm;
     private BigInteger fileId;
     private Date startYmd;
     private Date endYmd;
