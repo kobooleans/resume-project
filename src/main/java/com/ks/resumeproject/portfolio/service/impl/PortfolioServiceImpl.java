@@ -100,6 +100,10 @@ public class PortfolioServiceImpl implements PortfolioService {
 
         portfolioDto.setPortId(maxPortId);
 
+        if(portfolioDto.getCategoryId().equals(new BigInteger("0"))){
+            portfolioDto.setCategoryId(null);
+        }
+
         portfolioMapper.insertPortfolio(portfolioDto);
 
        for(PortfolioDetailDto dto : portfolioDto.getDetailList()){
@@ -134,6 +138,10 @@ public class PortfolioServiceImpl implements PortfolioService {
 
         if(portfolioDto.getId() == null){
             portfolioDto.setId(accountContext.getAccountDto().getId());
+        }
+
+        if(portfolioDto.getCategoryId().equals(new BigInteger("0"))){
+            portfolioDto.setCategoryId(null);
         }
 
         portfolioMapper.updatePortfolio(portfolioDto);

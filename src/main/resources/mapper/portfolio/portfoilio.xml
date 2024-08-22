@@ -140,19 +140,24 @@
 
     <select id="portfolioList" parameterType="PortfolioDto" resultType="PortfolioDto">
         <![CDATA[
-            SELECT ID
-                 , RANDOM_ID
-                 , PORT_ID
-                 , TITLE
-                 , CONTENT
-                 , CATEGORY_ID
-                 , FILE_ID
-                 , START_YMD
-                 , END_YMD
-            FROM PORTFOLIO
-            WHERE ID 		= #{id}
-              AND RANDOM_ID = #{randomId}
-              AND PORT_ID 	= #{portId}
+            SELECT A.ID
+                 , A.RANDOM_ID
+                 , A.PORT_ID
+                 , A.TITLE
+                 , A.CONTENT
+                 , A.CATEGORY_ID
+                 , A.FILE_ID
+                 , A.START_YMD
+                 , A.END_YMD
+                 , B.CATEGORY_NM
+              FROM PORTFOLIO A
+              LEFT OUTER JOIN CATEGORY B
+                ON A.ID = B.ID
+               AND A.RANDOM_ID = B.RANDOM_ID
+               AND A.CATEGORY_ID = B.CATEGORY_ID
+             WHERE A.ID 		= #{id}
+               AND A.RANDOM_ID  = #{randomId}
+               AND A.PORT_ID 	= #{portId}
         ]]>
     </select>
 
