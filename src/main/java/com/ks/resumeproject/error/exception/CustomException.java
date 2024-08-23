@@ -1,6 +1,6 @@
-package com.ks.resumeproject.util.exception;
+package com.ks.resumeproject.error.exception;
 
-import com.ks.resumeproject.util.domain.ErrorCode;
+import com.ks.resumeproject.error.domain.ErrorCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

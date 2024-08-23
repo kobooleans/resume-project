@@ -1,4 +1,4 @@
-package com.ks.resumeproject.util.domain;
+package com.ks.resumeproject.error.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
