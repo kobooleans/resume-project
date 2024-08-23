@@ -1,6 +1,8 @@
 package com.ks.resumeproject.security.util;
 
 import com.ks.resumeproject.security.domain.AccountContext;
+import com.ks.resumeproject.util.domain.ErrorCode;
+import com.ks.resumeproject.util.exception.CustomException;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,8 +20,7 @@ public class SecurityUtil {
     public AccountContext getAccount() {
         Authentication authentication = SecurityContextHolder.getContextHolderStrategy().getContext().getAuthentication();
         if(!(authentication.isAuthenticated())){
-            logger.error("로그인하지 않은 사용자는 해당 값을 가지고올 수 없습니다. 확인 바랍니다.");
-            return null;
+            throw new CustomException(ErrorCode.USER_NOT_FOUND);
         }
         return ((AccountContext) authentication.getPrincipal());
     }
