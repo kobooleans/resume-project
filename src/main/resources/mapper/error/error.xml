@@ -5,7 +5,9 @@
 <mapper namespace="com.ks.resumeproject.error.repository.ErrorMapper">
     <select id="getErrorByCode" parameterType="java.lang.String" resultType="ErrorDto">
         <![CDATA[
-        SELECT CODE, MESSAGE, NAME
+        SELECT CODE
+             , MESSAGE
+             , NAME
         FROM ERROR_CODE
         WHERE CODE = #{code}
         ]]>
