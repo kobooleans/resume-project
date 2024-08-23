@@ -12,8 +12,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class SecurityUtil {
 
-    private static final Logger logger = LoggerFactory.getLogger(SecurityUtil.class);
-
     public AccountContext getAccount() {
         Authentication authentication = SecurityContextHolder.getContextHolderStrategy().getContext().getAuthentication();
         if(!(authentication.isAuthenticated())){
