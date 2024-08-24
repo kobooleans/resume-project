@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ks.resumeproject.resume.repository.CoverLetterMapper">
+
+    <select id="getCoverLetterList" parameterType="AccountDto" resultType="CoverLetterDto">
+        <![CDATA[
+        SELECT COVER_LETTER_ID
+             , ID
+             , RANDOM_ID
+             , TITLE
+             , CONTENT
+             , SEQ
+        from RESUME_COVER_LETTER
+        where ID = #{id}
+          and RANDOM_ID = #{randomId}
+        ORDER BY SEQ
+        ]]>
+    </select>
+
+    <insert id="insertCoverLetter" parameterType="CoverLetterDto">
+        <![CDATA[
+        INSERT INTO
+            RESUME_COVER_LETTER( COVER_LETTER_ID
+                               , ID
+                               , RANDOM_ID
+                               , TITLE
+                               , CONTENT
+                               , SEQ)
+         SELECT  COALESCE(NULLIF(MAX(COVER_LETTER_ID), 0), 0) + 1
+               , #{id}
+               , #{randomId}
+               , #{title}
+               , #{content}
+               , #{seq}
+          FROM RESUME_COVER_LETTER
+         WHERE ID = #{id}
+           and RANDOM_ID = #{randomId}
+        ]]>
+    </insert>
+
+    <update id="updateCoverLetter" parameterType="CoverLetterDto">
+        <![CDATA[
+         update RESUME_COVER_LETTER
+            set TITLE = #{title}
+              , CONTENT = #{content}
+              , SEQ = #{seq}
+          where ID = #{id}
+            and RANDOM_ID = #{randomId}
+            and COVER_LETTER_ID = #{coverLetterId}
+        ]]>
+    </update>
+
+    <delete id="deleteCoverLetter" parameterType="CoverLetterDto">
+        <![CDATA[
+            DELETE FROM RESUME_COVER_LETTER
+             WHERE ID = #{id}
+               and RANDOM_ID = #{randomId}
+               and COVER_LETTER_ID = #{coverLetterId}
+        ]]>
+    </delete>
+
+</mapper>
