@@ -1,5 +1,6 @@
 package com.ks.resumeproject.resume.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ks.resumeproject.resume.domain.CareerDto;
 import com.ks.resumeproject.resume.domain.CoverLetterDto;
 import com.ks.resumeproject.resume.domain.ResumeDto;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -48,5 +50,19 @@ public class CoverLetterServiceImpl implements CoverLetterService {
     public int deleteCoverLetter(CoverLetterDto coverLetterDto) {
         coverLetterDto.setId(securityUtil.getAccount().getAccountDto().getId());
         return coverLetterMapper.deleteCoverLetter(coverLetterDto);
+    }
+
+    @Override
+    public int updateCoverLetterList(List<Map<String, Object>> updateList) {
+
+        int rst = 0;
+        for(Map<String, Object> updateMap : updateList) {
+            rst += 1;
+            updateMap.put("id", securityUtil.getAccount().getAccountDto().getId());
+            ObjectMapper mapper = new ObjectMapper();
+            CoverLetterDto coverLetterDto = mapper.convertValue(updateMap, CoverLetterDto.class);
+            coverLetterMapper.updateCoverLetterList(coverLetterDto);
+        }
+        return rst;
     }
 }

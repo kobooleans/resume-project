@@ -4,6 +4,7 @@ import com.ks.resumeproject.resume.domain.CoverLetterDto;
 import com.ks.resumeproject.security.domain.AccountDto;
 
 import java.util.List;
+import java.util.Map;
 
 public interface CoverLetterService {
     List<CoverLetterDto> getCoverLetterList(AccountDto accountDto);
@@ -13,4 +14,6 @@ public interface CoverLetterService {
     int updateCoverLetter(CoverLetterDto coverLetterDto);
 
     int deleteCoverLetter(CoverLetterDto coverLetterDto);
+
+    int updateCoverLetterList(List<Map<String, Object>> updateList);
 }

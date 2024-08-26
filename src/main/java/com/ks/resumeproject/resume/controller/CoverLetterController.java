@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -56,6 +57,19 @@ public class CoverLetterController {
     @PostMapping("/deleteCoverLetter")
     public String deleteCoverLetter(@RequestBody CoverLetterDto coverLetterDto){
         int result = coverLetterService.deleteCoverLetter(coverLetterDto);
+        System.out.println(result);
+        if(result>0){
+            return "success";
+        }else{
+            return "failure";
+        }
+    }
+
+    @Operation(summary = "이력서 자기소개서 목록 수정", description = "이력서에 사용되는 자기소개서을 수정한다.")
+    @PostMapping("/updateCoverLetterList")
+    public String updateCoverLetterList(@RequestBody List<Map<String, Object>> updateList){
+        System.out.println(updateList);
+        int result = coverLetterService.updateCoverLetterList(updateList);
         System.out.println(result);
         if(result>0){
             return "success";
