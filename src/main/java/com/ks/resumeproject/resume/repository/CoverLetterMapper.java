@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface CoverLetterMapper {
@@ -20,4 +21,6 @@ public interface CoverLetterMapper {
     int updateCoverLetter(CoverLetterDto coverLetterDto);
 
     int deleteCoverLetter(CoverLetterDto coverLetterDto);
+
+    int updateCoverLetterList(CoverLetterDto coverLetterDto);
 }

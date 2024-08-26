@@ -61,4 +61,14 @@
         ]]>
     </delete>
 
+    <update id="updateCoverLetterList" parameterType="CoverLetterDto">
+        <![CDATA[
+            update RESUME_COVER_LETTER
+            set  SEQ = #{seq}
+            where ID = #{id}
+              and RANDOM_ID = #{randomId}
+              and COVER_LETTER_ID = #{coverLetterId}
+        ]]>
+    </update>
+
 </mapper>
