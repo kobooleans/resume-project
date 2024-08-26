@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="changelog.c-1.01" author="KOBOOLEAN">
+
+        <dropTable tableName="RESUME_INFO"/>
+
+        <createTable tableName="RESUME_INFO">
+            <column name="ID" type="bigint" remarks="사용자 ID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="RANDOM_ID" type="varchar2" remarks="페이지 ID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="NAME" type="varchar2" remarks="이름">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+            <column name="FIRSTNAME" type="varchar2" remarks="영문 이름">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+            <column name="LASTNAME" type="varchar2" remarks="영문 성">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+            <column name="JOB" type="varchar2" remarks="직업">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+            <column name="EMAIL" type="varchar2" remarks="이메일">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+            <column name="CALL" type="varchar2" remarks="전화번호">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+            <column name="LOCATION" type="varchar2" remarks="지역(주소)">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="RESUME_SKILL">
+            <column name="ID" type="bigint" remarks="사용자 ID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="RANDOM_ID" type="varchar2" remarks="페이지 ID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SKILL_ID" type="bigint" remarks="스킬 ID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="SKILL_TITLE" type="varchar2" remarks="스킬 제목">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="RESUME_SKILL_DETAIL">
+            <column name="ID" type="bigint" remarks="사용자 ID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="RANDOM_ID" type="varchar2" remarks="페이지 ID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SKILL_ID" type="bigint" remarks="스킬 ID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SKILL_IMG_ID" type="varchar2" remarks="스킬 이미지 ID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="SKILL_URI" type="varchar2" remarks="스킬 URI">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SKILL_IMG_TITLE" type="varchar2" remarks="스킬 이미지 제목">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SKILL_HEX" type="varchar2" remarks="스킬 HEX">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint constraintName="resume-info-fk1"
+                                 baseTableName="RESUME_INFO"
+                                 baseColumnNames="id, random_id"
+                                 referencedTableName="RESUME"
+                                 referencedColumnNames="id, random_id"
+                                 onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint constraintName="resume-skill-fk1"
+                                 baseTableName="RESUME_SKILL"
+                                 baseColumnNames="id, random_id"
+                                 referencedTableName="RESUME"
+                                 referencedColumnNames="id, random_id"
+                                 onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint constraintName="resume-skill-fk2"
+                                 baseTableName="RESUME_SKILL_DETAIL"
+                                 baseColumnNames="SKILL_ID"
+                                 referencedTableName="RESUME_SKILL"
+                                 referencedColumnNames="SKILL_ID"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+</databaseChangeLog>
