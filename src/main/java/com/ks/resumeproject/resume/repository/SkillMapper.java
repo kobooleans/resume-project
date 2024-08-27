@@ -16,4 +16,7 @@ public interface SkillMapper {
     void insertSkillDetail(SkillDto skillDto);
 
     void insertSkill(SkillDto skillDto);
+
+    void deleteSkillSet(SkillSetDto skillDtos);
+    void deleteSkillDetailSet(SkillSetDto skillDtos);
 }

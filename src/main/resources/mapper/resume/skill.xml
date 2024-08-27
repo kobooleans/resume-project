@@ -62,4 +62,22 @@
             VALUES (#{id}, #{randomId}, #{skillId}, #{skillImgId}, #{skillUri}, #{skillImgTitle}, #{skillHex})
         ]]>
     </insert>
+
+    <delete id="deleteSkillSet" parameterType="SkillSetDto">
+        <![CDATA[
+            DELETE FROM RESUME_SKILL
+             WHERE ID = #{id}
+               AND RANDOM_ID = #{randomId}
+               AND SKILL_ID = #{skillId}
+        ]]>
+    </delete>
+
+    <delete id="deleteSkillDetailSet" parameterType="SkillSetDto">
+        <![CDATA[
+            DELETE FROM RESUME_SKILL_DETAIL
+             WHERE ID = #{id}
+               AND RANDOM_ID = #{randomId}
+               AND SKILL_ID = #{skillId}
+        ]]>
+    </delete>
 </mapper>

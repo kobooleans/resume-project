@@ -41,4 +41,12 @@ public class SkillController {
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("result","success"));
     }
 
+    @Operation(summary = "이력서 스킬 목록 삭제", description = "이력서에 사용되는 스킬 목록을 삭제한다.")
+    @PostMapping("/deleteSkillSet")
+    public ResponseEntity<Map<String, String>> deleteSkillSet(@RequestBody SkillSetDto skillDtos){
+        skillService.deleteSkillSet(skillDtos);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("result","success"));
+    }
+
 }
