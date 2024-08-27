@@ -2,6 +2,7 @@ package com.ks.resumeproject.resume.controller;
 
 import com.ks.resumeproject.resume.domain.ResumeDto;
 import com.ks.resumeproject.resume.domain.SkillDto;
+import com.ks.resumeproject.resume.domain.SkillSetDto;
 import com.ks.resumeproject.resume.service.SkillService;
 import com.ks.resumeproject.security.domain.AccountDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,19 +29,13 @@ public class SkillController {
 
     @Operation(summary = "이력서 스킬 목록 조회", description = "이력서에 사용되는 스킬 목록을 조회한다.")
     @PostMapping("/getSkillSet")
-    public Map<String,Object> getSkillSet(@RequestBody AccountDto accountDto){
-
-        Map<String,Object> map = new HashMap<>();
-
-        map.put("skill",skillService.getSkillSet(accountDto));
-        map.put("detail",skillService.getSkillDetailSet(accountDto));
-
-        return map;
+    public ResponseEntity<Map<String, List<SkillSetDto>>> getSkillSet(@RequestBody AccountDto accountDto){
+        return ResponseEntity.status(HttpStatus.OK).body(Map.of("skills", skillService.getSkillSet(accountDto)));
     }
 
     @Operation(summary = "이력서 스킬 목록 저장", description = "이력서에 사용되는 스킬 목록을 저장한다.")
     @PostMapping("/insertSkillSet")
-    public ResponseEntity<Map<String, String>> insertSkillSet(@RequestBody List<SkillDto> skillDtos){
+    public ResponseEntity<Map<String, String>> insertSkillSet(@RequestBody SkillSetDto skillDtos){
         skillService.insertSkillSet(skillDtos);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("result","success"));

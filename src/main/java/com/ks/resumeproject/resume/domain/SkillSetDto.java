@@ -4,17 +4,14 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.List;
 
 @Data
-public class SkillDto implements Serializable {
-
-    private BigInteger skillId;
-    private String skillImgId;
+public class SkillSetDto implements Serializable {
     private BigInteger id;
+    private String username;
     private String randomId;
-    private String skillUri;
+    private BigInteger skillId;
     private String skillTitle;
-    private String skillImgTitle;
-    private String skillHex;
-
+    private List<SkillDto> skills;
 }

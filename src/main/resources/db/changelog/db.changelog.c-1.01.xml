@@ -61,7 +61,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="SKILL_ID" type="bigint" remarks="스킬 ID">
-                <constraints nullable="false"/>
+                <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="SKILL_IMG_ID" type="varchar2" remarks="스킬 이미지 ID">
                 <constraints primaryKey="true" nullable="false"/>
@@ -93,9 +93,9 @@
 
         <addForeignKeyConstraint constraintName="resume-skill-fk2"
                                  baseTableName="RESUME_SKILL_DETAIL"
-                                 baseColumnNames="SKILL_ID"
-                                 referencedTableName="RESUME_SKILL"
-                                 referencedColumnNames="SKILL_ID"
+                                 baseColumnNames="id, random_id"
+                                 referencedTableName="RESUME"
+                                 referencedColumnNames="id, random_id"
                                  onDelete="CASCADE"/>
     </changeSet>
 </databaseChangeLog>
