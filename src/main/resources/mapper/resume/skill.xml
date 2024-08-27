@@ -2,9 +2,9 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.ks.resumeproject.resume.repository.ResumeMapper">
+<mapper namespace="com.ks.resumeproject.resume.repository.SkillMapper">
 
-    <select id="getSkillSet" parameterType="AccountDto" resultType="SkillDto">
+    <select id="getSkillSet" parameterType="AccountDto" resultType="SkillSetDto">
         <![CDATA[
         SELECT A.ID
              , A.RANDOM_ID
@@ -12,11 +12,11 @@
              , A.SKILL_TITLE
         FROM RESUME_SKILL A
         WHERE A.ID = #{id}
-          AND A.RANDOM_ID = #{randomId};
+          AND A.RANDOM_ID = #{randomId}
         ]]>
     </select>
 
-    <select id="getSkillDetailSet" parameterType="AccountDto" resultType="SkillDto">
+    <select id="getSkillDetailSet" parameterType="SkillSetDto" resultType="SkillDto">
         <![CDATA[
         SELECT A.ID
              , A.RANDOM_ID
@@ -32,7 +32,8 @@
            AND A.RANDOM_ID = B.RANDOM_ID
            AND A.SKILL_ID = B.SKILL_ID
          WHERE A.ID = #{id}
-           AND A.RANDOM_ID = #{randomId};
+           AND A.RANDOM_ID = #{randomId}
+           AND A.SKILL_ID = #{skillId}
         ]]>
     </select>
 
@@ -58,17 +59,7 @@
     <insert id="insertSkillDetail" parameterType="SkillDto">
         <![CDATA[
             INSERT INTO RESUME_SKILL_DETAIL(ID, RANDOM_ID, SKILL_ID, SKILL_IMG_ID, SKILL_URI, SKILL_IMG_TITLE, SKILL_HEX)
-            SELECT #{id}
-                 , #{randomId}
-                 , #{skillId}
-                 , COALESCE(NULLIF(MAX(SKILL_IMG_ID), 0), 0) + 1
-                 , #{skillUri}
-                 , #{skillImgTitle}
-                 , #{skillHex}
-              FROM RESUME_SKILL_DETAIL
-             WHERE ID = #{id}
-               AND RANDOM_ID = #{randomId}
-               AND SKILL_ID = #{skillId}
+            VALUES (#{id}, #{randomId}, #{skillId}, #{skillImgId}, #{skillUri}, #{skillImgTitle}, #{skillHex})
         ]]>
     </insert>
 </mapper>
