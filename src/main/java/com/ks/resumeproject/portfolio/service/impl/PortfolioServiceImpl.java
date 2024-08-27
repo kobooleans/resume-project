@@ -1,5 +1,8 @@
 package com.ks.resumeproject.portfolio.service.impl;
 
+import com.ks.resumeproject.error.domain.ErrorDto;
+import com.ks.resumeproject.error.exception.CustomCodeException;
+import com.ks.resumeproject.error.exception.CustomException;
 import com.ks.resumeproject.portfolio.domain.CategoryDto;
 import com.ks.resumeproject.portfolio.domain.PortfolioDetailDto;
 import com.ks.resumeproject.portfolio.domain.PortfolioDto;
@@ -73,8 +76,14 @@ public class PortfolioServiceImpl implements PortfolioService {
         if(categoryDto.getId() == null){
             categoryDto.setId(accountContext.getAccountDto().getId());
         }
+        /*이미 사용 중인 카테고리인지 확인하는 쿼리*/
+        int categoryCnt = portfolioMapper.selectCategoryCnt(categoryDto);
 
-        portfolioMapper.deleteCategory(categoryDto);
+        if(categoryCnt > 0){
+            throw new CustomCodeException(new ErrorDto("IS_REFERENCE_VALUE", "이미 사용되고 있는 카테고리는 삭제할 수 없습니다."));
+        }else{
+            portfolioMapper.deleteCategory(categoryDto);
+        }
     }
 
     @Override

@@ -10,10 +10,10 @@
                  , ID
                  , RANDOM_ID
                  , CATEGORY_NM
-            FROM CATEGORY
-            WHERE ID = #{id}
-              AND RANDOM_ID = #{randomId}
-            ORDER BY CATEGORY_ID
+              FROM CATEGORY
+             WHERE ID = #{id}
+               AND RANDOM_ID = #{randomId}
+             ORDER BY CATEGORY_ID
         ]]>
     </select>
 
@@ -53,6 +53,14 @@
                AND RANDOM_ID	= #{randomId}
         ]]>
     </delete>
+
+    <select id="selectCategoryCnt" parameterType="CategoryDto" resultType="int">
+        SELECT COUNT(CATEGORY_ID)
+          FROM PORTFOLIO
+         WHERE ID           = #{id}
+           AND RANDOM_ID    = #{randomId}
+           AND CATEGORY_ID  = #{categoryId}
+    </select>
 
     <select id="portfolioAllList" parameterType="PortfolioDto" resultType="PortfolioDto">
         <![CDATA[
