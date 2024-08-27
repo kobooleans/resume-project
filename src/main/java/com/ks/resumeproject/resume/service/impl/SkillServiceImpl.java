@@ -68,4 +68,13 @@ public class SkillServiceImpl implements SkillService {
             skillMapper.insertSkillDetail(skill);
         });
     }
+
+    @Override
+    @Transactional
+    public void deleteSkillSet(SkillSetDto skillDtos) {
+        skillDtos.setId(securityUtil.getAccount().getAccountDto().getId());
+        skillMapper.deleteSkillSet(skillDtos);
+        skillMapper.deleteSkillDetailSet(skillDtos);
+
+    }
 }
