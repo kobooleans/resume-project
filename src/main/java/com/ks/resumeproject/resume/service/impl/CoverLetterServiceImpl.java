@@ -1,19 +1,15 @@
 package com.ks.resumeproject.resume.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ks.resumeproject.resume.domain.CareerDto;
 import com.ks.resumeproject.resume.domain.CoverLetterDto;
-import com.ks.resumeproject.resume.domain.ResumeDto;
-import com.ks.resumeproject.resume.repository.CareerMapper;
 import com.ks.resumeproject.resume.repository.CoverLetterMapper;
-import com.ks.resumeproject.resume.repository.ResumeMapper;
 import com.ks.resumeproject.resume.service.CoverLetterService;
-import com.ks.resumeproject.resume.service.ResumeService;
 import com.ks.resumeproject.security.domain.AccountDto;
 import com.ks.resumeproject.security.util.SecurityUtil;
 import com.ks.resumeproject.users.service.SecurityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -53,6 +49,7 @@ public class CoverLetterServiceImpl implements CoverLetterService {
     }
 
     @Override
+    @Transactional
     public int updateCoverLetterList(List<Map<String, Object>> updateList) {
 
         int rst = 0;
