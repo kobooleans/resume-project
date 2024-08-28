@@ -15,7 +15,7 @@
         from RESUME_COVER_LETTER
         where ID = #{id}
           and RANDOM_ID = #{randomId}
-        ORDER BY SEQ
+        ORDER BY SEQ, COVER_LETTER_ID DESC
         ]]>
     </select>
 

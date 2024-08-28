@@ -45,7 +45,6 @@ public class CoverLetterController {
     @PostMapping("/updateCoverLetter")
     public String updateCoverLetter(@RequestBody CoverLetterDto coverLetterDto){
         int result = coverLetterService.updateCoverLetter(coverLetterDto);
-        System.out.println(result);
         if(result>0){
             return "success";
         }else{
