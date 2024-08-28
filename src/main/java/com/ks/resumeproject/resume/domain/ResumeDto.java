@@ -15,6 +15,7 @@ public class ResumeDto {
     private boolean awardYn;
     private boolean actionYn;
     private boolean coverLetterYn;
+    private boolean skillImgYn;
     private String type;
     private String isYn;
 }

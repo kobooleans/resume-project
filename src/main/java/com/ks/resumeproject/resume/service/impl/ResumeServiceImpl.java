@@ -66,6 +66,9 @@ public class ResumeServiceImpl implements ResumeService {
             case "action" :
                 resumeDto.setActionYn(resumeDto.getIsYn().equals("Y"));
                 break;
+            case "skillImgYn" :
+                resumeDto.setSkillImgYn(resumeDto.getIsYn().equals("Y"));
+                break;
             case "coverLetter":
                 resumeDto.setCoverLetterYn(resumeDto.getIsYn().equals("Y"));
                 break;
