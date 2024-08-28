@@ -6,7 +6,7 @@
 
     <select id="getResumeSet" parameterType="AccountDto" resultType="ResumeDto">
         <![CDATA[
-            SELECT ID, RANDOM_ID, SKILL_YN, CAREER_YN, EDU_YN, AWARD_YN, ACTION_YN, COVER_LETTER_YN
+            SELECT ID, RANDOM_ID, SKILL_YN, CAREER_YN, EDU_YN, AWARD_YN, ACTION_YN, SKILL_IMG_YN, COVER_LETTER_YN
               FROM RESUME
              WHERE ID = #{id}
                AND RANDOM_ID = #{randomId}
@@ -36,6 +36,9 @@
             </if>
             <if test='type == "action"'>
                 SET action_yn = #{actionYn}
+            </if>
+            <if test='type == "skillImgYn"'>
+                SET SKILL_IMG_YN = #{skillImgYn}
             </if>
             <if test='type == "coverLetter"'>
                 SET COVER_LETTER_YN = #{coverLetterYn}
