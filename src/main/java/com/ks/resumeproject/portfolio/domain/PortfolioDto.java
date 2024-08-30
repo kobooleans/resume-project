@@ -17,6 +17,7 @@ public class PortfolioDto {
     private BigInteger categoryId;
     private String categoryNm;
     private BigInteger fileId;
+    private byte[] file;
     private Date startYmd;
     private Date endYmd;
     private List<PortfolioDetailDto> detailList;
