@@ -38,4 +38,6 @@ public interface PortfolioMapper {
     void deletePortfolioDetailAll(PortfolioDto portfolioDto);
 
     int selectCategoryCnt(CategoryDto categoryDto);
+
+    int updatePortfolioImg(PortfolioDto portfolioDto);
 }

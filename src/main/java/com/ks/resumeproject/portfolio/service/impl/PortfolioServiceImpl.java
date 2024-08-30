@@ -3,6 +3,7 @@ package com.ks.resumeproject.portfolio.service.impl;
 import com.ks.resumeproject.error.domain.ErrorDto;
 import com.ks.resumeproject.error.exception.CustomCodeException;
 import com.ks.resumeproject.error.exception.CustomException;
+import com.ks.resumeproject.multi.service.MultiFileService;
 import com.ks.resumeproject.portfolio.domain.CategoryDto;
 import com.ks.resumeproject.portfolio.domain.PortfolioDetailDto;
 import com.ks.resumeproject.portfolio.domain.PortfolioDto;
@@ -28,9 +29,8 @@ import java.util.Map;
 public class PortfolioServiceImpl implements PortfolioService {
 
     private final SecurityService securityService;
-
     private final PortfolioMapper portfolioMapper;
-
+    private final MultiFileService multiFileService;
     private final SecurityUtil securityUtil;
 
     @Override
@@ -126,6 +126,26 @@ public class PortfolioServiceImpl implements PortfolioService {
                portfolioMapper.insertPortfolioDetail(dto);
            }
        }
+
+        updatePortfolioImg(portfolioDto);
+
+    }
+
+    private void updatePortfolioImg(PortfolioDto portfolioDto) {
+        AccountContext accountContext = securityUtil.getAccount();
+        AccountDto accountDto = accountContext.getAccountDto();
+
+        if(portfolioDto.getId() == null){
+            portfolioDto.setId(accountDto.getId());
+        }
+
+        int count = portfolioMapper.updatePortfolioImg(portfolioDto);
+
+        if(count > 0){
+            accountDto.setFileId(portfolioDto.getFileId());
+
+            multiFileService.setProfile(accountDto);
+        }
     }
 
     @Override
