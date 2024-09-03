@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="changelog.l-1.01" author="LJW">
+        <createTable tableName="RESUME_LICENSE">
+            <column name="LICENSE_ID" type="bigint" remarks="자격 ID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="ID" type="bigint" remarks="사용자 ID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="RANDOM_ID" type="varchar" remarks="페이지 ID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="LICENSE_NM" type="varchar" remarks="자격증명">
+                <constraints primaryKey="false" nullable="false"/>
+            </column>
+            <column name="LICENSE_ISSUE_ORG" type="varchar" remarks="발행처">
+                <constraints primaryKey="false" nullable="false"/>
+            </column>
+            <column name="LICENSE_PASS_YN" type="varchar" remarks="합격구분">
+                <constraints primaryKey="false" nullable="false"/>
+            </column>
+            <column name="LICENSE_PASS_DATE" type="varchar" remarks="합격년월">
+                <constraints primaryKey="false" nullable="false"/>
+            </column>
+            <column name="SEQ" type="number" remarks="순번">
+                <constraints primaryKey="false" nullable="false" />
+            </column>
+        </createTable>
+        <createTable tableName="RESUME_LANG_TEST">
+            <column name="LANG_TEST_ID" type="bigint" remarks="이력 ID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="ID" type="bigint" remarks="사용자 ID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="RANDOM_ID" type="varchar" remarks="페이지 ID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="LANG_NM" type="varchar" remarks="언어">
+                <constraints primaryKey="false" nullable="false"/>
+            </column>
+            <column name="LANG_TEST_NM" type="varchar" remarks="어학시험명">
+                <constraints primaryKey="false" nullable="false"/>
+            </column>
+            <column name="LANG_ACQUIRE_DATE" type="varchar" remarks="취득일">
+                <constraints primaryKey="false" nullable="false"/>
+            </column>
+            <column name="LANG_TEST_SCORE" type="varchar" remarks="급수점수">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+            <column name="LANG_ACQUIRE_YN" type="varchar" remarks="취득여부">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+            <column name="SEQ" type="number" remarks="순번">
+                <constraints primaryKey="false" nullable="false" />
+            </column>
+        </createTable>
+        <createTable tableName="RESUME_AWARD">
+            <column name="AWARD_ID" type="bigint" remarks="이력 ID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="ID" type="bigint" remarks="사용자 ID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="RANDOM_ID" type="varchar" remarks="페이지 ID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="AWARD_NM" type="varchar" remarks="수상공모전명">
+                <constraints primaryKey="false" nullable="false"/>
+            </column>
+            <column name="AWARD_DATE" type="varchar" remarks="수상공모일">
+                <constraints primaryKey="false" nullable="false"/>
+            </column>
+            <column name="AWARD_ORG" type="varchar" remarks="수여주최기관">
+                <constraints primaryKey="false" nullable="false"/>
+            </column>
+            <column name="SEQ" type="number" remarks="순번">
+                <constraints primaryKey="false" nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
