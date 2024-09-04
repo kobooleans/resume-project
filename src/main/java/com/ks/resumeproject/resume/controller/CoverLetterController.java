@@ -25,6 +25,7 @@ public class CoverLetterController {
     @Operation(summary = "이력서 자기소개서 목록을 가져온다.", description = "이력서에 사용되는 자기소개서 목록을 조회한다.")
     @PostMapping("/getCoverLetterList")
     public List<CoverLetterDto> getCoverLetterList(@RequestBody AccountDto accountDto){
+
         return coverLetterService.getCoverLetterList(accountDto);
     }
 
