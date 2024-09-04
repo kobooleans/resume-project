@@ -40,4 +40,8 @@ public interface PortfolioMapper {
     int selectCategoryCnt(CategoryDto categoryDto);
 
     int updatePortfolioImg(PortfolioDto portfolioDto);
+
+    void updateFileUseYn(PortfolioDto portfolioDto);
+
+    void updatePortFileUseYn(PortfolioDto portfolioDto);
 }

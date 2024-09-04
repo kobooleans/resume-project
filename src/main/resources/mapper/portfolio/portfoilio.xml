@@ -232,5 +232,21 @@
            AND RANDOM_ID    = #{randomId}
            AND PORT_ID      = #{portId}
     </update>
-        
+
+    <update id="updateFileUseYn" parameterType="PortfolioDto">
+        UPDATE FILE
+           SET USE_YN   = 'N'
+         WHERE FILE_ID  = #{fileId}
+    </update>
+
+    <update id="updatePortFileUseYn" parameterType="PortfolioDto">
+        UPDATE FILE
+           SET USE_YN   = 'N'
+         WHERE FILE_ID  = (SELECT FILE_ID
+                             FROM PORTFOLIO
+                            WHERE ID        = #{id}
+                              AND RANDOM_ID = #{randomId}
+                              AND PORT_ID   = #{portId}
+                          )
+    </update>
 </mapper>

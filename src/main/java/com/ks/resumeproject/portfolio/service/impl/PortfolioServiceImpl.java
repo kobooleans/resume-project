@@ -104,7 +104,7 @@ public class PortfolioServiceImpl implements PortfolioService {
         if(portfolioDto.getId() == null){
             portfolioDto.setId(accountContext.getAccountDto().getId());
         }
-
+        /*port_id Max값 조회*/
         BigInteger maxPortId = portfolioMapper.selectMaxPortId(portfolioDto);
 
         portfolioDto.setPortId(maxPortId);
@@ -126,9 +126,7 @@ public class PortfolioServiceImpl implements PortfolioService {
                portfolioMapper.insertPortfolioDetail(dto);
            }
        }
-
         updatePortfolioImg(portfolioDto);
-
     }
 
     private void updatePortfolioImg(PortfolioDto portfolioDto) {
@@ -139,6 +137,7 @@ public class PortfolioServiceImpl implements PortfolioService {
             portfolioDto.setId(accountDto.getId());
         }
 
+        /*포트폴리오 file_id update */
         int count = portfolioMapper.updatePortfolioImg(portfolioDto);
 
         if(count > 0){
@@ -173,8 +172,12 @@ public class PortfolioServiceImpl implements PortfolioService {
             portfolioDto.setCategoryId(null);
         }
 
-        portfolioMapper.updatePortfolio(portfolioDto);
+        /*사용하지 않는 이미지 use_yn N처리*/
+        portfolioMapper.updatePortFileUseYn(portfolioDto);
 
+        portfolioMapper.updatePortfolio(portfolioDto);
+    
+        /*추가 내용 부분 전체 삭제 후 재 등록*/
         portfolioMapper.deletePortfolioDetailAll(portfolioDto);
 
         for(PortfolioDetailDto dto : portfolioDto.getDetailList()){
@@ -188,6 +191,7 @@ public class PortfolioServiceImpl implements PortfolioService {
                 portfolioMapper.insertPortfolioDetail(dto);
             }
         }
+        updatePortfolioImg(portfolioDto);
     }
 
     @Override
@@ -201,5 +205,6 @@ public class PortfolioServiceImpl implements PortfolioService {
 
         portfolioMapper.deletePortfolioDetailAll(portfolioDto);
         portfolioMapper.deletePortfolio(portfolioDto);
+        portfolioMapper.updateFileUseYn(portfolioDto);
     }
 }
