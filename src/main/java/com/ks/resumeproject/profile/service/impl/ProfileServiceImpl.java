@@ -38,6 +38,9 @@ public class ProfileServiceImpl implements ProfileService {
 
         account.setFileId(accountDto.getFileId());
 
+        /*이전에 등록한 프로필파일 USE_YN 'N' 처리*/
+        profileMapper.updateProfileFileUseYn(account);
+
         int count = profileMapper.setProfile(account);
 
         if(count > 0){

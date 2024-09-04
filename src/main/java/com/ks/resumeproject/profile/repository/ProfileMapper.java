@@ -11,4 +11,6 @@ public interface ProfileMapper {
     BigInteger getProfile(AccountDto accountDto);
 
     int setProfile(AccountDto account);
+
+    void updateProfileFileUseYn(AccountDto account);
 }
