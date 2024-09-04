@@ -20,4 +20,14 @@
         ]]>
     </update>
 
+    <update id="updateProfileFileUseYn" parameterType="AccountDto">
+        <![CDATA[
+            UPDATE FILE
+               SET USE_YN = 'N'
+             WHERE FILE_ID = (SELECT FILE_ID
+                                FROM ACCOUNT
+                               WHERE ID = #{id}
+                             )
+        ]]>
+    </update>
 </mapper>
