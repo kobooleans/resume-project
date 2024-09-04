@@ -4,7 +4,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <changeSet id="changelog.l-1.07" author="LJW">
+    <changeSet id="changelog.l-1.0" author="LJW">
         <createTable tableName="RESUME_COVER_LETTER">
             <column name="COVER_LETTER_ID" type="bigint" remarks="자기소개서 ID">
                 <constraints primaryKey="true"/>
@@ -16,13 +16,13 @@
                 <constraints primaryKey="true"/>
             </column>
             <column name="TITLE" type="varchar" remarks="제목">
-                <constraints primaryKey="false" nullable="true"/>
+                <constraints primaryKey="false" nullable="false"/>
             </column>
             <column name="CONTENT" type="varchar" remarks="내용">
-                <constraints primaryKey="false" nullable="true"/>
+                <constraints primaryKey="false" nullable="false"/>
             </column>
             <column name="SEQ" type="number" remarks="순번">
-                <constraints primaryKey="false" nullable="true" />
+                <constraints primaryKey="false" nullable="false" />
             </column>
         </createTable>
     </changeSet>
