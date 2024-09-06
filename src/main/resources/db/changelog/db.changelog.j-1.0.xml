@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="changelog.j-1.0" author="JHI">
+        <createTable tableName="PORTFOLIO_SKILL">
+            <column name="ID" type="bigint" remarks="사용자 ID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="RANDOM_ID" type="varchar2" remarks="페이지 ID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PORT_ID" type="bigint" remarks="포트폴리오 ID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SKILL_ID" type="bigint" remarks="스킬 ID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="SKILL_TITLE" type="varchar2" remarks="스킬 제목">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="PORTFOLIO_SKILL_DETAIL">
+            <column name="ID" type="bigint" remarks="사용자 ID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="RANDOM_ID" type="varchar2" remarks="페이지 ID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PORT_ID" type="bigint" remarks="포트폴리오 ID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SKILL_ID" type="bigint" remarks="스킬 ID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="SKILL_IMG_ID" type="varchar2" remarks="스킬 이미지 ID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="SKILL_URI" type="varchar2" remarks="스킬 URI">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SKILL_IMG_TITLE" type="varchar2" remarks="스킬 이미지 제목">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SKILL_HEX" type="varchar2" remarks="스킬 HEX">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint constraintName="portfolio-skill-fk1"
+                                 baseTableName="PORTFOLIO_SKILL"
+                                 baseColumnNames="id, random_id, port_id"
+                                 referencedTableName="PORTFOLIO"
+                                 referencedColumnNames="id, random_id, port_id"
+                                 onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint constraintName="portfolio-skill-fk2"
+                                 baseTableName="PORTFOLIO_SKILL_DETAIL"
+                                 baseColumnNames="id, random_id, port_id"
+                                 referencedTableName="PORTFOLIO"
+                                 referencedColumnNames="id, random_id, port_id"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+</databaseChangeLog>
