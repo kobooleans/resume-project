@@ -2,11 +2,13 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.ks.resumeproject.resume.repository.CoverLetterMapper">
+<mapper namespace="com.ks.resumeproject.resume.repository.AwardMapper">
 
     <select id="getLicenseList" parameterType="AccountDto" resultType="AwardDto">
         <![CDATA[
-        SELECT LICENSE_ID
+        SELECT
+            'license' AS AWARD_KEY
+             , LICENSE_ID
              , ID
              , RANDOM_ID
              , LICENSE_NM
@@ -23,7 +25,9 @@
 
     <select id="getLangTestList" parameterType="AccountDto" resultType="AwardDto">
         <![CDATA[
-        SELECT LANG_TEST_ID
+        SELECT
+            'lang' AS AWARD_KEY
+             , LANG_TEST_ID
              , ID
              , RANDOM_ID
              , LANG_NM
@@ -41,7 +45,9 @@
 
     <select id="getAwardList" parameterType="AccountDto" resultType="AwardDto">
         <![CDATA[
-        SELECT AWARD_ID
+        SELECT
+             'award' AS AWARD_KEY
+             , AWARD_ID
              , ID
              , RANDOM_ID
              , AWARD_NM
@@ -68,11 +74,11 @@
                           , SEQ)
         SELECT  COALESCE(NULLIF(MAX(LICENSE_ID), 0), 0) + 1
              ,#{id}
-             ,#{random_id}
-             ,#{license_nm}
-             ,#{license_issue_org}
-             ,#{license_pass_yn}
-             ,#{license_pass_date}
+             ,#{randomId}
+             ,#{licenseNm}
+             ,#{licenseIssueOrg}
+             ,#{licensePassYn}
+             ,#{licensePassDate}
              ,#{seq}
         FROM RESUME_LICENSE
         WHERE ID = #{id}
@@ -133,10 +139,10 @@
     <update id="updateLicense" parameterType="AwardDto">
         <![CDATA[
         update RESUME_LICENSE
-        set     LICENSE_NM = #{license_nm}
-                ,LICENSE_iSSUE_ORG = #{license_issue_org}
-                ,LICENSE_PASS_YN = #{license_pass_yn}
-                ,LICENSE_PASS_DATE = #{license_pass_date}
+        set     LICENSE_NM = #{licenseNm}
+                ,LICENSE_iSSUE_ORG = #{licenseIssueOrg}
+                ,LICENSE_PASS_YN = #{licensePassYn}
+                ,LICENSE_PASS_DATE = #{licensePassDate}
         where ID = #{id}
           and RANDOM_ID = #{randomId}
           and LICENSE_ID = #{licenseId}
