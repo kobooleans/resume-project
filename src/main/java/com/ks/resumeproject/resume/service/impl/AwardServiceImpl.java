@@ -59,14 +59,31 @@ public class AwardServiceImpl implements AwardService {
     public int updateAward(AwardDto awardDto) {
         awardDto.setId(securityUtil.getAccount().getAccountDto().getId());
         String awardKey = awardDto.getAwardKey();
+        String initAwardKey = awardDto.getInitAwardKey();
         int rst = 0;
         if(awardKey != null){
-            rst = switch (awardKey) {
-                case "award" -> awardMapper.updateAward(awardDto);
-                case "license" -> awardMapper.updateLicense(awardDto);
-                case "lang" -> awardMapper.updateLangTest(awardDto);
-                default -> rst;
-            };
+            if(awardKey.equals(initAwardKey)){
+                rst = switch (awardKey) {
+                    case "award" -> awardMapper.updateAward(awardDto);
+                    case "license" -> awardMapper.updateLicense(awardDto);
+                    case "lang" -> awardMapper.updateLangTest(awardDto);
+                    default -> rst;
+                };
+            }else{
+                AwardDto delAwardDto = new AwardDto();
+                delAwardDto.setId(securityUtil.getAccount().getAccountDto().getId());
+                delAwardDto.setAwardKey(initAwardKey);
+                delAwardDto.setRandomId(awardDto.getRandomId());
+                switch (initAwardKey) {
+                    case "award" -> delAwardDto.setAwardId(awardDto.getAwardId());
+                    case "license" -> delAwardDto.setLicenseId(awardDto.getLicenseId());
+                    case "lang" -> delAwardDto.setLangTestId(awardDto.getLangTestId());
+                }
+                int del = deleteAward(delAwardDto);
+                if(del > 0){
+                    rst = insertAward(awardDto);
+                }
+            }
         }
         return rst;
     }
@@ -100,7 +117,6 @@ public class AwardServiceImpl implements AwardService {
             AwardDto awardDto = mapper.convertValue(updateMap, AwardDto.class);
 
             String awardKey = awardDto.getAwardKey();
-            int rtn = 0;
             if (awardKey != null) {
                 rst = switch (awardKey) {
                     case "award" -> awardMapper.updateAwardList(awardDto);

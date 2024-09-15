@@ -7,6 +7,7 @@ import java.math.BigInteger;
 @Data
 public class AwardDto {
     private String awardKey;
+    private String initAwardKey;
     private BigInteger id;
     private String randomId;
     private BigInteger seq;
