@@ -22,4 +22,9 @@ public class PortfolioDto {
     private Date endYmd;
     private List<PortfolioDetailDto> detailList;
 
+    private BigInteger skillId;
+    private String skillTitle;
+    private List<PortfolioSkillDetailDto> skills;
+
+
 }

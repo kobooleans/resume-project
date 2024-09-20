@@ -3,6 +3,7 @@ package com.ks.resumeproject.portfolio.repository;
 import com.ks.resumeproject.portfolio.domain.CategoryDto;
 import com.ks.resumeproject.portfolio.domain.PortfolioDetailDto;
 import com.ks.resumeproject.portfolio.domain.PortfolioDto;
+import com.ks.resumeproject.portfolio.domain.PortfolioSkillDetailDto;
 import com.ks.resumeproject.security.domain.AccountDto;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -44,4 +45,19 @@ public interface PortfolioMapper {
     void updateFileUseYn(PortfolioDto portfolioDto);
 
     void updatePortFileUseYn(PortfolioDto portfolioDto);
+
+    BigInteger selectMaxSkillId(PortfolioDto portfolioDto);
+
+    void insertPortSkill(PortfolioDto portfolioDto);
+
+    void insertPortSkillDetail(PortfolioSkillDetailDto portfolioSkillDetailDto);
+
+    BigInteger selectPortSkillId(PortfolioDto portfolioDto);
+
+    List<PortfolioSkillDetailDto> portSkillDetailList(PortfolioDto portfolioDto);
+
+    void deletePortSkill(PortfolioDto portfolioDto);
+
+    void deletePortSkillDetailAll(PortfolioDto portfolioDto);
+
 }
