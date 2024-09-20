@@ -149,6 +149,60 @@
         ]]>
     </insert>
 
+    <select id="selectMaxSkillId" parameterType="PortfolioDto" resultType="java.math.BigInteger">
+        <![CDATA[
+            SELECT COALESCE(NULLIF(MAX(SKILL_ID), 0), 0) + 1
+              FROM PORTFOLIO_SKILL
+             WHERE ID 			= #{id}
+               AND RANDOM_ID 	= #{randomId}
+               AND PORT_ID      = #{portId}
+        ]]>
+    </select>
+
+    <insert id="insertPortSkill" parameterType="PortfolioDto">
+        <![CDATA[
+            INSERT INTO PORTFOLIO_SKILL
+                 ( ID
+                 , RANDOM_ID
+                 , PORT_ID
+                 , SKILL_ID
+                 , SKILL_TITLE
+                 )
+            VALUES
+                 ( #{id}
+                 , #{randomId}
+                 , #{portId}
+                 , #{skillId}
+                 , #{skillTitle}
+                 )
+        ]]>
+    </insert>
+
+    <insert id="insertPortSkillDetail" parameterType="PortfolioSkillDetailDto">
+        <![CDATA[
+            INSERT INTO PORTFOLIO_SKILL_DETAIL
+                 ( ID
+                 , RANDOM_ID
+                 , PORT_ID
+                 , SKILL_ID
+                 , SKILL_IMG_ID
+                 , SKILL_URI
+                 , SKILL_IMG_TITLE
+                 , SKILL_HEX
+                 )
+            VALUES
+                 ( #{id}
+                 , #{randomId}
+                 , #{portId}
+                 , #{skillId}
+                 , #{skillImgId}
+                 , #{skillUri}
+                 , #{skillImgTitle}
+                 , #{skillHex}
+                 )
+        ]]>
+    </insert>
+
     <select id="portfolioList" parameterType="PortfolioDto" resultType="PortfolioDto">
         <![CDATA[
             SELECT A.ID
@@ -192,6 +246,31 @@
         ]]>
     </select>
 
+    <select id="selectPortSkillId" parameterType="PortfolioDto" resultType="java.math.BigInteger">
+        <![CDATA[
+            SELECT SKILL_ID
+              FROM PORTFOLIO_SKILL
+             WHERE ID           = #{id}
+               AND RANDOM_ID    = #{randomId}
+               AND PORT_ID      = #{portId}
+        ]]>
+    </select>
+
+    <select id="portSkillDetailList" parameterType="PortfolioDto" resultType="PortfolioSkillDetailDto">
+        <![CDATA[
+            SELECT SKILL_IMG_ID
+                 , SKILL_ID
+                 , SKILL_URI
+                 , SKILL_IMG_TITLE
+                 , SKILL_HEX
+              FROM PORTFOLIO_SKILL_DETAIL
+             WHERE ID           = #{id}
+               AND RANDOM_ID    = #{randomId}
+               AND PORT_ID      = #{portId}
+               AND SKILL_ID     = #{skillId}
+        ]]>
+    </select>
+
     <update id="updatePortfolio" parameterType="PortfolioDto">
         <![CDATA[
             UPDATE PORTFOLIO
@@ -224,7 +303,27 @@
                AND PORT_ID 		= #{portId}
         ]]>
     </delete>
-    
+
+    <delete id="deletePortSkill" parameterType="PortfolioDto">
+        <![CDATA[
+            DELETE FROM PORTFOLIO_SKILL
+             WHERE ID           = #{id}
+               AND RANDOM_ID    = #{randomId}
+               AND PORT_ID      = #{portId}
+               AND SKILL_ID     = #{skillId}
+        ]]>
+    </delete>
+
+    <delete id="deletePortSkillDetailAll" parameterType="PortfolioDto">
+        <![CDATA[
+            DELETE FROM PORTFOLIO_SKILL_DETAIL
+             WHERE ID           = #{id}
+               AND RANDOM_ID    = #{randomId}
+               AND PORT_ID      = #{portId}
+               AND SKILL_ID     = #{skillId}
+        ]]>
+    </delete>
+
     <update id="updatePortfolioImg" parameterType="PortfolioDto">
         <![CDATA[
             UPDATE PORTFOLIO

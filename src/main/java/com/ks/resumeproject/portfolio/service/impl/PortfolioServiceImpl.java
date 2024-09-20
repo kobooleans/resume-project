@@ -4,9 +4,7 @@ import com.ks.resumeproject.error.domain.ErrorDto;
 import com.ks.resumeproject.error.exception.CustomCodeException;
 import com.ks.resumeproject.error.exception.CustomException;
 import com.ks.resumeproject.multi.service.MultiFileService;
-import com.ks.resumeproject.portfolio.domain.CategoryDto;
-import com.ks.resumeproject.portfolio.domain.PortfolioDetailDto;
-import com.ks.resumeproject.portfolio.domain.PortfolioDto;
+import com.ks.resumeproject.portfolio.domain.*;
 import com.ks.resumeproject.portfolio.repository.PortfolioMapper;
 import com.ks.resumeproject.portfolio.service.PortfolioService;
 import com.ks.resumeproject.security.domain.AccountContext;
@@ -126,6 +124,24 @@ public class PortfolioServiceImpl implements PortfolioService {
                portfolioMapper.insertPortfolioDetail(dto);
            }
        }
+        /*skill_id Max값 조회*/
+        BigInteger maxSkillId = portfolioMapper.selectMaxSkillId(portfolioDto);
+        portfolioDto.setSkillId(maxSkillId);
+        portfolioDto.setSkillTitle("");
+
+        if(!portfolioDto.getSkills().isEmpty()){
+            portfolioMapper.insertPortSkill(portfolioDto);
+
+            for(PortfolioSkillDetailDto skillDto : portfolioDto.getSkills()){
+                skillDto.setSkillId(maxSkillId);
+                skillDto.setId(portfolioDto.getId());
+                skillDto.setRandomId(portfolioDto.getRandomId());
+                skillDto.setPortId(portfolioDto.getPortId());
+                portfolioMapper.insertPortSkillDetail(skillDto);
+            }
+        }
+
+        /*이미지 update*/
         updatePortfolioImg(portfolioDto);
     }
 
@@ -155,6 +171,11 @@ public class PortfolioServiceImpl implements PortfolioService {
 
         PortfolioDto portDto = portfolioMapper.portfolioList(portfolioDto);
         portDto.setDetailList(portfolioMapper.portfolioDetailList(portfolioDto));
+
+        BigInteger skillId = portfolioMapper.selectPortSkillId(portfolioDto);
+        portDto.setSkillId(skillId);
+        portfolioDto.setSkillId(skillId);
+        portDto.setSkills(portfolioMapper.portSkillDetailList(portfolioDto));
 
         return portDto;
     }
@@ -191,6 +212,27 @@ public class PortfolioServiceImpl implements PortfolioService {
                 portfolioMapper.insertPortfolioDetail(dto);
             }
         }
+
+        /*스킬 전체 삭제 후 재등록*/
+        portfolioMapper.deletePortSkillDetailAll(portfolioDto);
+        portfolioMapper.deletePortSkill(portfolioDto);
+
+        /*skill_id Max값 조회*/
+        BigInteger maxSkillId = portfolioMapper.selectMaxSkillId(portfolioDto);
+        portfolioDto.setSkillId(maxSkillId);
+        portfolioDto.setSkillTitle("");
+
+        portfolioMapper.insertPortSkill(portfolioDto);
+
+        for(PortfolioSkillDetailDto skillDto : portfolioDto.getSkills()){
+            skillDto.setSkillId(portfolioDto.getSkillId());
+            skillDto.setId(portfolioDto.getId());
+            skillDto.setRandomId(portfolioDto.getRandomId());
+            skillDto.setPortId(portfolioDto.getPortId());
+
+            portfolioMapper.insertPortSkillDetail(skillDto);
+        }
+
         updatePortfolioImg(portfolioDto);
     }
 
@@ -199,12 +241,18 @@ public class PortfolioServiceImpl implements PortfolioService {
     public void deletePortfolio(PortfolioDto portfolioDto) {
         AccountContext accountContext = securityUtil.getAccount();
 
-        if(portfolioDto.getId() == null){
+        if(portfolioDto.getId() == null) {
             portfolioDto.setId(accountContext.getAccountDto().getId());
         }
 
+        /*포트폴리오 스킬 삭제*/
+        portfolioMapper.deletePortSkillDetailAll(portfolioDto);
+        portfolioMapper.deletePortSkill(portfolioDto);
+
+        /*포트폴리오 삭제*/
         portfolioMapper.deletePortfolioDetailAll(portfolioDto);
         portfolioMapper.deletePortfolio(portfolioDto);
+
         portfolioMapper.updateFileUseYn(portfolioDto);
     }
 }
