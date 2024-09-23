@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="changelog.k-1.0" author="KDY">
+        <createTable tableName="RESUME_EDU">
+            <column name="EDU_ID" type="bigint" remarks="학력 ID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="ID" type="bigint" remarks="파일 ID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="RANDOM_ID" type="varchar2" remarks="페이지 ID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="SCHOOL_CD" type="varchar2" remarks="학교코드">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+            <column name="SCHOOL_NM" type="varchar2" remarks="학교명">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+            <column name="GRADUATE_STATE" type="varchar2" remarks="졸업여부">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+            <column name="ENTRANCE_DATE" type="date" remarks="입학년월">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+            <column name="GRADUATE_DATE" type="date" remarks="졸업년월">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+            <column name="MAJOR" type="varchar2" remarks="전공">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+            <column name="MAJOR_AVR" type="varchar2" remarks="학점">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+            <column name="SCHOOL_GB" type="varchar2" remarks="대학구분">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
