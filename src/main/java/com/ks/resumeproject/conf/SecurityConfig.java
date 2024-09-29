@@ -30,9 +30,6 @@ public class SecurityConfig {
     private final AuthorizationManager<RequestAuthorizationContext> authorizationManager;
     private final TokenProvider tokenProvider;
 
-    @Value("${spring.profiles.active}")
-    private String activeProfile;
-
     @Bean
     public SecurityFilterChain restSecurityFilterChain(HttpSecurity http) throws Exception {
 
