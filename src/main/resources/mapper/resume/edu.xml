@@ -48,6 +48,7 @@
         <![CDATA[
         UPDATE RESUME_EDU
            SET SCHOOL_NM      = #{schoolNm}
+             , SCHOOL_Cd      = #{schoolCd}
              , GRADUATE_STATE = #{graduateState}
              , ENTRANCE_DATE  = #{entranceDate}
              , GRADUATE_DATE  = #{graduateDate}
