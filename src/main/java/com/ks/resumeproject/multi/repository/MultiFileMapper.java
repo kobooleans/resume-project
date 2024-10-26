@@ -1,6 +1,7 @@
 package com.ks.resumeproject.multi.repository;
 
 import com.ks.resumeproject.multi.domain.FileDto;
+import com.ks.resumeproject.multi.domain.MultiFormDto;
 import com.ks.resumeproject.security.domain.AccountDto;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -17,4 +18,10 @@ public interface MultiFileMapper {
     List<FileDto> getFileList(BigInteger fileId);
 
     void setProfile(AccountDto account);
+
+    void deleteFile(MultiFormDto form);
+
+    void deleteFileAll(MultiFormDto form);
+
+    int getMaxFileSubId(BigInteger fileId);
 }

@@ -16,4 +16,8 @@ public interface MultiFileService {
     List<FileDto> getFileList(BigInteger fileId);
 
     void setProfile(AccountDto account);
+
+    BigInteger modifyFile(MultiFormDto form);
+
+    BigInteger deleteFile(MultiFormDto fileId);
 }
