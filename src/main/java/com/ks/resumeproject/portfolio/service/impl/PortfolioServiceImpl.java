@@ -42,7 +42,7 @@ public class PortfolioServiceImpl implements PortfolioService {
     @Override
     public void insertCategory(CategoryDto categoryDto) {
         /*사용자 Id가 없는 경우를 대비해 토큰에 있는 id를 가지고 온다.
-        * 토큰의 암호화를 풀기위해 SecurityContextHolder 사용 */
+         * 토큰의 암호화를 풀기위해 SecurityContextHolder 사용 */
         AccountContext accountContext = securityUtil.getAccount();
 
         if(categoryDto.getId() == null){
@@ -91,7 +91,6 @@ public class PortfolioServiceImpl implements PortfolioService {
         portfolioDto.setId(account.getId());
 
         return portfolioMapper.portfolioAllList(portfolioDto);
-
     }
 
     @Override
@@ -113,17 +112,17 @@ public class PortfolioServiceImpl implements PortfolioService {
 
         portfolioMapper.insertPortfolio(portfolioDto);
 
-       for(PortfolioDetailDto dto : portfolioDto.getDetailList()){
-           if(!dto.getDetailTitle().isEmpty() && !dto.getDetailContent().isEmpty()){
-               dto.setPortId(maxPortId);
-               dto.setId(portfolioDto.getId());
-               dto.setRandomId(portfolioDto.getRandomId());
-               /*상세 구분이 필요 없어졌지만 not null이라서 공백 set*/
-               dto.setDetailDivision("");
+        for(PortfolioDetailDto dto : portfolioDto.getDetailList()){
+            if(!dto.getDetailTitle().isEmpty() && !dto.getDetailContent().isEmpty()){
+                dto.setPortId(maxPortId);
+                dto.setId(portfolioDto.getId());
+                dto.setRandomId(portfolioDto.getRandomId());
+                /*상세 구분이 필요 없어졌지만 not null이라서 공백 set*/
+                dto.setDetailDivision("");
 
-               portfolioMapper.insertPortfolioDetail(dto);
-           }
-       }
+                portfolioMapper.insertPortfolioDetail(dto);
+            }
+        }
         /*skill_id Max값 조회*/
         BigInteger maxSkillId = portfolioMapper.selectMaxSkillId(portfolioDto);
         portfolioDto.setSkillId(maxSkillId);
@@ -143,24 +142,50 @@ public class PortfolioServiceImpl implements PortfolioService {
 
         /*이미지 update*/
         updatePortfolioImg(portfolioDto);
+        /* 첨부파일 update */
+        updatePortAttachFile(portfolioDto);
     }
 
     private void updatePortfolioImg(PortfolioDto portfolioDto) {
         AccountContext accountContext = securityUtil.getAccount();
         AccountDto accountDto = accountContext.getAccountDto();
-
+/*
         if(portfolioDto.getId() == null){
             portfolioDto.setId(accountDto.getId());
         }
+*/
 
-        /*포트폴리오 file_id update */
+        /*포트폴리오 img_file_id update */
         int count = portfolioMapper.updatePortfolioImg(portfolioDto);
 
         if(count > 0){
-            accountDto.setFileId(portfolioDto.getFileId());
+            accountDto.setFileId(portfolioDto.getImgFileId());
 
             multiFileService.setProfile(accountDto);
         }
+    }
+
+    public void updatePortAttachFile(PortfolioDto portfolioDto){
+        AccountContext accountContext = securityUtil.getAccount();
+        AccountDto accountDto = accountContext.getAccountDto();
+
+        int fileCnt = portfolioMapper.getAttachFileCnt(portfolioDto);
+
+        //파일이 있으면 Y처리
+        if(fileCnt > 0){
+            /*포트폴리오 file_id update */
+            int count = portfolioMapper.updatePortAttachFile(portfolioDto);
+
+            if(count > 0){
+                accountDto.setFileId(portfolioDto.getFileId());
+
+                multiFileService.setProfile(accountDto);
+            }
+        }else{
+            //파일이 없다면 null 처리
+            portfolioMapper.updateAttachFileToNull(portfolioDto);
+        }
+
     }
 
     @Override
@@ -171,6 +196,10 @@ public class PortfolioServiceImpl implements PortfolioService {
 
         PortfolioDto portDto = portfolioMapper.portfolioList(portfolioDto);
         portDto.setDetailList(portfolioMapper.portfolioDetailList(portfolioDto));
+
+        if(portDto.getFileId() != null){
+            portDto.setFileList(portfolioMapper.fileList(portDto));
+        }
 
         BigInteger skillId = portfolioMapper.selectPortSkillId(portfolioDto);
         portDto.setSkillId(skillId);
@@ -197,7 +226,7 @@ public class PortfolioServiceImpl implements PortfolioService {
         portfolioMapper.updatePortFileUseYn(portfolioDto);
 
         portfolioMapper.updatePortfolio(portfolioDto);
-    
+
         /*추가 내용 부분 전체 삭제 후 재 등록*/
         portfolioMapper.deletePortfolioDetailAll(portfolioDto);
 
@@ -213,6 +242,7 @@ public class PortfolioServiceImpl implements PortfolioService {
             }
         }
 
+        /*메서드화 하기, 우클릭 - 리팩토링 - 메서드 추출*/
         /*스킬 전체 삭제 후 재등록*/
         portfolioMapper.deletePortSkillDetailAll(portfolioDto);
         portfolioMapper.deletePortSkill(portfolioDto);
@@ -234,6 +264,8 @@ public class PortfolioServiceImpl implements PortfolioService {
         }
 
         updatePortfolioImg(portfolioDto);
+        /* 첨부파일 update */
+        updatePortAttachFile(portfolioDto);
     }
 
     @Override
@@ -256,3 +288,4 @@ public class PortfolioServiceImpl implements PortfolioService {
         portfolioMapper.updateFileUseYn(portfolioDto);
     }
 }
+

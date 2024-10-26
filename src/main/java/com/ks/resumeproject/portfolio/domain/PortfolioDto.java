@@ -1,5 +1,6 @@
 package com.ks.resumeproject.portfolio.domain;
 
+import com.ks.resumeproject.multi.domain.FileDto;
 import lombok.Data;
 
 import java.math.BigInteger;
@@ -17,10 +18,12 @@ public class PortfolioDto {
     private BigInteger categoryId;
     private String categoryNm;
     private BigInteger fileId;
-    private byte[] file;
+    private BigInteger imgFileId;
+    private byte[] imgFile;
     private Date startYmd;
     private Date endYmd;
     private List<PortfolioDetailDto> detailList;
+    private List<FileDto> fileList;
 
     private BigInteger skillId;
     private String skillTitle;

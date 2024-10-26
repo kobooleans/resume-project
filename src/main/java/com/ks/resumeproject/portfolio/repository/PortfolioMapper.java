@@ -1,5 +1,6 @@
 package com.ks.resumeproject.portfolio.repository;
 
+import com.ks.resumeproject.multi.domain.FileDto;
 import com.ks.resumeproject.portfolio.domain.CategoryDto;
 import com.ks.resumeproject.portfolio.domain.PortfolioDetailDto;
 import com.ks.resumeproject.portfolio.domain.PortfolioDto;
@@ -60,4 +61,11 @@ public interface PortfolioMapper {
 
     void deletePortSkillDetailAll(PortfolioDto portfolioDto);
 
+    List<FileDto> fileList(PortfolioDto portDto);
+
+    int updatePortAttachFile(PortfolioDto portfolioDto);
+
+    int getAttachFileCnt(PortfolioDto portfolioDto);
+
+    void updateAttachFileToNull(PortfolioDto portfolioDto);
 }
