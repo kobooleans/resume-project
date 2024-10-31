@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ks.resumeproject.manage.repository.CopyProjectMapper">
+
+    <select id="selectProjectList" parameterType="AccountDto" resultType="ProjectDto">
+        <![CDATA[
+        SELECT A.RANDOM_ID
+             , A.USERNAME
+             , A.PAGE_DESCRIPTION
+             , CASE WHEN COALESCE(NULLIF(D.RESUME_YN,FALSE), FALSE) = FALSE THEN 'N' ELSE 'Y' END AS RESUME_YN
+             , CASE WHEN COALESCE(NULLIF(B.SKILL_YN,FALSE), FALSE) = FALSE THEN 'N' ELSE 'Y' END AS SKILL_YN
+             , CASE WHEN COALESCE(NULLIF(B.CAREER_YN,FALSE), FALSE) = FALSE THEN 'N' ELSE 'Y' END AS CAREER_YN
+             , CASE WHEN COALESCE(NULLIF(B.EDU_YN,FALSE), FALSE) = FALSE THEN 'N' ELSE 'Y' END AS EDU_YN
+             , CASE WHEN COALESCE(NULLIF(B.AWARD_YN,FALSE), FALSE) = FALSE THEN 'N' ELSE 'Y' END AS AWARD_YN
+             , CASE WHEN COALESCE(NULLIF(B.ACTION_YN,FALSE), FALSE) = FALSE THEN 'N' ELSE 'Y' END AS ACTION_YN
+             , CASE WHEN COALESCE(NULLIF(B.COVER_LETTER_YN,FALSE), FALSE) = FALSE THEN 'N' ELSE 'Y' END AS COVER_LETTER_YN
+             , COUNT(C.PORT_ID) AS PORT_SIZE
+             , A.START_YMD
+             , A.END_YMD
+        FROM ACCOUNT_MY_PAGE A
+        LEFT OUTER JOIN RESUME B
+                        ON A.ID = B.ID
+                            AND A.RANDOM_ID = B.RANDOM_ID
+        LEFT OUTER JOIN PORTFOLIO C
+                        ON A.ID = C.ID
+                            AND A.RANDOM_ID = C.RANDOM_ID
+        LEFT OUTER JOIN MAIN_INFO D
+                        ON A.ID = D.ID
+                            AND A.RANDOM_ID = D.RANDOM_ID
+        WHERE A.ID = #{id}
+        GROUP BY A.RANDOM_ID
+               , A.USERNAME
+               , A.PAGE_DESCRIPTION
+               , D.RESUME_YN
+               , B.SKILL_YN
+               , B.CAREER_YN
+               , B.EDU_YN
+               , B.AWARD_YN
+               , B.ACTION_YN
+               , B.COVER_LETTER_YN
+               , A.START_YMD
+               , A.END_YMD
+        ]]>
+    </select>
+
+</mapper>

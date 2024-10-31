@@ -8,6 +8,7 @@ import java.math.BigInteger;
 public class PortfolioDetailDto {
     private BigInteger detailId;
     private BigInteger id;
+    private String username;
     private String randomId;
     private BigInteger portId;
     private int detailSeq;
