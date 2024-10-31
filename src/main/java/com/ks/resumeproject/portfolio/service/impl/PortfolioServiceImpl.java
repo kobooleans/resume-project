@@ -113,7 +113,7 @@ public class PortfolioServiceImpl implements PortfolioService {
         portfolioMapper.insertPortfolio(portfolioDto);
 
         for(PortfolioDetailDto dto : portfolioDto.getDetailList()){
-            if(!dto.getDetailTitle().isEmpty() && !dto.getDetailContent().isEmpty()){
+            if(dto.getDetailTitle() != null && dto.getDetailContent() != null){
                 dto.setPortId(maxPortId);
                 dto.setId(portfolioDto.getId());
                 dto.setRandomId(portfolioDto.getRandomId());
