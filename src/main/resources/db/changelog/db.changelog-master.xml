@@ -20,6 +20,7 @@
     <include file="db/changelog/db.changelog.c-1.01.xml"/>
     <include file="db/changelog/db.changelog.c-1.02.xml"/>
     <include file="db/changelog/db.changelog.c-1.03.xml"/>
+    <include file="db/changelog/db.changelog.c-1.04.xml"/>
 
     <include file="db/changelog/db.changelog.j-1.0.xml"/>
     <include file="db/changelog/db.changelog.j-1.01.xml"/>
