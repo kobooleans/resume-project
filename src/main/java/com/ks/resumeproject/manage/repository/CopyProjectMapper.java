@@ -1,6 +1,7 @@
 package com.ks.resumeproject.manage.repository;
 
 import com.ks.resumeproject.manage.domain.ProjectDto;
+import com.ks.resumeproject.multi.domain.FileDto;
 import com.ks.resumeproject.security.domain.AccountDto;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -10,4 +11,48 @@ import java.util.List;
 public interface CopyProjectMapper {
 
     List<ProjectDto> selectProjectList(AccountDto account);
+
+    void copyAccountMyPage(ProjectDto projectDto);
+
+    void copyResume(ProjectDto projectDto);
+
+    void copyPortfolio(ProjectDto projectDto);
+
+    void copyPortfolioDetail(ProjectDto projectDto);
+
+    void copyPortfolioSkill(ProjectDto projectDto);
+
+    void copyPortfolioSkillDetail(ProjectDto projectDto);
+
+    void copyMainInfo(ProjectDto projectDto);
+
+    void copyResumeEdu(ProjectDto projectDto);
+
+    void copyResumeCareer(ProjectDto projectDto);
+
+    void copyResumeActivity(ProjectDto projectDto);
+
+    void copyResumeInfo(ProjectDto projectDto);
+
+    void copyResumeSkillDetail(ProjectDto projectDto);
+
+    void copyResumeSkill(ProjectDto projectDto);
+
+    void copyResumeLangTest(ProjectDto projectDto);
+
+    void copyResumeLicense(ProjectDto projectDto);
+
+    void copyResumeAward(ProjectDto projectDto);
+
+    void copyResumeCoverLetter(ProjectDto projectDto);
+
+    List<FileDto> selectPortfolioFileList(ProjectDto projectDto);
+
+    void copyFile(ProjectDto projectDto);
+
+    void updatePortfolioFile(ProjectDto projectDto);
+
+    List<FileDto> selectPortfolioImgFileList(ProjectDto projectDto);
+
+    void updatePortfolioImgFile(ProjectDto projectDto);
 }

@@ -7,4 +7,6 @@ import java.util.List;
 public interface CopyProjectService {
 
     List<ProjectDto> selectProjectList();
+
+    void copyProject(List<ProjectDto> projectDto);
 }
