@@ -52,7 +52,7 @@
             INSERT INTO ACCOUNT_MY_PAGE(
                 id, username, random_id, account_id, page_id, page_description, use_yn, start_ymd, end_ymd
             )
-            SELECT COALESCE(NULLIF(MAX(ID), 0), 0) + 1
+            SELECT MAX(ID)
                  , MAX(USERNAME)
                  , #{copyRandomId}
                  , MAX(ACCOUNT_ID)
