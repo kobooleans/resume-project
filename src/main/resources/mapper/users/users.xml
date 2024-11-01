@@ -54,8 +54,7 @@
 
     <select id="checkAccessYn" parameterType="java.util.Map" resultType="java.util.Map">
         <![CDATA[
-            SELECT CASE when START_YMD is null then true
-                        when END_YMD is null then TRUE
+            SELECT CASE when END_YMD is null then TRUE
                         WHEN TO_CHAR(NOW(), 'YYYYMMDD')
                         BETWEEN TO_CHAR(START_YMD, 'YYYYMMDD') AND TO_CHAR(END_YMD, 'YYYYMMDD')
                         THEN TRUE
