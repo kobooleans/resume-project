@@ -10,6 +10,7 @@ import com.ks.resumeproject.security.util.SecurityUtil;
 import com.ks.resumeproject.util.ComUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class CopyProjectServiceImpl implements CopyProjectService {
     }
 
     @Override
+    @Transactional
     public void copyProject(List<ProjectDto> projectDtos) {
 
         AccountDto accountDto = securityUtil.getAccount().getAccountDto();
