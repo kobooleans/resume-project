@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +38,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean checkUsername(AccountDto accountDto) {
         return userMapper.userNameCheck(accountDto).equals("Y");
+    }
+
+    @Override
+    public Map checkAccessYn(Map map) {
+        AccountDto accountDto = new AccountDto();
+
+        accountDto.setUsername(map.get("username").toString());
+        map.put("id",userMapper.getAccountId(accountDto));
+
+        return userMapper.checkAccessYn(map);
     }
 
     @Override

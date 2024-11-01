@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -21,6 +22,7 @@ import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Security;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -67,6 +69,16 @@ public class SecurityController {
 
         return "logout";
     }
+
+    @Operation(summary = "페이지 접근", description = "페이지 접근 가능여부를 확인한다.")
+    @PostMapping(value = "/access")
+    public ResponseEntity<Map<String, Boolean>> access(@RequestBody Map map){
+
+        Map result = userService.checkAccessYn(map);
+
+        return ResponseEntity.ok(result);
+    }
+
 
     @Operation(summary = "사용안함", description = "REST 형식의 로그인 시 csrf 토큰을 가져옵니다.")
     @GetMapping(value = "/csrfToken")

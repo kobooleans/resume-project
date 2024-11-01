@@ -19,6 +19,8 @@
              , COUNT(C.PORT_ID) AS PORT_SIZE
              , A.START_YMD
              , A.END_YMD
+             , TO_CHAR(A.START_YMD,'YYYY.MM.DD') AS START_VIEW_YMD
+             , TO_CHAR(A.END_YMD, 'YYYY.MM.DD') AS END_VIEW_YMD
         FROM ACCOUNT_MY_PAGE A
         LEFT OUTER JOIN RESUME B
                         ON A.ID = B.ID
