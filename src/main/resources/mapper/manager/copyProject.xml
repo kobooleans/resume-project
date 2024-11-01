@@ -23,13 +23,13 @@
              , TO_CHAR(A.END_YMD, 'YYYY.MM.DD') AS END_VIEW_YMD
         FROM ACCOUNT_MY_PAGE A
         LEFT OUTER JOIN RESUME B
-                        ON A.ID = B.ID
+                        ON A.ACCOUNT_ID = B.ID
                             AND A.RANDOM_ID = B.RANDOM_ID
         LEFT OUTER JOIN PORTFOLIO C
-                        ON A.ID = C.ID
+                        ON A.ACCOUNT_ID = C.ID
                             AND A.RANDOM_ID = C.RANDOM_ID
         LEFT OUTER JOIN MAIN_INFO D
-                        ON A.ID = D.ID
+                        ON A.ACCOUNT_ID = D.ID
                             AND A.RANDOM_ID = D.RANDOM_ID
         WHERE A.ACCOUNT_ID = #{id}
         GROUP BY A.RANDOM_ID
