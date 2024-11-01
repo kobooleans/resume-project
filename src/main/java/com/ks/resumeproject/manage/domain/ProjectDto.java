@@ -2,10 +2,12 @@ package com.ks.resumeproject.manage.domain;
 
 import lombok.Data;
 
+import java.math.BigInteger;
 import java.util.Date;
 
 @Data
 public class ProjectDto {
+    private BigInteger id;
     private String randomId;
     private String username;
     private String pageDescription;
@@ -19,4 +21,8 @@ public class ProjectDto {
     private int portSize;
     private Date startYmd;
     private Date endYmd;
+
+    private String copyRandomId;
+    private BigInteger fileId;
+    private BigInteger copyFileId;
 }
