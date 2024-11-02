@@ -9,4 +9,6 @@ public interface CopyProjectService {
     List<ProjectDto> selectProjectList();
 
     void copyProject(List<ProjectDto> projectDto);
+
+    void saveProject(List<ProjectDto> projectDto);
 }

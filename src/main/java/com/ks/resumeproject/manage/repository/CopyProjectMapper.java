@@ -57,4 +57,6 @@ public interface CopyProjectMapper {
     void updatePortfolioImgFile(ProjectDto projectDto);
 
     void copyCategory(ProjectDto projectDto);
+
+    void updateAccountMyPage(ProjectDto projectDto);
 }

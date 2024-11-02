@@ -19,8 +19,7 @@
              , COUNT(C.PORT_ID) AS PORT_SIZE
              , A.START_YMD
              , A.END_YMD
-             , TO_CHAR(A.START_YMD,'YYYY.MM.DD') AS START_VIEW_YMD
-             , TO_CHAR(A.END_YMD, 'YYYY.MM.DD') AS END_VIEW_YMD
+             , case when A.page_id = 0 then true else false end as disabled
         FROM ACCOUNT_MY_PAGE A
         LEFT OUTER JOIN RESUME B
                         ON A.ACCOUNT_ID = B.ID
@@ -33,6 +32,7 @@
                             AND A.RANDOM_ID = D.RANDOM_ID
         WHERE A.ACCOUNT_ID = #{id}
         GROUP BY A.RANDOM_ID
+               , A.page_id
                , A.USERNAME
                , A.PAGE_DESCRIPTION
                , D.RESUME_YN
@@ -44,6 +44,7 @@
                , B.COVER_LETTER_YN
                , A.START_YMD
                , A.END_YMD
+        ORDER BY PAGE_ID
         ]]>
     </select>
 
@@ -363,6 +364,18 @@
         where id = #{id}
           and random_id = #{randomId}
           and img_file_id = #{fileId}
+        ]]>
+    </update>
+    
+    <update id="updateAccountMyPage" parameterType="ProjectDto">
+        <![CDATA[
+            UPDATE account_my_page
+               set page_description = #{pageDescription}
+                 , start_ymd = #{startYmd}
+                 , end_ymd = #{endYmd}
+             where id = #{id}
+               and username = #{username}
+               and random_id = #{randomId}
         ]]>
     </update>
 
