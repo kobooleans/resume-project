@@ -55,4 +55,6 @@ public interface CopyProjectMapper {
     List<FileDto> selectPortfolioImgFileList(ProjectDto projectDto);
 
     void updatePortfolioImgFile(ProjectDto projectDto);
+
+    void copyCategory(ProjectDto projectDto);
 }
