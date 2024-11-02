@@ -54,8 +54,8 @@ public class CopyProjectServiceImpl implements CopyProjectService {
             copyProjectMapper.copyResumeCareer(projectDto);
             copyProjectMapper.copyResumeActivity(projectDto);
             copyProjectMapper.copyResumeInfo(projectDto);
-            copyProjectMapper.copyResumeSkillDetail(projectDto);
             copyProjectMapper.copyResumeSkill(projectDto);
+            copyProjectMapper.copyResumeSkillDetail(projectDto);
             copyProjectMapper.copyResumeLangTest(projectDto);
             copyProjectMapper.copyResumeLicense(projectDto);
             copyProjectMapper.copyResumeAward(projectDto);
@@ -107,6 +107,60 @@ public class CopyProjectServiceImpl implements CopyProjectService {
             projectDto.setUsername(accountDto.getUsername());
 
             copyProjectMapper.updateAccountMyPage(projectDto);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void deleteProject(List<ProjectDto> projectDtos) {
+        AccountDto accountDto = securityUtil.getAccount().getAccountDto();
+
+        for (ProjectDto projectDto : projectDtos) {
+            projectDto.setId(accountDto.getId());
+
+            // 1. FILE 관련사항 삭제
+
+            /* potrolio 첨부파일 삭제 */
+            List<FileDto> fileDtos = copyProjectMapper.selectPortfolioFileList(projectDto);
+            for (FileDto fileDto : fileDtos) {
+                projectDto.setFileId(fileDto.getFileId());
+                projectDto.setCopyFileId(fileDto.getFileId());
+
+                copyProjectMapper.updateFile(projectDto);
+            }
+
+            List<FileDto> fileImgDtos = copyProjectMapper.selectPortfolioImgFileList(projectDto);
+            for (FileDto fileDto : fileImgDtos) {
+                projectDto.setFileId(fileDto.getFileId());
+                projectDto.setCopyFileId(fileDto.getFileId());
+                copyProjectMapper.updateFile(projectDto);
+            }
+
+            // 2. ACCOUNT_MY_PAGE 복제
+            copyProjectMapper.deleteAccountMyPage(projectDto);
+
+            // 3. RESUME 복제
+            copyProjectMapper.deleteResumeEdu(projectDto);
+            copyProjectMapper.deleteResumeCareer(projectDto);
+            copyProjectMapper.deleteResumeActivity(projectDto);
+            copyProjectMapper.deleteResumeInfo(projectDto);
+            copyProjectMapper.deleteResumeSkillDetail(projectDto);
+            copyProjectMapper.deleteResumeSkill(projectDto);
+            copyProjectMapper.deleteResumeLangTest(projectDto);
+            copyProjectMapper.deleteResumeLicense(projectDto);
+            copyProjectMapper.deleteResumeAward(projectDto);
+            copyProjectMapper.deleteResumeCoverLetter(projectDto);
+            copyProjectMapper.deleteResume(projectDto);
+
+            // 4. PORTFOLIO 복제
+            copyProjectMapper.deletePortfolioDetail(projectDto);
+            copyProjectMapper.deletePortfolio(projectDto);
+            copyProjectMapper.deletePortfolioSkillDetail(projectDto);
+            copyProjectMapper.deletePortfolioSkill(projectDto);
+            copyProjectMapper.deleteCategory(projectDto);
+
+            // 5. MAIN_INFO 삭제
+            copyProjectMapper.deleteMainInfo(projectDto);
         }
     }
 }

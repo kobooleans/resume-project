@@ -59,4 +59,42 @@ public interface CopyProjectMapper {
     void copyCategory(ProjectDto projectDto);
 
     void updateAccountMyPage(ProjectDto projectDto);
+
+    void updateFile(ProjectDto projectDto);
+
+    void deleteAccountMyPage(ProjectDto projectDto);
+
+    void deleteResumeEdu(ProjectDto projectDto);
+
+    void deleteResumeCareer(ProjectDto projectDto);
+
+    void deleteResumeActivity(ProjectDto projectDto);
+
+    void deleteResumeInfo(ProjectDto projectDto);
+
+    void deleteResumeSkillDetail(ProjectDto projectDto);
+
+    void deleteResumeSkill(ProjectDto projectDto);
+
+    void deleteResumeLangTest(ProjectDto projectDto);
+
+    void deleteResumeLicense(ProjectDto projectDto);
+
+    void deleteResumeAward(ProjectDto projectDto);
+
+    void deleteResumeCoverLetter(ProjectDto projectDto);
+
+    void deleteResume(ProjectDto projectDto);
+
+    void deletePortfolioDetail(ProjectDto projectDto);
+
+    void deletePortfolio(ProjectDto projectDto);
+
+    void deletePortfolioSkillDetail(ProjectDto projectDto);
+
+    void deletePortfolioSkill(ProjectDto projectDto);
+
+    void deleteCategory(ProjectDto projectDto);
+
+    void deleteMainInfo(ProjectDto projectDto);
 }

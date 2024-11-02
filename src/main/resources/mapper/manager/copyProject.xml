@@ -379,4 +379,158 @@
         ]]>
     </update>
 
+    <update id="updateFile" parameterType="ProjectDto">
+        <![CDATA[
+            update file
+               set use_yn = 'N'
+                 , update_ymd = NOW()
+             where file_id = #{fileId}
+        ]]>
+    </update>
+
+    <delete id="deleteAccountMyPage" parameterType="ProjectDto">
+        <![CDATA[
+            delete from account_my_page
+             where id = #{id}
+               and random_id = #{randomId}
+        ]]>
+    </delete>
+
+    <delete id="deleteResumeEdu" parameterType="ProjectDto">
+        <![CDATA[
+            delete from resume_edu
+            where id = #{id}
+              and random_id = #{randomId}
+        ]]>
+    </delete>
+
+    <delete id="deleteResumeCareer" parameterType="ProjectDto">
+        <![CDATA[
+            delete from resume_career
+            where id = #{id}
+              and random_id = #{randomId}
+    ]]>
+    </delete>
+
+    <delete id="deleteResumeActivity" parameterType="ProjectDto">
+        <![CDATA[
+            delete from resume_activity
+            where id = #{id}
+              and random_id = #{randomId}
+        ]]>
+    </delete>
+
+    <delete id="deleteResumeInfo" parameterType="ProjectDto">
+        <![CDATA[
+            delete from resume_info
+            where id = #{id}
+              and random_id = #{randomId}
+        ]]>
+    </delete>
+
+    <delete id="deleteResumeSkillDetail" parameterType="ProjectDto">
+        <![CDATA[
+        delete from resume_skill_detail
+        where id = #{id}
+          and random_id = #{randomId}
+        ]]>
+    </delete>
+
+    <delete id="deleteResumeSkill" parameterType="ProjectDto">
+        <![CDATA[
+        delete from resume_skill
+        where id = #{id}
+          and random_id = #{randomId}
+        ]]>
+    </delete>
+
+    <delete id="deleteResumeLangTest" parameterType="ProjectDto">
+        <![CDATA[
+        delete from resume_lang_test
+        where id = #{id}
+          and random_id = #{randomId}
+        ]]>
+    </delete>
+
+    <delete id="deleteResumeLicense" parameterType="ProjectDto">
+        <![CDATA[
+        delete from resume_license
+        where id = #{id}
+          and random_id = #{randomId}
+        ]]>
+    </delete>
+
+    <delete id="deleteResumeAward" parameterType="ProjectDto">
+        <![CDATA[
+        delete from resume_award
+        where id = #{id}
+          and random_id = #{randomId}
+        ]]>
+    </delete>
+
+    <delete id="deleteResumeCoverLetter" parameterType="ProjectDto">
+        <![CDATA[
+        delete from resume_cover_letter
+        where id = #{id}
+          and random_id = #{randomId}
+        ]]>
+    </delete>
+
+    <delete id="deleteResume" parameterType="ProjectDto">
+        <![CDATA[
+        delete from resume
+        where id = #{id}
+          and random_id = #{randomId}
+        ]]>
+    </delete>
+
+    <delete id="deletePortfolioDetail" parameterType="ProjectDto">
+        <![CDATA[
+        delete from portfolio_detail
+        where id = #{id}
+          and random_id = #{randomId}
+        ]]>
+    </delete>
+
+    <delete id="deletePortfolio" parameterType="ProjectDto">
+        <![CDATA[
+        delete from portfolio
+        where id = #{id}
+          and random_id = #{randomId}
+        ]]>
+    </delete>
+
+    <delete id="deletePortfolioSkillDetail" parameterType="ProjectDto">
+        <![CDATA[
+        delete from portfolio_skill_detail
+        where id = #{id}
+          and random_id = #{randomId}
+        ]]>
+    </delete>
+
+    <delete id="deletePortfolioSkill" parameterType="ProjectDto">
+        <![CDATA[
+        delete from portfolio_skill
+        where id = #{id}
+          and random_id = #{randomId}
+        ]]>
+    </delete>
+
+    <delete id="deleteCategory" parameterType="ProjectDto">
+        <![CDATA[
+        delete from category
+        where id = #{id}
+          and random_id = #{randomId}
+        ]]>
+    </delete>
+
+    <delete id="deleteMainInfo" parameterType="ProjectDto">
+        <![CDATA[
+        delete from main_info
+        where id = #{id}
+          and random_id = #{randomId}
+        ]]>
+    </delete>
+
+
 </mapper>
