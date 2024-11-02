@@ -36,5 +36,13 @@ public class CopyProject {
         return ResponseEntity.ok(Map.of("result","success"));
     }
 
+    @PostMapping(value = "/save")
+    @Operation(summary = "페이지 내용 저장", description = "페이지 내용을 저장한다.")
+    public ResponseEntity<Map<String,String>> saveProject(@RequestBody List<ProjectDto> projectDto){
+
+        copyProjectService.saveProject(projectDto);
+
+        return ResponseEntity.ok(Map.of("result","success"));
+    }
 
 }

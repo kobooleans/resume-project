@@ -95,8 +95,18 @@ public class CopyProjectServiceImpl implements CopyProjectService {
                 copyProjectMapper.updatePortfolioImgFile(projectDto);
             }
         }
+    }
 
+    @Override
+    @Transactional
+    public void saveProject(List<ProjectDto> projectDtos) {
+        AccountDto accountDto = securityUtil.getAccount().getAccountDto();
 
+        for (ProjectDto projectDto : projectDtos) {
+            projectDto.setId(accountDto.getId());
+            projectDto.setUsername(accountDto.getUsername());
 
+            copyProjectMapper.updateAccountMyPage(projectDto);
+        }
     }
 }
