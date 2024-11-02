@@ -45,4 +45,13 @@ public class CopyProject {
         return ResponseEntity.ok(Map.of("result","success"));
     }
 
+    @PostMapping(value = "/delete")
+    @Operation(summary = "페이지 내용 저장", description = "페이지 내용을 저장한다.")
+    public ResponseEntity<Map<String,String>> deleteProject(@RequestBody List<ProjectDto> projectDto){
+
+        copyProjectService.deleteProject(projectDto);
+
+        return ResponseEntity.ok(Map.of("result","success"));
+    }
+
 }

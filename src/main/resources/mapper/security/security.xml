@@ -18,6 +18,7 @@
                AND B.PAGE_DESCRIPTION = 'MAIN'
              WHERE A.USERNAME = #{userId}
                AND A.PASSWORD IS NOT NULL
+               AND A.USE_YN = 'Y'
         ]]>
     </select>
 
@@ -65,4 +66,5 @@
             ON A.PARENT_ID = B.ID
         ]]>
     </select>
+
 </mapper>

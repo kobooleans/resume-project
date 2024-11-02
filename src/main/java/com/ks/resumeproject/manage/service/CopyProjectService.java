@@ -11,4 +11,6 @@ public interface CopyProjectService {
     void copyProject(List<ProjectDto> projectDto);
 
     void saveProject(List<ProjectDto> projectDto);
+
+    void deleteProject(List<ProjectDto> projectDto);
 }
