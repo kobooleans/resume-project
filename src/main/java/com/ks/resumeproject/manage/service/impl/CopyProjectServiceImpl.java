@@ -66,6 +66,7 @@ public class CopyProjectServiceImpl implements CopyProjectService {
             copyProjectMapper.copyPortfolioDetail(projectDto);
             copyProjectMapper.copyPortfolioSkill(projectDto);
             copyProjectMapper.copyPortfolioSkillDetail(projectDto);
+            copyProjectMapper.copyCategory(projectDto);
 
             // 4. MAIN_INFO 복제
             copyProjectMapper.copyMainInfo(projectDto);
