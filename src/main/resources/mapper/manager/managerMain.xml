@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ks.resumeproject.manage.repository.ManageMainMapper">
+
+    <select id="selectProjectCalList" parameterType="AccountDto" resultType="ProjectDto">
+        <![CDATA[
+        SELECT A.RANDOM_ID
+             , A.USERNAME
+             , A.PAGE_DESCRIPTION
+             , A.START_YMD
+             , A.END_YMD
+        FROM ACCOUNT_MY_PAGE A
+        WHERE A.ACCOUNT_ID = #{id}
+        ORDER BY PAGE_ID
+        ]]>
+    </select>
+
+
+</mapper>
