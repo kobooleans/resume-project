@@ -1,2 +1,46 @@
+spring:
+  application:
+    name: core-project
+  datasource:
+    #driver-class-name: org.postgresql.Driver
+    #url: jdbc:postgresql://43.201.249.27:5432/resume
+    username: resume
+    password: local_ks_postgres_db
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    url: jdbc:log4jdbc:postgresql://192.168.45.161:15432/resume?charSet=UTF-8
+  devtools:
+    restart:
+      enabled: true
+    livereload:
+      enabled: true
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
+    enabled: true
+
+server:
+  port: 8080
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+
+mybatis:
+  mapper-locations: classpath:mapper/**/*.xml
+  type-aliases-package: com.ks.resumeproject.**.domain
+  config-location: classpath:mybatis-config.xml
+
+springdoc:
+  version: '@springdoc.version@'
+  api-docs:
+    version: openapi_3_1
+  swagger-ui:
+    display-request-duration: true
+    groups-order: DESC
+    operationsSorter: method
+    disable-swagger-default-url: true
+    use-root-path: true
+  show-actuator: true
+
 jwt:
   secret: 511b0f52445969be5e0cedb7e7f89a183758eeb27c7270711c83cc057222587
+
