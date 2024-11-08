@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ks.resumeproject.batch.repository.BatchMapper">
+    <select id="selectDelAccountList" resultType="AccountDto">
+        <![CDATA[
+            SELECT ID
+                 , USERNAME
+                 , '' AS PASSWORD
+                 , ROLE_TYPE
+                 , FILE_ID
+                 , USE_YN
+                 , UPDATE_YMD
+              FROM ACCOUNT
+             WHERE USE_YN = 'N'
+               AND UPDATE_YMD + 10 < NOW()
+        ]]>
+    </select>
+
+    <select id="selectDelFileList" resultType="FileDto">
+        <![CDATA[
+        SELECT FILE_ID
+             , FILE_SUB_ID
+             , FILE_NM
+             , null AS FILE
+             , FILE_TYPE
+             , USE_YN
+             , CREATE_YMD
+             , UPDATE_YMD
+          FROM FILE
+         WHERE USE_YN = 'N'
+           AND UPDATE_YMD + 10 < NOW()
+        ]]>
+    </select>
+
+    <delete id="deleteAccountMyPage" parameterType="AccountDto">
+        <![CDATA[
+        delete from account_my_page
+        where id = #{id}
+        ]]>
+    </delete>
+
+    <delete id="deleteResumeEdu" parameterType="AccountDto">
+        <![CDATA[
+        delete from resume_edu
+        where id = #{id}
+        ]]>
+    </delete>
+
+    <delete id="deleteResumeCareer" parameterType="AccountDto">
+        <![CDATA[
+        delete from resume_career
+        where id = #{id}
+        ]]>
+    </delete>
+
+    <delete id="deleteResumeActivity" parameterType="AccountDto">
+        <![CDATA[
+        delete from resume_activity
+        where id = #{id}
+        ]]>
+    </delete>
+
+    <delete id="deleteResumeInfo" parameterType="AccountDto">
+        <![CDATA[
+        delete from resume_info
+        where id = #{id}
+        ]]>
+    </delete>
+
+    <delete id="deleteResumeSkillDetail" parameterType="AccountDto">
+        <![CDATA[
+        delete from resume_skill_detail
+        where id = #{id}
+        ]]>
+    </delete>
+
+    <delete id="deleteResumeSkill" parameterType="AccountDto">
+        <![CDATA[
+        delete from resume_skill
+        where id = #{id}
+        ]]>
+    </delete>
+
+    <delete id="deleteResumeLangTest" parameterType="AccountDto">
+        <![CDATA[
+        delete from resume_lang_test
+        where id = #{id}
+        ]]>
+    </delete>
+
+    <delete id="deleteResumeLicense" parameterType="AccountDto">
+        <![CDATA[
+        delete from resume_license
+        where id = #{id}
+        ]]>
+    </delete>
+
+    <delete id="deleteResumeAward" parameterType="AccountDto">
+        <![CDATA[
+        delete from resume_award
+        where id = #{id}
+        ]]>
+    </delete>
+
+    <delete id="deleteResumeCoverLetter" parameterType="AccountDto">
+        <![CDATA[
+        delete from resume_cover_letter
+        where id = #{id}
+        ]]>
+    </delete>
+
+    <delete id="deleteResume" parameterType="AccountDto">
+        <![CDATA[
+        delete from resume
+        where id = #{id}
+        ]]>
+    </delete>
+
+    <delete id="deletePortfolioDetail" parameterType="AccountDto">
+        <![CDATA[
+        delete from portfolio_detail
+        where id = #{id}
+        ]]>
+    </delete>
+
+    <delete id="deletePortfolio" parameterType="AccountDto">
+        <![CDATA[
+        delete from portfolio
+        where id = #{id}
+        ]]>
+    </delete>
+
+    <delete id="deletePortfolioSkillDetail" parameterType="AccountDto">
+        <![CDATA[
+        delete from portfolio_skill_detail
+        where id = #{id}
+        ]]>
+    </delete>
+
+    <delete id="deletePortfolioSkill" parameterType="AccountDto">
+        <![CDATA[
+        delete from portfolio_skill
+        where id = #{id}
+        ]]>
+    </delete>
+
+    <delete id="deleteCategory" parameterType="AccountDto">
+        <![CDATA[
+        delete from category
+        where id = #{id}
+        ]]>
+    </delete>
+
+    <delete id="deleteMainInfo" parameterType="AccountDto">
+        <![CDATA[
+        delete from main_info
+        where id = #{id}
+        ]]>
+    </delete>    
+
+    <delete id="deleteFile" parameterType="java.math.BigInteger">
+        <![CDATA[
+            DELETE FROM FILE
+             WHERE FILE_ID = #{fileId}
+        ]]>
+    </delete>
+
+    <delete id="deleteAccount" parameterType="AccountDto">
+        <![CDATA[
+            DELETE FROM ACCOUNT
+             WHERE ID = #{id}
+        ]]>
+    </delete>
+
+    <select id="selectDelPortFile" parameterType="AccountDto" resultType="PortfolioDto">
+        <![CDATA[
+            SELECT ID
+                 , RANDOM_ID
+                 , PORT_ID
+                 , TITLE
+                 , CONTENT
+                 , CATEGORY_ID
+                 , FILE_ID
+                 , START_YMD
+                 , END_YMD
+                 , IMG_FILE_ID
+              FROM PORTFOLIO
+             WHERE ID = #{id}
+        ]]>
+    </select>
+
+    <delete id="deletePortImgFile" parameterType="PortfolioDto">
+        <![CDATA[
+            DELETE FROM FILE
+             WHERE FILE_ID = #{imgFileId}
+        ]]>
+    </delete>
+
+    <delete id="deletePortFile" parameterType="PortfolioDto">
+        <![CDATA[
+            DELETE FROM FILE
+             WHERE FILE_ID = #{fileId}
+        ]]>
+    </delete>
+</mapper>

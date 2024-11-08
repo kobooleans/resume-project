@@ -26,4 +26,11 @@ public class MemberManageController {
         memberManageService.updatePw(memberManageDto);
         return "success";
     }
+
+    @Operation(summary = "회원탈퇴", description = "회원탈퇴 처리한다.")
+    @PostMapping("/updateUseYnId")
+    public String updateUseYnId(){
+        memberManageService.updateUseYnId();
+        return "success";
+    }
 }
