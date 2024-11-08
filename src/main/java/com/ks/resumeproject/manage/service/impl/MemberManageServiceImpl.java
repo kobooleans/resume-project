@@ -48,4 +48,13 @@ public class MemberManageServiceImpl implements MemberManageService {
         memberManageDto.setNewPw(passwordEncoder.encode(memberManageDto.getNewPw()));
         memberManageMapper.updatePw(memberManageDto);
     }
+
+    @Override
+    public void updateUseYnId() {
+        AccountDto accountDto = securityUtil.getAccount().getAccountDto();
+
+        /*account 테이블의 use_yn을 N처리*/
+        memberManageMapper.updateUseYnId(accountDto);
+
+    }
 }

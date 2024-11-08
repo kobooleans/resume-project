@@ -11,4 +11,13 @@
                AND username = #{username}
         ]]>
     </update>
+
+    <update id="updateUseYnId" parameterType="AccountDto">
+        <![CDATA[
+            UPDATE ACCOUNT
+               SET USE_YN       = 'N'
+                 , UPDATE_YMD   = NOW()
+             WHERE id       = #{id}
+        ]]>
+    </update>
 </mapper>
