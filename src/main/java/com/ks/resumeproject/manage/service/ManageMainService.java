@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface ManageMainService {
 
-    List<ProjectDto> selectProjectCalList();
+    List<ProjectDto> selectProjectCalList(ProjectDto projectDto);
 
 }
