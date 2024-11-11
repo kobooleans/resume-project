@@ -18,10 +18,10 @@ public class ManageMainController {
 
     private final ManageMainService manageMainService;
 
-    @GetMapping(value = "/projectCalList")
+    @PostMapping(value = "/projectCalList")
     @Operation(summary = "프로젝트 일정 리스트", description = "프로젝트 일정 리스트를 조회한다.")
-    public ResponseEntity<List<ProjectDto>> selectProjectCalList(){
-        List<ProjectDto> projectList = manageMainService.selectProjectCalList();
+    public ResponseEntity<List<ProjectDto>> selectProjectCalList(@RequestBody ProjectDto projectDto){
+        List<ProjectDto> projectList = manageMainService.selectProjectCalList(projectDto);
         return ResponseEntity.ok(projectList);
     }
 }

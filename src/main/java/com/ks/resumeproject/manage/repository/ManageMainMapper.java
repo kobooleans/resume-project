@@ -9,6 +9,6 @@ import java.util.List;
 @Mapper
 public interface ManageMainMapper {
 
-    List<ProjectDto> selectProjectCalList(AccountDto account);
+    List<ProjectDto> selectProjectCalList(ProjectDto projectDto);
 
 }
