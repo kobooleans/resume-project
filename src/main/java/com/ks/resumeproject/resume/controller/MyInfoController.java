@@ -9,6 +9,7 @@ import com.ks.resumeproject.security.domain.AccountDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,8 +25,8 @@ public class MyInfoController {
 
     @Operation(summary = "이력서 개인 정보 목록 조회", description = "이력서에 사용되는 개인정보 목록을 조회한다.")
     @PostMapping("/getMyInfo")
-    public MyinfoDto getMyInfo(@RequestBody AccountDto accountDto){
-        return myInfoService.getMyInfo(accountDto);
+    public ResponseEntity<MyinfoDto> getMyInfo(@RequestBody AccountDto accountDto){
+        return ResponseEntity.ok(myInfoService.getMyInfo(accountDto));
     }
 
     @Operation(summary = "이력서 개인 정보 추가", description = "이력서에 사용되는 개인정보 목록을 추가한다.")
