@@ -21,11 +21,16 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.List;
 
 @EnableWebSecurity
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
+
+    @Value("${allowed.origins}")
+    private String allowedOrigins;
+
 
     private final AuthorizationManager<RequestAuthorizationContext> authorizationManager;
     private final TokenProvider tokenProvider;
@@ -53,7 +58,11 @@ public class SecurityConfig {
     public CorsConfigurationSource configurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173/","http://study.koboolean.site:2023/", "http://192.168.45.161:2023/"));
+        String[] split = allowedOrigins.split(",");
+
+        List<String> origins = Arrays.asList(split);
+
+        configuration.setAllowedOrigins(origins);
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
         configuration.setAllowCredentials(true);
