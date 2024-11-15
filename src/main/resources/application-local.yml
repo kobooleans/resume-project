@@ -48,6 +48,8 @@ springdoc:
     use-root-path: true
   show-actuator: true
 
+allowed:
+  origins: http://localhost:5173/
 
 jwt:
   secret: ***REMOVED***

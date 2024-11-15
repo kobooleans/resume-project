@@ -43,3 +43,6 @@ springdoc:
 
 jwt:
   secret: ***REMOVED***
+
+allowed:
+  origins: http://study.koboolean.site:2023/,http://192.168.45.161:2023/
