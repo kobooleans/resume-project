@@ -34,7 +34,7 @@ public class AwardController {
     @PostMapping("/insertAward")
     public ResponseEntity<Map> insertAward(@RequestBody AwardDto awardDto){
         int result = awardService.insertAward(awardDto);
-        System.out.println(result);
+        //System.out.println(result);
         if(result>0){
             return ResponseEntity.ok(Map.of("result","success"));
         }else{
@@ -58,7 +58,7 @@ public class AwardController {
     @PostMapping("/deleteAward")
     public ResponseEntity<Map> deleteAward(@RequestBody AwardDto awardDto){
         int result = awardService.deleteAward(awardDto);
-        System.out.println(result);
+        //System.out.println(result);
         if(result>0){
             return ResponseEntity.ok(Map.of("result","success"));
         }else{
@@ -69,9 +69,9 @@ public class AwardController {
     @Operation(summary = "이력서 자격/어학/수상 목록 수정", description = "이력서에 사용되는 자격/어학/수상을 수정한다.")
     @PostMapping("/updateAwardList")
     public ResponseEntity<Map> updateAwardList(@RequestBody List<Map<String, Object>> updateList){
-        System.out.println(updateList);
+        //System.out.println(updateList);
         int result = awardService.updateAwardList(updateList);
-        System.out.println(result);
+        //System.out.println(result);
         if(result>0){
             return ResponseEntity.ok(Map.of("result","success"));
         }else{

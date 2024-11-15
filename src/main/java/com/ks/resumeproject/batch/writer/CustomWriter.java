@@ -7,6 +7,6 @@ public class CustomWriter implements ItemWriter<String> {
     @Override
     public void write(Chunk<? extends String> items) throws Exception {
         // 쓰기 로직 구현
-        System.out.println("write : " + items);
+        //System.out.println("write : " + items);
     }
 }
