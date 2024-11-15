@@ -6,10 +6,13 @@ import com.ks.resumeproject.security.domain.AccountDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/home")
@@ -27,8 +30,8 @@ public class HomeController {
 
     @Operation(summary = "타이틀 수정", description = "타이틀 정보를 수정한다.")
     @PostMapping("/updateTitle")
-    public String updateTitle(@RequestBody TitleDto titleDto){
+    public ResponseEntity<Map> updateTitle(@RequestBody TitleDto titleDto){
         homeService.updateTitle(titleDto);
-        return "success";
+        return ResponseEntity.ok(Map.of("result","success"));
     }
 }

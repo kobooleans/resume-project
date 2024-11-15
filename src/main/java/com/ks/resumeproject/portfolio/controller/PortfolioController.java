@@ -36,16 +36,16 @@ public class PortfolioController {
 
     @Operation(summary = "카테고리 등록", description = "카테고리 정보를 저장한다.")
     @PostMapping("/addCategory")
-    public String insertCategory(@RequestBody CategoryDto categoryDto){
+    public ResponseEntity<Map<String, String>> insertCategory(@RequestBody CategoryDto categoryDto){
         portfolioService.insertCategory(categoryDto);
-        return "success";
+        return ResponseEntity.ok(Map.of("result","success"));
     }
 
     @Operation(summary = "카테고리 수정", description = "카테고리 정보를 수정한다.")
     @PostMapping("/updateCategory")
-    public String updateCategory(@RequestBody CategoryDto categoryDto){
+    public ResponseEntity<Map<String, String>> updateCategory(@RequestBody CategoryDto categoryDto){
         portfolioService.updateCategory(categoryDto);
-        return "success";
+        return ResponseEntity.ok(Map.of("result","success"));
     }
 
     @Operation(summary = "카테고리 삭제", description = "카테고리 정보를 삭제한다.")
@@ -63,9 +63,9 @@ public class PortfolioController {
 
     @Operation(summary = "포트폴리오 저장", description = "포트폴리오 정보를 저장한다.")
     @PostMapping("/addPortfolio")
-    public String insertPortfolio(@RequestBody PortfolioDto portfolioDto){
+    public ResponseEntity<Map<String, String>> insertPortfolio(@RequestBody PortfolioDto portfolioDto){
         portfolioService.insertPortfolio(portfolioDto);
-        return "success";
+        return ResponseEntity.ok(Map.of("result","success"));
     }
 
     @Operation(summary = "포트폴리오 상세 조회", description = "포트폴리오 상세 정보를 조회한다.")
@@ -77,15 +77,15 @@ public class PortfolioController {
 
     @Operation(summary = "포트폴리오 수정", description = "포트폴리오 정보를 수정한다.")
     @PostMapping("/updatePortfolioDetail")
-    public String updatePortfolioDetail(@RequestBody PortfolioDto portfolioDto){
+    public ResponseEntity<Map<String, String>> updatePortfolioDetail(@RequestBody PortfolioDto portfolioDto){
         portfolioService.updatePortfolioDetail(portfolioDto);
-        return "success";
+        return ResponseEntity.ok(Map.of("result","success"));
     }
 
     @Operation(summary = "포트폴리오 삭제", description = "포트폴리오 삭제한다.")
     @PostMapping("/deletePortfolio")
-    public String deletePortfolio(@RequestBody PortfolioDto portfolioDto){
+    public ResponseEntity<Map<String, String>> deletePortfolio(@RequestBody PortfolioDto portfolioDto){
         portfolioService.deletePortfolio(portfolioDto);
-        return "success";
+        return ResponseEntity.ok(Map.of("result","success"));
     }
 }

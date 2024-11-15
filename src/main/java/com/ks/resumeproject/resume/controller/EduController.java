@@ -6,6 +6,7 @@ import com.ks.resumeproject.security.domain.AccountDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,26 +30,26 @@ public class EduController {
     }
     @Operation(summary = "학력 등록", description = "학력 정보를 등록한다.")
     @PostMapping("/insertEdu")
-    public String insertEdu(@RequestBody EduDto eduDto){
+    public ResponseEntity<Map<String, String>> insertEdu(@RequestBody EduDto eduDto){
         eduService.insertEdu(eduDto);
 
-        return "success";
+        return ResponseEntity.ok(Map.of("result","success"));
     }
 
     @Operation(summary = "학력 수정", description = "학력 정보를 수정한다.")
     @PostMapping("/updateEdu")
-    public String updateEdu(@RequestBody EduDto eduDto){
+    public ResponseEntity<Map<String, String>> updateEdu(@RequestBody EduDto eduDto){
         eduService.updateEdu(eduDto);
 
-        return "success";
+        return ResponseEntity.ok(Map.of("result","success"));
     }
 
     @Operation(summary = "학력 삭제", description = "학력 정보를 삭제한다.")
     @PostMapping("/deleteEdu")
-    public String deleteEdu(@RequestBody EduDto eduDto){
+    public ResponseEntity<Map<String, String>> deleteEdu(@RequestBody EduDto eduDto){
         eduService.deleteEdu(eduDto);
 
-        return "success";
+        return ResponseEntity.ok(Map.of("result","success"));
     }
 
 
