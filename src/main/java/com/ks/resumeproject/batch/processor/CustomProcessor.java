@@ -8,7 +8,7 @@ public class CustomProcessor implements ItemProcessor<TestDto, String> {
     @Override
     public String process(TestDto item) throws Exception {
         // 처리로직 구현
-        System.out.println("item : " + item);
+        //System.out.println("item : " + item);
         return item.getName().toUpperCase();
     }
 }
