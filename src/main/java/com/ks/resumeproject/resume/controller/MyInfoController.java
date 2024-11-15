@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/myinfo")
@@ -31,9 +33,9 @@ public class MyInfoController {
 
     @Operation(summary = "이력서 개인 정보 추가", description = "이력서에 사용되는 개인정보 목록을 추가한다.")
     @PostMapping("/setMyInfo")
-    public String setMyInfo(@RequestBody MyinfoDto myinfoDto){
+    public ResponseEntity<Map<String, String>> setMyInfo(@RequestBody MyinfoDto myinfoDto){
         myInfoService.setMyInfo(myinfoDto);
 
-        return "success";
+        return ResponseEntity.ok(Map.of("result","success"));
     }
 }

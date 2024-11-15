@@ -6,12 +6,14 @@ import com.ks.resumeproject.security.domain.AccountDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,25 +31,25 @@ public class CareerController {
 
     @Operation(summary = "이력서 경력 등록", description = "이력서에 사용되는 경럭을 등록한다.")
     @PostMapping("/insertCareer")
-    public String insertCareer(@RequestBody CareerDto careerDto){
+    public ResponseEntity<Map> insertCareer(@RequestBody CareerDto careerDto){
         careerService.insertCareer(careerDto);
 
-        return "success";
+        return ResponseEntity.ok(Map.of("result","success"));
     }
 
     @Operation(summary = "이력서 경력 수정", description = "이력서에 사용되는 경럭을 수정한다.")
     @PostMapping("/updateCareer")
-    public String updateCareer(@RequestBody CareerDto careerDto){
+    public ResponseEntity<Map> updateCareer(@RequestBody CareerDto careerDto){
         careerService.updateCareer(careerDto);
 
-        return "success";
+        return ResponseEntity.ok(Map.of("result","success"));
     }
 
     @Operation(summary = "이력서 경력 삭제", description = "이력서에 사용되는 경럭을 삭제한다.")
     @PostMapping("/deleteCareer")
-    public String deleteCareer(@RequestBody CareerDto careerDto){
+    public ResponseEntity<Map> deleteCareer(@RequestBody CareerDto careerDto){
         careerService.deleteCareer(careerDto);
 
-        return "success";
+        return ResponseEntity.ok(Map.of("result","success"));
     }
 }
