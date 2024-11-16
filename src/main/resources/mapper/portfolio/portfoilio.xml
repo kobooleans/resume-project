@@ -91,7 +91,7 @@
             <if test="categoryId != 0">
                AND A.CATEGORY_ID    = #{categoryId}
             </if>
-             ORDER BY PORT_ID
+             ORDER BY START_YMD DESC, PORT_ID
     </select>
 
     <select id="selectMaxPortId" parameterType="PortfolioDto" resultType="java.math.BigInteger">
