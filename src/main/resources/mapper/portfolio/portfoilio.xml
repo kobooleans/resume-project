@@ -78,11 +78,16 @@
                  , A.TITLE
                  , A.CONTENT
                  , A.CATEGORY_ID
+                 , C.category_nm
                  , A.IMG_FILE_ID
                  , A.START_YMD
                  , A.END_YMD
                  , B.FILE AS IMG_FILE
               FROM PORTFOLIO A
+              JOIN category C
+                ON A.category_id = C.category_id
+               AND A.ID = C.id
+               AND A.RANDOM_ID = C.RANDOM_ID
               LEFT OUTER JOIN FILE B
                 ON A.IMG_FILE_ID    = B.FILE_ID
              WHERE A.ID             = #{id}
