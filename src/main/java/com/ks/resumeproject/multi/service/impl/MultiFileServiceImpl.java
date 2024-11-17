@@ -117,4 +117,35 @@ public class MultiFileServiceImpl implements MultiFileService {
 
         return result;
     }
+
+    @Override
+    public FileDto inputImage(MultiFormDto form) {
+
+        BigInteger result;
+
+        result = multiFileMapper.getFileId();
+
+        //file_sub_id 는 1부터
+        int file_sub_title = 1;
+
+        FileDto fileDto = new FileDto();
+
+        try {
+            MultipartFile f = (MultipartFile) form.getFiles().get(0);
+
+
+            fileDto.setFile(f.getBytes());
+            fileDto.setFileType(f.getContentType());
+            fileDto.setFileNm(f.getOriginalFilename());
+            fileDto.setUseYn("N");
+            fileDto.setFileId(result);
+            fileDto.setFileSubId(file_sub_title);
+            multiFileMapper.setFile(fileDto);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return fileDto;
+    }
 }

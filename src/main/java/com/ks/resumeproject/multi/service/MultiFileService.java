@@ -20,4 +20,6 @@ public interface MultiFileService {
     BigInteger modifyFile(MultiFormDto form);
 
     BigInteger deleteFile(MultiFormDto fileId);
+
+    FileDto inputImage(@Valid MultiFormDto form);
 }
