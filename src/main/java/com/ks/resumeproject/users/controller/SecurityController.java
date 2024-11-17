@@ -44,21 +44,24 @@ public class SecurityController {
 
     @Operation(summary = "회원가입 아이디 중복검사", description = "ROLE_USER 계정의 사용자의 username의 중복여부를 확인합니다.")
     @PostMapping(value = "/signup/checkUsername")
-    public boolean checkUsername(@Valid @RequestBody AccountDto accountDto) {
-        return userService.checkUsername(accountDto);
+    public ResponseEntity<Map<String,Boolean>> checkUsername(@Valid @RequestBody AccountDto accountDto) {
+        Boolean success = userService.checkUsername(accountDto);
+
+        return ResponseEntity.ok(Map.of("isSuccess", success));
     }
 
     @Operation(summary = "회원가입", description = "ROLE_USER 계정의 사용자를 등록합니다.")
     @PostMapping(value = "/signup")
-    public String signup(@Valid @RequestBody AccountDto accountDto) {
+    public ResponseEntity<Map<String, String>> signup(@Valid @RequestBody AccountDto accountDto) {
         userService.signUp(accountDto);
-        return "signup";
+
+        return ResponseEntity.ok(Map.of("result", "signup"));
     }
 
 
     @Operation(summary = "로그아웃", description = "JWT 형식의 로그인 정보를 지워 로그아웃합니다.")
     @GetMapping(value = "/logout")
-    public String logout(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<Map<String, String>> logout(HttpServletRequest request, HttpServletResponse response) {
 
         AccountContext accountContext = securityUtil.getAccount();
 
@@ -67,7 +70,7 @@ public class SecurityController {
             new SecurityContextLogoutHandler().logout(request, response, authentication);
         }
 
-        return "logout";
+        return ResponseEntity.ok(Map.of("result", "logout"));
     }
 
     @Operation(summary = "페이지 접근", description = "페이지 접근 가능여부를 확인한다.")
