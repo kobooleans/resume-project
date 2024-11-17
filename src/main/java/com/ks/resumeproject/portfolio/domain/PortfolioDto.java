@@ -22,6 +22,8 @@ public class PortfolioDto {
     private byte[] imgFile;
     private Date startYmd;
     private Date endYmd;
+    private Boolean mdUseYn;
+    private String mdData;
     private List<PortfolioDetailDto> detailList;
     private List<FileDto> fileList;
 

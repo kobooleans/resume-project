@@ -78,13 +78,14 @@
                  , A.TITLE
                  , A.CONTENT
                  , A.CATEGORY_ID
-                 , C.category_nm
+                 , COALESCE(NULLIF(C.category_nm, ''), '') AS category_nm
+                 , a.MD_USE_YN
                  , A.IMG_FILE_ID
                  , A.START_YMD
                  , A.END_YMD
                  , B.FILE AS IMG_FILE
               FROM PORTFOLIO A
-              JOIN category C
+              LEFT OUTER JOIN category C
                 ON A.category_id = C.category_id
                AND A.ID = C.id
                AND A.RANDOM_ID = C.RANDOM_ID
@@ -122,6 +123,8 @@
                  , IMG_FILE_ID
                  , START_YMD
                  , END_YMD
+                 , MD_USE_YN
+                 , MD_DATA
                  )
             VALUES
                  ( #{id}
@@ -133,6 +136,8 @@
                  , #{imgFileId}
                  , #{startYmd}
                  , #{endYmd}
+                 , #{mdUseYn}
+                 , #{mdData}
                  )
         ]]>
     </insert>
@@ -237,6 +242,8 @@
                  , A.END_YMD
                  , B.CATEGORY_NM
                  , C.FILE AS IMG_FILE
+                 , A.MD_USE_YN
+                 , A.MD_DATA
               FROM PORTFOLIO A
               LEFT OUTER JOIN CATEGORY B
                 ON A.ID             = B.ID
@@ -319,6 +326,8 @@
                  , CONTENT      = #{content}
                  , CATEGORY_ID  = #{categoryId}
                  , IMG_FILE_ID  = #{imgFileId}
+                 , MD_USE_YN    = #{mdUseYn}
+                 , MD_DATA      = #{mdData}
                  , START_YMD    = #{startYmd}
                  , END_YMD      = #{endYmd}
              WHERE ID           = #{id}

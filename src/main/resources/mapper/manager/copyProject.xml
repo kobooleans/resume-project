@@ -73,7 +73,7 @@
     <insert id="copyPortfolio" parameterType="ProjectDto">
         <![CDATA[
             INSERT INTO PORTFOLIO(
-                id, random_id, port_id, title, content, category_id, file_id, start_ymd, end_ymd, img_file_id
+                id, random_id, port_id, title, content, category_id, file_id, start_ymd, end_ymd, img_file_id, md_use_yn, md_data
             )
             SELECT ID
                  , #{copyRandomId}
@@ -85,6 +85,8 @@
                  , START_YMD
                  , END_YMD
                  , IMG_FILE_ID
+                 , MD_USE_YN
+                 , MD_DATA
               FROM PORTFOLIO
              WHERE ID = #{id}
                AND RANDOM_ID = #{randomId}
