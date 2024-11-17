@@ -6,9 +6,11 @@ import com.ks.resumeproject.security.domain.AccountDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/profile")
@@ -26,8 +28,9 @@ public class ProfileController {
 
     @Operation(summary = "프로필 저장", description = "프로필 저장")
     @PostMapping("/setProfile")
-    public void setProfile(@RequestBody AccountDto accountDto){
+    public ResponseEntity<Map<String, String>> setProfile(@RequestBody AccountDto accountDto){
         profileService.setProfile(accountDto);
+        return ResponseEntity.ok(Map.of("result","success"));
     }
 
 }
