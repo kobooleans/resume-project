@@ -15,7 +15,7 @@
         WHERE ACCOUNT_ID = #{id}
         AND (START_YMD BETWEEN #{startYmd} AND #{endYmd}
         OR END_YMD BETWEEN #{startYmd} AND #{endYmd})
-        ORDER BY PAGE_ID
+        ORDER BY END_YMD desc
         ]]>
     </select>
 
