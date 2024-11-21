@@ -3,10 +3,13 @@ package com.ks.resumeproject.home.service.impl;
 import com.ks.resumeproject.home.domain.TitleDto;
 import com.ks.resumeproject.home.repository.HomeMapper;
 import com.ks.resumeproject.home.service.HomeService;
+import com.ks.resumeproject.manage.domain.SiteInfoDto;
 import com.ks.resumeproject.security.domain.AccountDto;
 import com.ks.resumeproject.users.service.SecurityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -37,5 +40,10 @@ public class HomeServiceImpl implements HomeService {
     @Override
     public void updateTitle(TitleDto titleDto) {
         homeMapper.updateTitle(titleDto);
+    }
+
+    @Override
+    public List<SiteInfoDto> selectSiteInfo(AccountDto accountDto) {
+        return homeMapper.selectSiteInfo(accountDto);
     }
 }

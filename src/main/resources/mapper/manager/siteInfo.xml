@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ks.resumeproject.manage.repository.SiteInfoMapper">
+
+    <select id="getFooterSiteList" parameterType="AccountDto" resultType="SiteInfoDto">
+        <![CDATA[
+            SELECT site_id as id, site_title, site_icon, site_url, site_content
+              FROM site_info
+             WHERE id = #{id}
+        ]]>
+    </select>
+
+    <insert id="insertFooterSite" parameterType="SiteInfoDto">
+        <![CDATA[
+        INSERT INTO SITE_INFO(id, site_id, site_title, site_icon, site_url, site_content)
+        SELECT #{id}
+             , COALESCE(NULLIF(MAX(SITE_ID), 0), 0) + 1
+             , #{siteTitle}
+             , #{siteIcon}
+             , #{siteUrl}
+             , #{siteContent}
+          FROM SITE_INFO
+         WHERE ID = #{id}
+        ORDER BY MAX(SITE_ID) DESC
+        FETCH FIRST 1 ROWS ONLY
+        ]]>
+    </insert>
+
+    <delete id="deleteFooterSite" parameterType="SiteInfoDto">
+        <![CDATA[
+            DELETE FROM site_info
+             WHERE id = #{id}
+               and site_id = #{siteId}
+        ]]>
+    </delete>
+
+    <update id="updateFooterSite" parameterType="SiteInfoDto">
+        <![CDATA[
+            UPDATE site_info
+               SET site_title = #{siteTitle}
+                 , site_icon = #{siteIcon}
+                 , site_content = #{siteContent}
+                 , site_url = #{siteUrl}
+             WHERE id = #{id}
+               and site_id = #{siteId}
+        ]]>
+    </update>
+</mapper>
