@@ -15,4 +15,5 @@ public class MyinfoDto {
     private String email;
     private String call;
     private String location;
+    private String pageMainYn;
 }
