@@ -6,18 +6,22 @@
 
     <select id="getMyInfo" parameterType="AccountDto" resultType="MyinfoDto">
         <![CDATA[
-        SELECT ID
-             , RANDOM_ID
-             , NAME
-             , FIRSTNAME
-             , LASTNAME
-             , JOB
-             , EMAIL
-             , CALL
-             , LOCATION
-          FROM RESUME_INFO
-         WHERE ID = #{id}
-           AND RANDOM_ID = #{randomId}
+        SELECT A.ID
+             , A.RANDOM_ID
+             , A.NAME
+             , A.FIRSTNAME
+             , A.LASTNAME
+             , A.JOB
+             , A.EMAIL
+             , A.CALL
+             , A.LOCATION
+             , CASE WHEN B.PAGE_DESCRIPTION = 'MAIN' THEN 'Y' ELSE 'N' END PAGE_MAIN_YN
+          FROM RESUME_INFO A
+          LEFT OUTER JOIN ACCOUNT_MY_PAGE B
+            ON A.ID = B.ID
+           AND A.RANDOM_ID = B.RANDOM_ID
+         WHERE A.ID = #{id}
+           AND A.RANDOM_ID = #{randomId}
         ]]>
     </select>
 

@@ -40,4 +40,12 @@
         ]]>
     </insert>
 
+    <select id="selectSiteInfo" parameterType="SiteInfoDto">
+        <![CDATA[
+            SELECT id, site_id, site_title, site_icon, site_url, site_content
+              FROM SITE_INFO
+             WHERE ID = #{id}
+        ]]>
+    </select>
+
 </mapper>
