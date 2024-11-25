@@ -1,20 +1,14 @@
 package com.ks.resumeproject.conf;
 
-import com.ks.resumeproject.security.dsl.RestApiDsl;
 import com.ks.resumeproject.security.entrypoint.RestAuthenticationEntryPoint;
 import com.ks.resumeproject.security.filter.JwtAuthenticationFilter;
-import com.ks.resumeproject.security.handler.RestAccessDeniedHandler;
-import com.ks.resumeproject.security.handler.RestAuthenticationFailureHandler;
-import com.ks.resumeproject.security.handler.RestAuthenticationSuccessHandler;
+import com.ks.resumeproject.security.handler.JwtAccessDeniedHandler;
 import com.ks.resumeproject.security.provider.TokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authorization.AuthorizationManager;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -22,16 +16,21 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.List;
 
 @EnableWebSecurity
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
+
+    @Value("${allowed.origins}")
+    private String allowedOrigins;
+
 
     private final AuthorizationManager<RequestAuthorizationContext> authorizationManager;
     private final TokenProvider tokenProvider;
@@ -50,7 +49,7 @@ public class SecurityConfig {
                         .anyRequest().access(authorizationManager))
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(new RestAuthenticationEntryPoint())
-                        .accessDeniedHandler(new RestAccessDeniedHandler()))
+                        .accessDeniedHandler(new JwtAccessDeniedHandler()))
                 .addFilterBefore(new JwtAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
@@ -58,7 +57,12 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource configurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("http://localhost:5173/");
+
+        String[] split = allowedOrigins.split(",");
+
+        List<String> origins = Arrays.asList(split);
+
+        configuration.setAllowedOrigins(origins);
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
         configuration.setAllowCredentials(true);

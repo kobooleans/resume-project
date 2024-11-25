@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="changelog.c-1.03" author="KOBOOLEAN">
+
+    <createTable tableName="RESUME_ACTIVITY">
+        <column name="ID" type="bigint" remarks="사용자 ID">
+            <constraints nullable="false"/>
+        </column>
+        <column name="RANDOM_ID" type="varchar2" remarks="페이지 ID">
+            <constraints nullable="false"/>
+        </column>
+        <column name="ACTIVITY_ID" type="bigint" remarks="활동 ID">
+            <constraints primaryKey="true" nullable="false"/>
+        </column>
+        <column name="ACTIVITY_KEY" type="int" remarks="활동 KEY">
+            <constraints nullable="true"/>
+        </column>
+        <column name="ACTIVITY_START_DATE" type="date" remarks="활동 시작 일자">
+            <constraints nullable="true"/>
+        </column>
+        <column name="ACTIVITY_END_DATE" type="date" remarks="활동 종료 일자">
+            <constraints nullable="true"/>
+        </column>
+        <column name="ACTIVITY_ORG" type="varchar2" remarks="활동 기관">
+            <constraints nullable="true"/>
+        </column>
+        <column name="ACTIVITY_CONTENT" type="text" remarks="활동 내용">
+            <constraints nullable="true"/>
+        </column>
+    </createTable>
+
+    <addForeignKeyConstraint constraintName="resume-activity-fk1"
+                             baseTableName="RESUME_ACTIVITY"
+                             baseColumnNames="id, random_id"
+                             referencedTableName="RESUME"
+                             referencedColumnNames="id, random_id"
+                             onDelete="CASCADE"/>
+
+    </changeSet>
+</databaseChangeLog>

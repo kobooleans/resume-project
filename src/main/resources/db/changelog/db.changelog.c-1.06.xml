@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="changelog.c-1.06" author="KOBOOLEAN">
+
+        <addColumn tableName="file">
+            <column name="CREATE_YMD" type="date" defaultValueDate="CURRENT_TIMESTAMP">
+                <constraints primaryKey="false"/>
+            </column>
+            <column name="UPDATE_YMD" type="date" defaultValueDate="CURRENT_TIMESTAMP">
+                <constraints primaryKey="false"/>
+            </column>
+        </addColumn>
+
+        <addColumn tableName="account">
+            <column name="USE_YN" type="varchar" defaultValue="Y">
+                <constraints primaryKey="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

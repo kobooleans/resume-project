@@ -13,6 +13,8 @@ import java.util.List;
 public interface SecurityMapper {
     AccountDto selectAccount(String userId);
 
+    AccountDto selectUserAccount(String username);
+
     List<RoleDto> listRole(BigInteger id);
 
     List<ResourceDto> listResources();

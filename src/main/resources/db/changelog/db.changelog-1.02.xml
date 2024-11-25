@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="changelog-1.02" author="KOBOOLEAN">
+
+        <addColumn tableName="ACCOUNT">
+            <column name="FILE_ID" type="bigint" remarks="파일 ID">
+                <constraints primaryKey="false"/>
+            </column>
+        </addColumn>
+
+        <dropTable tableName="FILE"/>
+
+        <createTable tableName="FILE">
+            <column name="FILE_ID" type="bigint" remarks="파일 ID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="FILE_SUB_ID" type="integer" remarks="파일 서브 ID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="FILE_NM" type="varchar2" remarks="파일명">
+                <constraints primaryKey="false" nullable="false"/>
+            </column>
+            <column name="FILE" type="bytea" remarks="파일">
+                <constraints primaryKey="false" nullable="false"/>
+            </column>
+            <column name="FILE_TYPE" type="varchar2" remarks="파일 타입">
+                <constraints primaryKey="false" nullable="false"/>
+            </column>
+            <column name="USE_YN" type="varchar2" remarks="사용여부">
+                <constraints primaryKey="false" nullable="false"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+</databaseChangeLog>

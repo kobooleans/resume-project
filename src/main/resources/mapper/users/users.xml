@@ -39,4 +39,30 @@
              , #{useYn}
           FROM ACCOUNT_MY_PAGE
     </insert>
+
+    <select id="pageList" parameterType="java.math.BigInteger" resultType="AccountMyPageDto">
+        <![CDATA[
+            SELECT ID
+                 , RANDOM_ID
+                 , PAGE_ID
+                 , PAGE_DESCRIPTION
+            FROM ACCOUNT_MY_PAGE
+            WHERE ACCOUNT_ID = #{id}
+              AND USE_YN = 'Y'
+        ]]>
+    </select>
+
+    <select id="checkAccessYn" parameterType="java.util.Map" resultType="java.util.Map">
+        <![CDATA[
+            SELECT CASE when END_YMD is null then TRUE
+                        WHEN TO_CHAR(NOW(), 'YYYYMMDD')
+                        BETWEEN TO_CHAR(START_YMD, 'YYYYMMDD') AND TO_CHAR(END_YMD, 'YYYYMMDD')
+                        THEN TRUE
+                        ELSE FALSE
+                    END AS ACCESSYN
+             FROM ACCOUNT_MY_PAGE
+            WHERE account_id = #{id}
+              AND random_id = #{randomId}
+        ]]>
+    </select>
 </mapper>

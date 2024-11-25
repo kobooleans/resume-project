@@ -4,10 +4,11 @@ import com.ks.resumeproject.security.domain.AccountContext;
 import com.ks.resumeproject.security.domain.AccountDto;
 import com.ks.resumeproject.security.domain.TokenDto;
 import com.ks.resumeproject.security.provider.TokenProvider;
+import com.ks.resumeproject.users.domain.AccountMyPageDto;
 import com.ks.resumeproject.users.domain.PageDto;
 import com.ks.resumeproject.users.repository.UserMapper;
 import com.ks.resumeproject.users.service.UserService;
-import com.ks.resumeproject.util.WebUtil;
+import com.ks.resumeproject.util.ComUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -20,6 +21,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -30,11 +33,21 @@ public class UserServiceImpl implements UserService {
     private final TokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
-    private WebUtil webUtil;
+    private final ComUtil comUtil;
 
     @Override
     public boolean checkUsername(AccountDto accountDto) {
         return userMapper.userNameCheck(accountDto).equals("Y");
+    }
+
+    @Override
+    public Map checkAccessYn(Map map) {
+        AccountDto accountDto = new AccountDto();
+
+        accountDto.setUsername(map.get("username").toString());
+        map.put("id",userMapper.getAccountId(accountDto));
+
+        return userMapper.checkAccessYn(map);
     }
 
     @Override
@@ -55,7 +68,7 @@ public class UserServiceImpl implements UserService {
 
             // 기본 Main 페이지 생성
             pageDto.setUsername(accountDto.getUsername());
-            pageDto.setRandomId(webUtil.addRandomVal());
+            pageDto.setRandomId(comUtil.addRandomVal(10));
             pageDto.setAccountId(userMapper.getAccountId(accountDto));
             pageDto.setPageId(new BigInteger("0"));
             pageDto.setPageDescription("MAIN");
@@ -75,12 +88,13 @@ public class UserServiceImpl implements UserService {
 
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
-
         if(authentication == null || !passwordEncoder.matches(password, ((AccountContext)authentication.getPrincipal()).getPassword())){
             throw new BadCredentialsException("Invalid password");
         }
 
-        return jwtTokenProvider.generateToken(authentication);
+        List<AccountMyPageDto> accountMyPageDto = userMapper.pageList(new BigInteger(((AccountContext)authentication.getPrincipal()).getAccountDto().getId().toString()));
+
+        return jwtTokenProvider.generateToken(authentication, accountMyPageDto);
     }
 
 

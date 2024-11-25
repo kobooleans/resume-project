@@ -18,6 +18,17 @@
                AND B.PAGE_DESCRIPTION = 'MAIN'
              WHERE A.USERNAME = #{userId}
                AND A.PASSWORD IS NOT NULL
+               AND A.USE_YN = 'Y'
+        ]]>
+    </select>
+
+    <select id="selectUserAccount" parameterType="java.lang.String" resultType="AccountDto">
+        <![CDATA[
+        SELECT A.ID
+             , A.USERNAME
+             , A.ROLE_TYPE
+        FROM ACCOUNT A
+        WHERE A.USERNAME = #{username}
         ]]>
     </select>
 
@@ -55,4 +66,5 @@
             ON A.PARENT_ID = B.ID
         ]]>
     </select>
+
 </mapper>

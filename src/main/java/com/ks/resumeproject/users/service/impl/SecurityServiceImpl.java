@@ -31,6 +31,11 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     @Override
+    public AccountDto selectUserAccount(String username) {
+        return securityMapper.selectUserAccount(username);
+    }
+
+    @Override
     public List<RoleDto> listRole(BigInteger id) {
         return securityMapper.listRole(id);
     }

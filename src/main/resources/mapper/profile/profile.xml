@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ks.resumeproject.profile.repository.ProfileMapper">
+
+    <select id="getProfile" parameterType="AccountDto" resultType="java.math.BigInteger">
+        <![CDATA[
+            SELECT FILE_ID
+              FROM ACCOUNT
+             WHERE username = #{username}
+        ]]>
+    </select>
+
+    <update id="setProfile" parameterType="AccountDto">
+        <![CDATA[
+            UPDATE ACCOUNT
+               SET FILE_ID = #{fileId}
+             WHERE ID = #{id}
+        ]]>
+    </update>
+
+    <update id="updateProfileFileUseYn" parameterType="AccountDto">
+        <![CDATA[
+            UPDATE FILE
+               SET USE_YN = 'N'
+             WHERE FILE_ID = (SELECT FILE_ID
+                                FROM ACCOUNT
+                               WHERE ID = #{id}
+                             )
+        ]]>
+    </update>
+</mapper>

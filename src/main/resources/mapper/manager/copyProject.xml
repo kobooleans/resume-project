@@ -1,0 +1,538 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ks.resumeproject.manage.repository.CopyProjectMapper">
+
+    <select id="selectProjectList" parameterType="AccountDto" resultType="ProjectDto">
+        <![CDATA[
+        SELECT A.RANDOM_ID
+             , A.USERNAME
+             , A.PAGE_DESCRIPTION
+             , CASE WHEN COALESCE(NULLIF(D.RESUME_YN,FALSE), FALSE) = FALSE THEN 'N' ELSE 'Y' END AS RESUME_YN
+             , CASE WHEN COALESCE(NULLIF(B.SKILL_YN,FALSE), FALSE) = FALSE THEN 'N' ELSE 'Y' END AS SKILL_YN
+             , CASE WHEN COALESCE(NULLIF(B.CAREER_YN,FALSE), FALSE) = FALSE THEN 'N' ELSE 'Y' END AS CAREER_YN
+             , CASE WHEN COALESCE(NULLIF(B.EDU_YN,FALSE), FALSE) = FALSE THEN 'N' ELSE 'Y' END AS EDU_YN
+             , CASE WHEN COALESCE(NULLIF(B.AWARD_YN,FALSE), FALSE) = FALSE THEN 'N' ELSE 'Y' END AS AWARD_YN
+             , CASE WHEN COALESCE(NULLIF(B.ACTION_YN,FALSE), FALSE) = FALSE THEN 'N' ELSE 'Y' END AS ACTION_YN
+             , CASE WHEN COALESCE(NULLIF(B.COVER_LETTER_YN,FALSE), FALSE) = FALSE THEN 'N' ELSE 'Y' END AS COVER_LETTER_YN
+             , COUNT(C.PORT_ID) AS PORT_SIZE
+             , A.START_YMD
+             , A.END_YMD
+             , case when A.page_id = 0 then true else false end as disabled
+        FROM ACCOUNT_MY_PAGE A
+        LEFT OUTER JOIN RESUME B
+                        ON A.ACCOUNT_ID = B.ID
+                            AND A.RANDOM_ID = B.RANDOM_ID
+        LEFT OUTER JOIN PORTFOLIO C
+                        ON A.ACCOUNT_ID = C.ID
+                            AND A.RANDOM_ID = C.RANDOM_ID
+        LEFT OUTER JOIN MAIN_INFO D
+                        ON A.ACCOUNT_ID = D.ID
+                            AND A.RANDOM_ID = D.RANDOM_ID
+        WHERE A.ACCOUNT_ID = #{id}
+        GROUP BY A.RANDOM_ID
+               , A.page_id
+               , A.USERNAME
+               , A.PAGE_DESCRIPTION
+               , D.RESUME_YN
+               , B.SKILL_YN
+               , B.CAREER_YN
+               , B.EDU_YN
+               , B.AWARD_YN
+               , B.ACTION_YN
+               , B.COVER_LETTER_YN
+               , A.START_YMD
+               , A.END_YMD
+        ORDER BY PAGE_ID
+        ]]>
+    </select>
+
+    <insert id="copyAccountMyPage" parameterType="ProjectDto">
+        <![CDATA[
+            INSERT INTO ACCOUNT_MY_PAGE(
+                id, username, random_id, account_id, page_id, page_description, use_yn, start_ymd, end_ymd
+            )
+            SELECT MAX(ID)
+                 , MAX(USERNAME)
+                 , #{copyRandomId}
+                 , MAX(ACCOUNT_ID)
+                 , MAX(PAGE_ID) + 1
+                 , MAX(PAGE_DESCRIPTION) || '의 복제된 페이지'
+                 , MAX(USE_YN)
+                 , NOW()
+                 , NOW()
+              FROM ACCOUNT_MY_PAGE
+             WHERE ID = #{id}
+               AND USERNAME = #{username}
+               AND RANDOM_ID = #{randomId}
+
+        ]]>
+    </insert>
+
+    <insert id="copyPortfolio" parameterType="ProjectDto">
+        <![CDATA[
+            INSERT INTO PORTFOLIO(
+                id, random_id, port_id, title, content, category_id, file_id, start_ymd, end_ymd, img_file_id, md_use_yn, md_data
+            )
+            SELECT ID
+                 , #{copyRandomId}
+                 , PORT_ID
+                 , TITLE
+                 , CONTENT
+                 , CATEGORY_ID
+                 , FILE_ID
+                 , START_YMD
+                 , END_YMD
+                 , IMG_FILE_ID
+                 , MD_USE_YN
+                 , MD_DATA
+              FROM PORTFOLIO
+             WHERE ID = #{id}
+               AND RANDOM_ID = #{randomId}
+        ]]>
+    </insert>
+
+    <insert id="copyPortfolioDetail" parameterType="ProjectDto">
+        <![CDATA[
+            INSERT INTO portfolio_detail(
+                detail_id, id, random_id, port_id, detail_seq, detail_division, detail_title, detail_content
+            )
+            SELECT DETAIL_ID
+                 , ID
+                 , #{copyRandomId}
+                 , PORT_ID
+                 , DETAIL_SEQ
+                 , DETAIL_DIVISION
+                 , detail_title
+                 , detail_content
+              FROM PORTFOLIO_DETAIL
+             WHERE ID = #{id}
+               AND RANDOM_ID = #{randomId}
+        ]]>
+    </insert>
+
+    <insert id="copyPortfolioSkill" parameterType="ProjectDto">
+        <![CDATA[
+            INSERT INTO portfolio_skill(
+                id, random_id, port_id, skill_id, skill_title
+            )
+            SELECT ID
+                 , #{copyRandomId}
+                 , PORT_ID
+                 , SKILL_ID
+                 , SKILL_TITLE
+              FROM portfolio_skill
+             WHERE ID = #{id}
+               AND RANDOM_ID = #{randomId}
+        ]]>
+    </insert>
+
+    <insert id="copyPortfolioSkillDetail" parameterType="ProjectDto">
+        <![CDATA[
+            INSERT INTO portfolio_skill_detail(
+                id, random_id, port_id, skill_id, skill_img_id, skill_uri, skill_img_title, skill_hex
+            )
+            SELECT ID
+                 , #{copyRandomId}
+                 , PORT_ID
+                 , SKILL_ID
+                 , skill_img_id
+                 , skill_uri
+                 , SKILL_IMG_TITLE
+                 , SKILL_HEX
+              FROM PORTFOLIO_SKILL_DETAIL
+             WHERE ID = #{id}
+               AND RANDOM_ID = #{randomId}
+        ]]>
+    </insert>
+
+    <insert id="copyCategory" parameterType="ProjectDto">
+        <![CDATA[
+            INSERT INTO CATEGORY(
+                category_id, id, random_id, category_nm
+            )
+            SELECT CATEGORY_ID
+                 , ID
+                 , #{copyRandomId}
+                 , CATEGORY_NM
+              FROM CATEGORY
+             WHERE ID = #{id}
+               AND RANDOM_ID = #{randomId}
+        ]]>
+    </insert>
+
+    <insert id="copyMainInfo" parameterType="ProjectDto">
+        <![CDATA[
+            INSERT INTO MAIN_INFO(
+                id, random_id, title, subtitle, resume_yn
+            )
+            SELECT ID
+                 , #{copyRandomId}
+                 , TITLE
+                 , SUBTITLE
+                 , RESUME_YN
+              FROM MAIN_INFO
+             WHERE ID = #{id}
+               AND RANDOM_ID = #{randomId}
+        ]]>
+    </insert>
+
+    <insert id="copyResume" parameterType="ProjectDto">
+        <![CDATA[
+            insert into resume(
+                   id, random_id, skill_yn, career_yn, edu_yn, award_yn, action_yn, cover_letter_yn, skill_img_yn
+            )
+            select id
+                 , #{copyRandomId}
+                 , skill_yn
+                 , career_yn
+                 , edu_yn
+                 , award_yn
+                 , action_yn
+                 , cover_letter_yn
+                 , skill_img_yn
+              from resume
+             where ID = #{id}
+               AND RANDOM_ID = #{randomId}
+        ]]>
+    </insert>
+
+    <insert id="copyResumeLicense" parameterType="ProjectDto">
+        <![CDATA[
+            insert into resume_license(
+                license_id, id, random_id, license_nm, license_issue_org, license_pass_yn, license_pass_date, seq
+            )
+            select
+                license_id, id, #{copyRandomId}, license_nm, license_issue_org, license_pass_yn, license_pass_date, seq
+              from resume_license
+             where ID = #{id}
+               AND RANDOM_ID = #{randomId}
+        ]]>
+    </insert>
+
+    <insert id="copyResumeLangTest" parameterType="ProjectDto">
+        <![CDATA[
+            insert into resume_lang_test(
+                lang_test_id, id, random_id, lang_nm, lang_test_nm, lang_acquire_date, lang_test_score, lang_acquire_yn, seq
+            )
+            select
+                lang_test_id, id, #{copyRandomId}, lang_nm, lang_test_nm, lang_acquire_date, lang_test_score, lang_acquire_yn, seq
+              from resume_lang_test
+             where ID = #{id}
+               AND RANDOM_ID = #{randomId}
+        ]]>
+    </insert>
+
+    <insert id="copyResumeAward" parameterType="ProjectDto">
+        <![CDATA[
+            insert into resume_award(
+                award_id, id, random_id, award_nm, award_date, award_org, seq
+            )
+            select award_id, id, #{copyRandomId}, award_nm, award_date, award_org, seq
+              from resume_award
+             where ID = #{id}
+               AND RANDOM_ID = #{randomId}
+        ]]>
+    </insert>
+
+    <insert id="copyResumeSkill" parameterType="ProjectDto">
+        <![CDATA[
+            insert into resume_skill(
+                id, random_id, skill_id, skill_title
+            )
+            select id, #{copyRandomId}, skill_id, skill_title
+              from resume_skill
+             where ID = #{id}
+               AND RANDOM_ID = #{randomId}
+        ]]>
+    </insert>
+
+    <insert id="copyResumeSkillDetail" parameterType="ProjectDto">
+        <![CDATA[
+            insert into resume_skill_detail(
+                id, random_id, skill_id, skill_img_id, skill_uri, skill_img_title, skill_hex
+            )
+            select id, #{copyRandomId}, skill_id, skill_img_id, skill_uri, skill_img_title, skill_hex
+              from resume_skill_detail
+             where ID = #{id}
+               AND RANDOM_ID = #{randomId}
+        ]]>
+    </insert>
+
+    <insert id="copyResumeInfo" parameterType="ProjectDto">
+        <![CDATA[
+            insert into resume_info(
+                id, random_id, name, firstname, lastname, job, email, call, location
+            )
+            select id, #{copyRandomId}, name, firstname, lastname, job, email, call, location
+              from resume_info
+             where ID = #{id}
+               AND RANDOM_ID = #{randomId}
+        ]]>
+    </insert>
+
+    <insert id="copyResumeActivity" parameterType="ProjectDto">
+        <![CDATA[
+            insert into resume_activity(
+                id, random_id, activity_id, activity_key, activity_start_date, activity_end_date, activity_org, activity_content
+            )
+            select id, #{copyRandomId}, activity_id, activity_key, activity_start_date, activity_end_date, activity_org, activity_content
+              from resume_activity
+             where ID = #{id}
+               AND RANDOM_ID = #{randomId}
+        ]]>
+    </insert>
+
+    <insert id="copyResumeCareer" parameterType="ProjectDto">
+        <![CDATA[
+            insert into resume_career(
+                career_id, id, random_id, start_day, end_day, company_name, role, position, job, salary, location, content
+            )
+            select career_id, id, #{copyRandomId}, start_day, end_day, company_name, role, position, job, salary, location, content
+              from resume_career
+             where ID = #{id}
+               AND RANDOM_ID = #{randomId}
+        ]]>
+    </insert>
+
+    <insert id="copyResumeEdu" parameterType="ProjectDto">
+        <![CDATA[
+            insert into resume_edu(edu_id, id, random_id, school_cd, school_nm, graduate_state, entrance_date, graduate_date, major, major_avr, school_gb)
+            select edu_id, id, #{copyRandomId}, school_cd, school_nm, graduate_state, entrance_date, graduate_date, major, major_avr, school_gb
+              from resume_edu
+             where ID = #{id}
+               AND RANDOM_ID = #{randomId}
+        ]]>
+    </insert>
+
+    <insert id="copyResumeCoverLetter" parameterType="ProjectDto">
+        <![CDATA[
+            insert into resume_cover_letter(
+                cover_letter_id, id, random_id, title, content, seq
+            )
+            select cover_letter_id, id, #{copyRandomId}, title, content, seq
+              from resume_cover_letter
+             where ID = #{id}
+               AND RANDOM_ID = #{randomId}
+        ]]>
+    </insert>
+
+    <select id="selectPortfolioFileList" parameterType="ProjectDto" resultType="FileDto">
+        <![CDATA[
+           select b.file_id, b.file_sub_id, b.file_nm, b.file, b.file_type, b.use_yn
+             from portfolio a
+             join file b
+               on a.file_id = b.file_id
+            where id = #{id}
+              and random_id = #{randomId};
+        ]]>
+    </select>
+
+    <select id="selectPortfolioImgFileList" parameterType="ProjectDto" resultType="FileDto">
+        <![CDATA[
+        select f.file_id, f.file_sub_id, f.file_nm, f.file, f.file_type, f.use_yn
+          from portfolio p
+          join file f
+            on p.img_file_id = f.file_id
+         where id = #{id}
+           and random_id = #{randomId}
+        ]]>
+    </select>
+
+    <insert id="copyFile" parameterType="ProjectDto">
+        <![CDATA[
+            insert into file(file_id, file_sub_id, file_nm, file, file_type, use_yn)
+            select #{copyFileId}, file_sub_id, file_nm, file, file_type, use_yn
+            from file
+            where file_id = #{fileId}
+        ]]>
+    </insert>
+
+    <update id="updatePortfolioFile" parameterType="ProjectDto">
+        <![CDATA[
+            update portfolio
+               set file_id = #{copyFileId}
+             where id = #{id}
+               and random_id = #{randomId}
+               and file_id = #{fileId}
+        ]]>
+    </update>
+
+    <update id="updatePortfolioImgFile" parameterType="ProjectDto">
+        <![CDATA[
+        update portfolio
+        set img_file_id = #{copyFileId}
+        where id = #{id}
+          and random_id = #{randomId}
+          and img_file_id = #{fileId}
+        ]]>
+    </update>
+    
+    <update id="updateAccountMyPage" parameterType="ProjectDto">
+        <![CDATA[
+            UPDATE account_my_page
+               set page_description = #{pageDescription}
+                 , start_ymd = #{startYmd}
+                 , end_ymd = #{endYmd}
+             where id = #{id}
+               and username = #{username}
+               and random_id = #{randomId}
+        ]]>
+    </update>
+
+    <update id="updateFile" parameterType="ProjectDto">
+        <![CDATA[
+            update file
+               set use_yn = 'N'
+                 , update_ymd = NOW()
+             where file_id = #{fileId}
+        ]]>
+    </update>
+
+    <delete id="deleteAccountMyPage" parameterType="ProjectDto">
+        <![CDATA[
+            delete from account_my_page
+             where id = #{id}
+               and random_id = #{randomId}
+        ]]>
+    </delete>
+
+    <delete id="deleteResumeEdu" parameterType="ProjectDto">
+        <![CDATA[
+            delete from resume_edu
+            where id = #{id}
+              and random_id = #{randomId}
+        ]]>
+    </delete>
+
+    <delete id="deleteResumeCareer" parameterType="ProjectDto">
+        <![CDATA[
+            delete from resume_career
+            where id = #{id}
+              and random_id = #{randomId}
+    ]]>
+    </delete>
+
+    <delete id="deleteResumeActivity" parameterType="ProjectDto">
+        <![CDATA[
+            delete from resume_activity
+            where id = #{id}
+              and random_id = #{randomId}
+        ]]>
+    </delete>
+
+    <delete id="deleteResumeInfo" parameterType="ProjectDto">
+        <![CDATA[
+            delete from resume_info
+            where id = #{id}
+              and random_id = #{randomId}
+        ]]>
+    </delete>
+
+    <delete id="deleteResumeSkillDetail" parameterType="ProjectDto">
+        <![CDATA[
+        delete from resume_skill_detail
+        where id = #{id}
+          and random_id = #{randomId}
+        ]]>
+    </delete>
+
+    <delete id="deleteResumeSkill" parameterType="ProjectDto">
+        <![CDATA[
+        delete from resume_skill
+        where id = #{id}
+          and random_id = #{randomId}
+        ]]>
+    </delete>
+
+    <delete id="deleteResumeLangTest" parameterType="ProjectDto">
+        <![CDATA[
+        delete from resume_lang_test
+        where id = #{id}
+          and random_id = #{randomId}
+        ]]>
+    </delete>
+
+    <delete id="deleteResumeLicense" parameterType="ProjectDto">
+        <![CDATA[
+        delete from resume_license
+        where id = #{id}
+          and random_id = #{randomId}
+        ]]>
+    </delete>
+
+    <delete id="deleteResumeAward" parameterType="ProjectDto">
+        <![CDATA[
+        delete from resume_award
+        where id = #{id}
+          and random_id = #{randomId}
+        ]]>
+    </delete>
+
+    <delete id="deleteResumeCoverLetter" parameterType="ProjectDto">
+        <![CDATA[
+        delete from resume_cover_letter
+        where id = #{id}
+          and random_id = #{randomId}
+        ]]>
+    </delete>
+
+    <delete id="deleteResume" parameterType="ProjectDto">
+        <![CDATA[
+        delete from resume
+        where id = #{id}
+          and random_id = #{randomId}
+        ]]>
+    </delete>
+
+    <delete id="deletePortfolioDetail" parameterType="ProjectDto">
+        <![CDATA[
+        delete from portfolio_detail
+        where id = #{id}
+          and random_id = #{randomId}
+        ]]>
+    </delete>
+
+    <delete id="deletePortfolio" parameterType="ProjectDto">
+        <![CDATA[
+        delete from portfolio
+        where id = #{id}
+          and random_id = #{randomId}
+        ]]>
+    </delete>
+
+    <delete id="deletePortfolioSkillDetail" parameterType="ProjectDto">
+        <![CDATA[
+        delete from portfolio_skill_detail
+        where id = #{id}
+          and random_id = #{randomId}
+        ]]>
+    </delete>
+
+    <delete id="deletePortfolioSkill" parameterType="ProjectDto">
+        <![CDATA[
+        delete from portfolio_skill
+        where id = #{id}
+          and random_id = #{randomId}
+        ]]>
+    </delete>
+
+    <delete id="deleteCategory" parameterType="ProjectDto">
+        <![CDATA[
+        delete from category
+        where id = #{id}
+          and random_id = #{randomId}
+        ]]>
+    </delete>
+
+    <delete id="deleteMainInfo" parameterType="ProjectDto">
+        <![CDATA[
+        delete from main_info
+        where id = #{id}
+          and random_id = #{randomId}
+        ]]>
+    </delete>
+
+
+</mapper>
