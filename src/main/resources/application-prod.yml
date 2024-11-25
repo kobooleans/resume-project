@@ -5,9 +5,9 @@ spring:
     #driver-class-name: org.postgresql.Driver
     #url: jdbc:postgresql://43.201.249.27:5432/resume
     username: resume
-    password: local_ks_postgres_db
+    password: resume_project_db_aws13!$
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-    url: jdbc:log4jdbc:postgresql://192.168.45.161:15432/resume?charSet=UTF-8
+    url: jdbc:log4jdbc:postgresql://cvfit-resume-project.cnky2es0q8nu.ap-northeast-2.rds.amazonaws.com:5432/resume?charSet=UTF-8
   devtools:
     restart:
       enabled: true
@@ -18,7 +18,7 @@ spring:
     enabled: true
 
 server:
-  port: 8080
+  port: 80
   servlet:
     encoding:
       charset: UTF-8
@@ -33,14 +33,10 @@ springdoc:
   version: '@springdoc.version@'
   api-docs:
     version: openapi_3_1
-  swagger-ui:
-    display-request-duration: true
-    groups-order: DESC
-    operationsSorter: method
-    disable-swagger-default-url: true
-    use-root-path: true
   show-actuator: true
 
 jwt:
   secret: 511b0f52445969be5e0cedb7e7f89a183758eeb27c7270711c83cc057222587
 
+allowed:
+  origins: https://www.cv-fit.com/,https://cv-fit.com
