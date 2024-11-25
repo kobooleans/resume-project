@@ -39,4 +39,4 @@ jwt:
   secret: ***REMOVED***
 
 allowed:
-  origins: https://www.cv-fit.com/,https://cv-fit.com
+  origins: https://www.cv-fit.com,https://cv-fit.com
