@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ks.resumeproject.resume.repository.EduMapper">
+    <select id="selectEdu" parameterType="AccountDto" resultType="EduDto">
+        <![CDATA[
+        SELECT *
+          FROM RESUME_EDU
+         WHERE ID        = #{id}
+           AND RANDOM_ID = #{randomId}
+         ORDER BY SCHOOL_CD
+        ]]>
+    </select>
+
+    <insert id="insertEdu" parameterType="EduDto">
+        <![CDATA[
+        INSERT INTO RESUME_EDU
+             ( EDU_ID
+             , ID
+             , RANDOM_ID
+             , SCHOOL_CD
+             , SCHOOL_NM
+             , GRADUATE_STATE
+             , ENTRANCE_DATE
+             , GRADUATE_DATE
+             , MAJOR
+             , MAJOR_AVR
+             , SCHOOL_GB )
+        SELECT COALESCE(NULLIF(MAX(EDU_ID), 0), 0) + 1
+             , #{id}
+             , #{randomId}
+             , #{schoolCd}
+             , #{schoolNm}
+             , #{graduateState}
+             , #{entranceDate}
+             , #{graduateDate}
+             , #{major}
+             , #{majorAvr}
+             , #{schoolGb}
+         FROM RESUME_EDU
+        WHERE ID        = #{id}
+          AND RANDOM_ID = #{randomId}
+        ]]>
+    </insert>
+
+    <update id="updateEdu" parameterType="EduDto" >
+        <![CDATA[
+        UPDATE RESUME_EDU
+           SET SCHOOL_NM      = #{schoolNm}
+             , SCHOOL_Cd      = #{schoolCd}
+             , GRADUATE_STATE = #{graduateState}
+             , ENTRANCE_DATE  = #{entranceDate}
+             , GRADUATE_DATE  = #{graduateDate}
+             , MAJOR          = #{major}
+             , MAJOR_AVR      = #{majorAvr}
+             , SCHOOL_GB      = #{schoolGb}
+         WHERE ID         = #{id}
+           AND RANDOM_ID  = #{randomId}
+           AND edu_id     = #{eduId}
+        ]]>
+    </update>
+
+    <delete id="deleteEdu" parameterType="EduDto">
+        <![CDATA[
+        DELETE FROM RESUME_EDU
+         WHERE ID        = #{id}
+           AND RANDOM_ID = #{randomId}
+           AND edu_id    = #{eduId}
+        ]]>
+    </delete>
+
+</mapper>

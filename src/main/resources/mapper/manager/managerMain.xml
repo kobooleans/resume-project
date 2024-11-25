@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ks.resumeproject.manage.repository.ManageMainMapper">
+
+    <select id="selectProjectCalList" parameterType="ProjectDto" resultType="ProjectDto">
+        <![CDATA[
+        SELECT RANDOM_ID
+             , USERNAME
+             , PAGE_DESCRIPTION
+             , START_YMD
+             , END_YMD
+        FROM ACCOUNT_MY_PAGE
+        WHERE ACCOUNT_ID = #{id}
+        AND (START_YMD BETWEEN #{startYmd} AND #{endYmd}
+        OR END_YMD BETWEEN #{startYmd} AND #{endYmd})
+        ORDER BY END_YMD desc
+        ]]>
+    </select>
+
+
+</mapper>

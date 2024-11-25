@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ks.resumeproject.portfolio.repository.PortfolioMapper">
+
+    <select id="categoryList" parameterType="AccountDto" resultType="CategoryDto">
+        /* PortfolioMapper.categoryList */
+        <![CDATA[
+            SELECT CATEGORY_ID
+                 , ID
+                 , RANDOM_ID
+                 , CATEGORY_NM
+              FROM CATEGORY
+             WHERE ID           = #{id}
+               AND RANDOM_ID    = #{randomId}
+             ORDER BY CATEGORY_ID
+        ]]>
+    </select>
+
+    <insert id="insertCategory" parameterType="CategoryDto">
+        /* PortfolioMapper.insertCategory */
+        <![CDATA[
+            INSERT INTO CATEGORY
+                 ( CATEGORY_ID
+                 , ID
+                 , RANDOM_ID
+                 , CATEGORY_NM)
+            SELECT COALESCE(NULLIF(MAX(CATEGORY_ID), 0), 0) + 1
+                 , #{id}
+                 , #{randomId}
+                 , #{categoryNm}
+              FROM CATEGORY
+             WHERE ID = #{id}
+               AND RANDOM_ID = #{randomId}
+             ORDER BY MAX(CATEGORY_ID) DESC
+        ]]>
+    </insert>
+
+    <update id="updateCategory" parameterType="CategoryDto">
+        /* PortfolioMapper.updateCategory */
+        <![CDATA[
+            UPDATE CATEGORY
+               SET CATEGORY_NM	= #{categoryNm}
+             WHERE CATEGORY_ID	= #{categoryId}
+               AND ID			= #{id}
+               AND RANDOM_ID	= #{randomId}
+        ]]>
+    </update>
+
+    <delete id="deleteCategory" parameterType="CategoryDto">
+        /* PortfolioMapper.deleteCategory */
+        <![CDATA[
+            DELETE FROM CATEGORY
+             WHERE CATEGORY_ID	= #{categoryId}
+               AND ID			= #{id}
+               AND RANDOM_ID	= #{randomId}
+        ]]>
+    </delete>
+
+    <select id="selectCategoryCnt" parameterType="CategoryDto" resultType="int">
+        /* PortfolioMapper.selectCategoryCnt */
+        <![CDATA[
+            SELECT COUNT(CATEGORY_ID)
+              FROM PORTFOLIO
+             WHERE ID           = #{id}
+               AND RANDOM_ID    = #{randomId}
+               AND CATEGORY_ID  = #{categoryId}
+        ]]>
+    </select>
+
+    <select id="portfolioAllList" parameterType="PortfolioDto" resultType="PortfolioDto">
+        /* PortfolioMapper.portfolioAllList */
+        <![CDATA[
+            SELECT A.ID
+                 , A.RANDOM_ID
+                 , A.PORT_ID
+                 , A.TITLE
+                 , A.CONTENT
+                 , A.CATEGORY_ID
+                 , COALESCE(NULLIF(C.category_nm, ''), '') AS category_nm
+                 , a.MD_USE_YN
+                 , A.IMG_FILE_ID
+                 , A.START_YMD
+                 , A.END_YMD
+                 , B.FILE AS IMG_FILE
+              FROM PORTFOLIO A
+              LEFT OUTER JOIN category C
+                ON A.category_id = C.category_id
+               AND A.ID = C.id
+               AND A.RANDOM_ID = C.RANDOM_ID
+              LEFT OUTER JOIN FILE B
+                ON A.IMG_FILE_ID    = B.FILE_ID
+             WHERE A.ID             = #{id}
+               AND A.RANDOM_ID      = #{randomId}
+        ]]>
+            <if test="categoryId != 0">
+               AND A.CATEGORY_ID    = #{categoryId}
+            </if>
+             ORDER BY START_YMD DESC, PORT_ID
+    </select>
+
+    <select id="selectMaxPortId" parameterType="PortfolioDto" resultType="java.math.BigInteger">
+        /* PortfolioMapper.selectMaxPortId */
+        <![CDATA[
+            SELECT COALESCE(NULLIF(MAX(PORT_ID), 0), 0) + 1
+              FROM PORTFOLIO
+             WHERE ID 			= #{id}
+               AND RANDOM_ID 	= #{randomId}
+        ]]>
+    </select>
+
+    <insert id="insertPortfolio" parameterType="PortfolioDto">
+        /* PortfolioMapper.insertPortfolio */
+        <![CDATA[
+            INSERT INTO PORTFOLIO
+                 ( ID
+                 , RANDOM_ID
+                 , PORT_ID
+                 , TITLE
+                 , CONTENT
+                 , CATEGORY_ID
+                 , IMG_FILE_ID
+                 , START_YMD
+                 , END_YMD
+                 , MD_USE_YN
+                 , MD_DATA
+                 )
+            VALUES
+                 ( #{id}
+                 , #{randomId}
+                 , #{portId}
+                 , #{title}
+                 , #{content}
+                 , #{categoryId}
+                 , #{imgFileId}
+                 , #{startYmd}
+                 , #{endYmd}
+                 , #{mdUseYn}
+                 , #{mdData}
+                 )
+        ]]>
+    </insert>
+
+    <insert id="insertPortfolioDetail" parameterType="PortfolioDetailDto">
+        /* PortfolioMapper.insertPortfolioDetail */
+        <![CDATA[
+            INSERT INTO PORTFOLIO_DETAIL
+                 ( DETAIL_ID
+                 , ID
+                 , RANDOM_ID
+                 , PORT_ID
+                 , DETAIL_SEQ
+                 , DETAIL_DIVISION
+                 , DETAIL_TITLE
+                 , DETAIL_CONTENT
+                 )
+            SELECT COALESCE(NULLIF(MAX(DETAIL_ID), 0), 0) + 1
+                 , #{id}
+                 , #{randomId}
+                 , #{portId}
+                 , COALESCE(NULLIF(MAX(DETAIL_SEQ), 0), 0) + 1
+                 , #{detailDivision}
+                 , #{detailTitle}
+                 , #{detailContent}
+              FROM PORTFOLIO_DETAIL
+             WHERE ID	 		= #{id}
+               AND RANDOM_ID 	= #{randomId}
+               AND PORT_ID 		= #{portId}
+        ]]>
+    </insert>
+
+    <select id="selectMaxSkillId" parameterType="PortfolioDto" resultType="java.math.BigInteger">
+        /* PortfolioMapper.selectMaxSkillId */
+        <![CDATA[
+            SELECT COALESCE(NULLIF(MAX(SKILL_ID), 0), 0) + 1
+              FROM PORTFOLIO_SKILL
+             WHERE ID 			= #{id}
+               AND RANDOM_ID 	= #{randomId}
+               AND PORT_ID      = #{portId}
+        ]]>
+    </select>
+
+    <insert id="insertPortSkill" parameterType="PortfolioDto">
+        /* PortfolioMapper.insertPortSkill */
+        <![CDATA[
+            INSERT INTO PORTFOLIO_SKILL
+                 ( ID
+                 , RANDOM_ID
+                 , PORT_ID
+                 , SKILL_ID
+                 , SKILL_TITLE
+                 )
+            VALUES
+                 ( #{id}
+                 , #{randomId}
+                 , #{portId}
+                 , #{skillId}
+                 , #{skillTitle}
+                 )
+        ]]>
+    </insert>
+
+    <insert id="insertPortSkillDetail" parameterType="PortfolioSkillDetailDto">
+        /* PortfolioMapper.insertPortSkillDetail */
+        <![CDATA[
+            INSERT INTO PORTFOLIO_SKILL_DETAIL
+                 ( ID
+                 , RANDOM_ID
+                 , PORT_ID
+                 , SKILL_ID
+                 , SKILL_IMG_ID
+                 , SKILL_URI
+                 , SKILL_IMG_TITLE
+                 , SKILL_HEX
+                 )
+            VALUES
+                 ( #{id}
+                 , #{randomId}
+                 , #{portId}
+                 , #{skillId}
+                 , #{skillImgId}
+                 , #{skillUri}
+                 , #{skillImgTitle}
+                 , #{skillHex}
+                 )
+        ]]>
+    </insert>
+
+    <select id="portfolioList" parameterType="PortfolioDto" resultType="PortfolioDto">
+        /* PortfolioMapper.portfolioList */
+        <![CDATA[
+            SELECT A.ID
+                 , A.RANDOM_ID
+                 , A.PORT_ID
+                 , A.TITLE
+                 , A.CONTENT
+                 , A.CATEGORY_ID
+                 , A.IMG_FILE_ID
+                 , A.FILE_ID
+                 , A.START_YMD
+                 , A.END_YMD
+                 , B.CATEGORY_NM
+                 , C.FILE AS IMG_FILE
+                 , A.MD_USE_YN
+                 , A.MD_DATA
+              FROM PORTFOLIO A
+              LEFT OUTER JOIN CATEGORY B
+                ON A.ID             = B.ID
+               AND A.RANDOM_ID      = B.RANDOM_ID
+               AND A.CATEGORY_ID    = B.CATEGORY_ID
+              LEFT OUTER JOIN FILE C
+                ON A.IMG_FILE_ID    =  C.FILE_ID
+             WHERE A.ID 		    = #{id}
+               AND A.RANDOM_ID      = #{randomId}
+               AND A.PORT_ID 	    = #{portId}
+        ]]>
+    </select>
+
+    <select id="fileList" parameterType="PortfolioDto" resultType="FileDto">
+        /* PortfolioMapper.fileList */
+        <![CDATA[
+            SELECT FILE_ID
+                 , FILE_SUB_ID
+                 , FILE_NM
+                 , FILE
+                 , FILE_TYPE
+                 , USE_YN
+              FROM FILE
+             WHERE FILE_ID  = #{fileId}
+               AND USE_YN   = 'Y'
+             ORDER BY FILE_ID, FILE_SUB_ID
+        ]]>
+    </select>
+
+    <select id="portfolioDetailList" parameterType="PortfolioDto" resultType="PortfolioDetailDto">
+        /* PortfolioMapper.portfolioDetailList */
+        <![CDATA[
+            SELECT DETAIL_ID
+                 , ID
+                 , RANDOM_ID
+                 , PORT_ID
+                 , DETAIL_SEQ
+                 , DETAIL_DIVISION
+                 , DETAIL_TITLE
+                 , DETAIL_CONTENT
+              FROM PORTFOLIO_DETAIL
+             WHERE ID 			= #{id}
+               AND RANDOM_ID 	= #{randomId}
+               AND PORT_ID 		= #{portId}
+        ]]>
+    </select>
+
+    <select id="selectPortSkillId" parameterType="PortfolioDto" resultType="java.math.BigInteger">
+        /* PortfolioMapper.selectPortSkillId */
+        <![CDATA[
+            SELECT SKILL_ID
+              FROM PORTFOLIO_SKILL
+             WHERE ID           = #{id}
+               AND RANDOM_ID    = #{randomId}
+               AND PORT_ID      = #{portId}
+        ]]>
+    </select>
+
+    <select id="portSkillDetailList" parameterType="PortfolioDto" resultType="PortfolioSkillDetailDto">
+        /* PortfolioMapper.portSkillDetailList */
+        <![CDATA[
+            SELECT SKILL_IMG_ID
+                 , SKILL_ID
+                 , SKILL_URI
+                 , SKILL_IMG_TITLE
+                 , SKILL_HEX
+              FROM PORTFOLIO_SKILL_DETAIL
+             WHERE ID           = #{id}
+               AND RANDOM_ID    = #{randomId}
+               AND PORT_ID      = #{portId}
+               AND SKILL_ID     = #{skillId}
+        ]]>
+    </select>
+
+    <update id="updatePortfolio" parameterType="PortfolioDto">
+        /* PortfolioMapper.updatePortfolio */
+        <![CDATA[
+            UPDATE PORTFOLIO
+               SET TITLE        = #{title}
+                 , CONTENT      = #{content}
+                 , CATEGORY_ID  = #{categoryId}
+                 , IMG_FILE_ID  = #{imgFileId}
+                 , MD_USE_YN    = #{mdUseYn}
+                 , MD_DATA      = #{mdData}
+                 , START_YMD    = #{startYmd}
+                 , END_YMD      = #{endYmd}
+             WHERE ID           = #{id}
+               AND RANDOM_ID    = #{randomId}
+               AND PORT_ID      = #{portId}
+        ]]>
+    </update>
+
+    <delete id="deletePortfolio" parameterType="PortfolioDto">
+        /* PortfolioMapper.deletePortfolio */
+        <![CDATA[
+            DELETE FROM PORTFOLIO
+             WHERE ID 			= #{id}
+               AND RANDOM_ID 	= #{randomId}
+               AND PORT_ID 		= #{portId}
+        ]]>
+    </delete>
+
+    <delete id="deletePortfolioDetailAll" parameterType="PortfolioDto">
+        /* PortfolioMapper.deletePortfolioDetailAll */
+        <![CDATA[
+            DELETE FROM PORTFOLIO_DETAIL
+             WHERE ID 			= #{id}
+               AND RANDOM_ID	= #{randomId}
+               AND PORT_ID 		= #{portId}
+        ]]>
+    </delete>
+
+    <delete id="deletePortSkill" parameterType="PortfolioDto">
+        /* PortfolioMapper.deletePortSkill */
+        <![CDATA[
+            DELETE FROM PORTFOLIO_SKILL
+             WHERE ID           = #{id}
+               AND RANDOM_ID    = #{randomId}
+               AND PORT_ID      = #{portId}
+               AND SKILL_ID     = #{skillId}
+        ]]>
+    </delete>
+
+    <delete id="deletePortSkillDetailAll" parameterType="PortfolioDto">
+        /* PortfolioMapper.deletePortSkillDetailAll */
+        <![CDATA[
+            DELETE FROM PORTFOLIO_SKILL_DETAIL
+             WHERE ID           = #{id}
+               AND RANDOM_ID    = #{randomId}
+               AND PORT_ID      = #{portId}
+               AND SKILL_ID     = #{skillId}
+        ]]>
+    </delete>
+
+    <update id="updatePortfolioImg" parameterType="PortfolioDto">
+        /* PortfolioMapper.updatePortfolioImg */
+        <![CDATA[
+            UPDATE PORTFOLIO
+               SET IMG_FILE_ID  = #{imgFileId}
+             WHERE ID           = #{id}
+               AND RANDOM_ID    = #{randomId}
+               AND PORT_ID      = #{portId}
+        ]]>
+    </update>
+
+    <update id="updatePortAttachFile" parameterType="PortfolioDto">
+        /* PortfolioMapper.updatePortAttachFile */
+        <![CDATA[
+            UPDATE PORTFOLIO
+               SET FILE_ID      = #{fileId}
+             WHERE ID           = #{id}
+               AND RANDOM_ID    = #{randomId}
+               AND PORT_ID      = #{portId}
+        ]]>
+    </update>
+
+    <update id="updateFileUseYn" parameterType="PortfolioDto">
+        /* PortfolioMapper.updateFileUseYn */
+        <![CDATA[
+            UPDATE FILE
+               SET USE_YN   = 'N'
+             WHERE FILE_ID  = #{imgFileId}
+        ]]>
+    </update>
+
+    <update id="updatePortFileUseYn" parameterType="PortfolioDto">
+        /* PortfolioMapper.updatePortFileUseYn */
+        <![CDATA[
+            UPDATE FILE
+               SET USE_YN   = 'N'
+             WHERE FILE_ID  = (SELECT IMG_FILE_ID
+                                 FROM PORTFOLIO
+                                WHERE ID        = #{id}
+                                  AND RANDOM_ID = #{randomId}
+                                  AND PORT_ID   = #{portId}
+                              )
+        ]]>
+    </update>
+
+    <select id="getAttachFileCnt" parameterType="PortfolioDto" resultType="int">
+        /* PortfolioMapper.getAttachFileCnt */
+        <![CDATA[
+            SELECT COUNT(FILE_ID)
+              FROM FILE
+             WHERE FILE_ID = #{fileId}
+        ]]>
+    </select>
+
+    <update id="updateAttachFileToNull" parameterType="PortfolioDto">
+        /* PortfolioMapper.updateAttachFileToNull */
+        <![CDATA[
+            UPDATE PORTFOLIO
+               SET FILE_ID = NULL
+             WHERE ID           = #{id}
+               AND RANDOM_ID    = #{randomId}
+               AND PORT_ID      = #{portId}
+        ]]>
+    </update>
+</mapper>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="changelog-1.01" author="OWNER">
+        <createTable tableName="PORTFOLIO">
+            <column name="ID" type="bigint" remarks="사용자 ID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="RANDOM_ID" type="varchar2" remarks="페이지 ID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="PORT_ID" type="bigint" remarks="포트폴리오 ID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="TITLE" type="varchar2" remarks="포트폴리오 제목">
+                <constraints primaryKey="false" nullable="false"/>
+            </column>
+            <column name="CONTENT" type="varchar2" remarks="간략 내용">
+                <constraints primaryKey="false"/>
+            </column>
+            <column name="CATEGORY_ID" type="bigint" remarks="카테고리 ID">
+                <constraints primaryKey="false"/>
+            </column>
+            <column name="FILE_ID" type="bigint" remarks="파일 ID">
+                <constraints primaryKey="false"/>
+            </column>
+            <column name="START_YMD" type="date" remarks="프로젝트 시작일자">
+                <constraints primaryKey="false"/>
+            </column>
+            <column name="END_YMD" type="date" remarks="프로젝트 종료일자">
+                <constraints primaryKey="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="PORTFOLIO_DETAIL">
+            <column name="DETAIL_ID" type="bigint" remarks="상세 ID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="ID" type="bigint" remarks="사용자 ID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="RANDOM_ID" type="varchar2" remarks="페이지 ID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="PORT_ID" type="bigint" remarks="포트폴리오 ID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="DETAIL_SEQ" type="number" remarks="상세 순번">
+                <constraints primaryKey="false" nullable="false"/>
+            </column>
+            <column name="DETAIL_DIVISION" type="varchar2" remarks="상세 구분">
+                <constraints primaryKey="false" nullable="false"/>
+            </column>
+            <column name="DETAIL_TITLE" type="varchar2" remarks="상세 제목">
+                <constraints primaryKey="false" nullable="false"/>
+            </column>
+            <column name="DETAIL_CONTENT" type="varchar2" remarks="상세 내용">
+                <constraints primaryKey="false" nullable="false"/>
+            </column>
+        </createTable>
+        
+        <createTable tableName="CATEGORY">
+            <column name="CATEGORY_ID" type="bigint" remarks="카테고리 ID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="ID" type="bigint" remarks="사용자 ID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="RANDOM_ID" type="varchar2" remarks="페이지 ID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="CATEGORY_NM" type="varchar2" remarks="카테고리 명">
+                <constraints primaryKey="false" nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="FILE">
+            <column name="FILE_ID" type="bigint" remarks="파일 ID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="FILE_NM" type="varchar2" remarks="파일명">
+                <constraints primaryKey="false" nullable="false"/>
+            </column>
+            <column name="FILE" type="blob" remarks="파일">
+                <constraints primaryKey="false" nullable="false"/>
+            </column>
+            <column name="FILE_TYPE" type="varchar2" remarks="파일 타입">
+                <constraints primaryKey="false" nullable="false"/>
+            </column>
+            <column name="USE_YN" type="varchar2" remarks="사용여부">
+                <constraints primaryKey="false" nullable="false"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+</databaseChangeLog>

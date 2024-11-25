@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ks.resumeproject.resume.repository.CareerMapper">
+
+    <select id="getCareerList" parameterType="AccountDto" resultType="CareerDto">
+        <![CDATA[
+        SELECT CAREER_ID
+             , ID
+             , RANDOM_ID
+             , START_DAY
+             , END_DAY
+             , COMPANY_NAME
+             , ROLE
+             , POSITION
+             , JOB
+             , SALARY
+             , LOCATION
+             , CONTENT
+        from RESUME_CAREER
+        where ID = #{id}
+          and RANDOM_ID = #{randomId}
+        ORDER BY start_day
+        ]]>
+    </select>
+
+    <insert id="insertCareer" parameterType="CareerDto">
+        <![CDATA[
+        INSERT INTO
+            RESUME_CAREER( CAREER_ID
+                         , ID
+                         , RANDOM_ID
+                         , START_DAY
+                         , END_DAY
+                         , COMPANY_NAME
+                         , ROLE
+                         , POSITION
+                         , JOB
+                         , SALARY
+                         , LOCATION
+                         , CONTENT)
+         SELECT  COALESCE(NULLIF(MAX(CAREER_ID), 0), 0) + 1
+               , #{id}
+               , #{randomId}
+               , #{startDay}
+               , #{endDay}
+               , #{companyName}
+               , #{role}
+               , #{position}
+               , #{job}
+               , #{salary}
+               , #{location}
+               , #{content}
+          FROM RESUME_CAREER
+         WHERE ID = #{id}
+           and RANDOM_ID = #{randomId}
+        ]]>
+    </insert>
+
+    <update id="updateCareer" parameterType="CareerDto">
+        <![CDATA[
+         update resume_career
+            set start_day = #{startDay}
+              , end_day = #{endDay}
+              , company_name = #{companyName}
+              , role = #{role}
+              , position = #{position}
+              , job = #{job}
+              , salary = #{salary}
+              , location = #{location}
+              , content = #{content}
+          where ID = #{id}
+            and RANDOM_ID = #{randomId}
+            and career_id = #{careerId}
+        ]]>
+    </update>
+
+    <delete id="deleteCareer" parameterType="CareerDto">
+        <![CDATA[
+            DELETE FROM resume_career
+             WHERE ID = #{id}
+               and RANDOM_ID = #{randomId}
+               and career_id = #{careerId}
+        ]]>
+    </delete>
+
+</mapper>

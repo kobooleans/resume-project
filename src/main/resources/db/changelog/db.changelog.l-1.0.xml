@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="changelog.l-1.0" author="LJW">
+        <createTable tableName="RESUME_COVER_LETTER">
+            <column name="COVER_LETTER_ID" type="bigint" remarks="자기소개서 ID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="ID" type="bigint" remarks="사용자 ID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="RANDOM_ID" type="varchar" remarks="페이지 ID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="TITLE" type="varchar" remarks="제목">
+                <constraints primaryKey="false" nullable="false"/>
+            </column>
+            <column name="CONTENT" type="varchar" remarks="내용">
+                <constraints primaryKey="false" nullable="false"/>
+            </column>
+            <column name="SEQ" type="number" remarks="순번">
+                <constraints primaryKey="false" nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

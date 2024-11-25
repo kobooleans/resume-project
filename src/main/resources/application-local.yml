@@ -19,9 +19,17 @@ spring:
   messages:
     basename: messages
     fallback-to-system-locale: false
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 30MB
 
 server:
   port: 8080
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
 
 mybatis:
   mapper-locations: classpath:/mapper/**/*.xml
@@ -40,6 +48,8 @@ springdoc:
     use-root-path: true
   show-actuator: true
 
+allowed:
+  origins: http://localhost:5173/
 
 jwt:
   secret: ***REMOVED***

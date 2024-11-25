@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ks.resumeproject.resume.repository.ActivityMapper">
+
+    <select id="getActivityList" parameterType="AccountDto" resultType="ActivityDto">
+        <![CDATA[
+            SELECT activity_id
+                 , activity_key
+                 , activity_start_date
+                 , activity_end_date
+                 , activity_org
+                 , activity_content
+              FROM RESUME_ACTIVITY
+             WHERE ID = #{id}
+               AND RANDOM_ID = #{randomId}
+        ]]>
+    </select>
+
+    <insert id="insertActivity" parameterType="ActivityDto">
+        <![CDATA[
+            INSERT INTO RESUME_ACTIVITY(id, random_id, activity_id, activity_key, activity_start_date, activity_end_date, activity_org, activity_content)
+            SELECT #{id}
+                 , #{randomId}
+                 , COALESCE(NULLIF(MAX(ACTIVITY_ID), 0), 0) + 1
+                 , #{activityKey}
+                 , #{activityStartDate}
+                 , #{activityEndDate}
+                 , #{activityOrg}
+                 , #{activityContent}
+              FROM RESUME_ACTIVITY
+             WHERE ID = #{id}
+               AND RANDOM_ID = #{randomId}
+        ]]>
+    </insert>
+
+    <update id="updateActivity" parameterType="ActivityDto">
+        <![CDATA[
+            UPDATE RESUME_ACTIVITY
+               SET ACTIVITY_KEY = #{activityKey}
+                 , ACTIVITY_START_DATE = #{activityStartDate}
+                 , ACTIVITY_END_DATE = #{activityEndDate}
+                 , ACTIVITY_ORG = #{activityOrg}
+                 , ACTIVITY_CONTENT = #{activityContent}
+             WHERE ID = #{id}
+               AND RANDOM_ID = #{randomId}
+               AND ACTIVITY_ID = #{activityId}
+        ]]>
+    </update>
+
+    <delete id="deleteActivity" parameterType="ActivityDto">
+        <![CDATA[
+            DELETE
+              FROM resume_activity
+             WHERE ID = #{id}
+               AND RANDOM_ID = #{randomId}
+               AND ACTIVITY_ID = #{activityId}
+        ]]>
+    </delete>
+
+</mapper>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ks.resumeproject.resume.repository.SkillMapper">
+
+    <select id="getSkillSet" parameterType="AccountDto" resultType="SkillSetDto">
+        <![CDATA[
+        SELECT A.ID
+             , A.RANDOM_ID
+             , A.SKILL_ID
+             , A.SKILL_TITLE
+        FROM RESUME_SKILL A
+        WHERE A.ID = #{id}
+          AND A.RANDOM_ID = #{randomId}
+        ]]>
+    </select>
+
+    <select id="getSkillDetailSet" parameterType="SkillSetDto" resultType="SkillDto">
+        <![CDATA[
+        SELECT A.ID
+             , A.RANDOM_ID
+             , A.SKILL_ID
+             , A.SKILL_TITLE
+             , B.SKILL_IMG_ID
+             , B.SKILL_URI
+             , B.SKILL_IMG_TITLE
+             , B.SKILL_HEX
+          FROM RESUME_SKILL A
+          JOIN RESUME_SKILL_DETAIL B
+            ON A.ID = B.ID
+           AND A.RANDOM_ID = B.RANDOM_ID
+           AND A.SKILL_ID = B.SKILL_ID
+         WHERE A.ID = #{id}
+           AND A.RANDOM_ID = #{randomId}
+           AND A.SKILL_ID = #{skillId}
+        ]]>
+    </select>
+
+    <select id="selectSkillId" parameterType="SkillDto" resultType="java.math.BigInteger">
+        <![CDATA[
+            SELECT COALESCE(NULLIF(MAX(SKILL_ID), 0), 0) + 1
+              FROM RESUME_SKILL
+            WHERE ID = #{id}
+              and RANDOM_ID = #{randomId}
+        ]]>
+    </select>
+
+    <insert id="insertSkill" parameterType="SkillDto">
+        <![CDATA[
+            INSERT INTO RESUME_SKILL(id, random_id, skill_id, skill_title)
+            VALUES (#{id}
+                  , #{randomId}
+                  , #{skillId}
+                  , #{skillTitle} )
+        ]]>
+    </insert>
+
+    <insert id="insertSkillDetail" parameterType="SkillDto">
+        <![CDATA[
+            INSERT INTO RESUME_SKILL_DETAIL(ID, RANDOM_ID, SKILL_ID, SKILL_IMG_ID, SKILL_URI, SKILL_IMG_TITLE, SKILL_HEX)
+            VALUES (#{id}, #{randomId}, #{skillId}, #{skillImgId}, #{skillUri}, #{skillImgTitle}, #{skillHex})
+        ]]>
+    </insert>
+
+    <delete id="deleteSkillSet" parameterType="SkillSetDto">
+        <![CDATA[
+            DELETE FROM RESUME_SKILL
+             WHERE ID = #{id}
+               AND RANDOM_ID = #{randomId}
+               AND SKILL_ID = #{skillId}
+        ]]>
+    </delete>
+
+    <delete id="deleteSkillDetailSet" parameterType="SkillSetDto">
+        <![CDATA[
+            DELETE FROM RESUME_SKILL_DETAIL
+             WHERE ID = #{id}
+               AND RANDOM_ID = #{randomId}
+               AND SKILL_ID = #{skillId}
+        ]]>
+    </delete>
+</mapper>

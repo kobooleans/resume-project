@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="changelog-1.05" author="KOBOOLEAN">
+
+        <createTable tableName="RESUME_CAREER">
+            <column name="CAREER_ID" type="bigint" remarks="경력 ID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="ID" type="bigint" remarks="사용자 ID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="RANDOM_ID" type="varchar" remarks="페이지 ID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="START_DAY" type="date" remarks="시작일자">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+            <column name="END_DAY" type="date" remarks="종료일자">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+            <column name="COMPANY_NAME" type="varchar" remarks="회사명">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+            <column name="ROLE" type="varchar" remarks="직위">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+            <column name="POSITION" type="varchar" remarks="직책">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+            <column name="JOB" type="varchar" remarks="직업">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+            <column name="SALARY" type="varchar" remarks="연봉">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+            <column name="LOCATION" type="varchar" remarks="지역(주소)">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+            <column name="CONTENT" type="text" remarks="내용">
+                <constraints primaryKey="false" nullable="true"/>
+            </column>
+        </createTable>
+        
+        <addForeignKeyConstraint constraintName="resume-career-fk1"
+                                 baseTableName="RESUME_CAREER"
+                                 baseColumnNames="id, random_id"
+                                 referencedTableName="RESUME"
+                                 referencedColumnNames="id, random_id"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+</databaseChangeLog>

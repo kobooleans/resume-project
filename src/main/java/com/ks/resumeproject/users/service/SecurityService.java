@@ -13,6 +13,8 @@ public interface SecurityService {
 
     AccountDto selectAccount(String userId);
 
+    AccountDto selectUserAccount(String username);
+
     List<RoleDto> listRole(BigInteger userId);
 
     List<ResourceDto> listResources();

@@ -19,6 +19,10 @@ spring:
 
 server:
   port: 8080
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
 
 mybatis:
   mapper-locations: classpath:mapper/**/*.xml
@@ -39,3 +43,6 @@ springdoc:
 
 jwt:
   secret: ***REMOVED***
+
+allowed:
+  origins: http://study.koboolean.site:2023/,http://192.168.45.161:2023/

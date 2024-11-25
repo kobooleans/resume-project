@@ -10,4 +10,12 @@
         ]]>
     </select>
 
+    <select id="selectTestBatchList" resultType="TestDto">
+        <![CDATA[
+        SELECT 'TEST' AS NAME
+        union
+        SELECT 'TEST1' AS NAME
+        ]]>
+    </select>
+
 </mapper>

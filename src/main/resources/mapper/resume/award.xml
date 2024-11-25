@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ks.resumeproject.resume.repository.AwardMapper">
+
+    <select id="getLicenseList" parameterType="AccountDto" resultType="AwardDto">
+        <![CDATA[
+        SELECT
+            'license' AS AWARD_KEY
+             , LICENSE_ID
+             , ID
+             , RANDOM_ID
+             , LICENSE_NM
+             , LICENSE_ISSUE_ORG
+             , LICENSE_PASS_YN
+             , LICENSE_PASS_DATE
+             , SEQ
+        from RESUME_LICENSE
+        where ID = #{id}
+          and RANDOM_ID = #{randomId}
+        ORDER BY SEQ, LICENSE_ID DESC
+        ]]>
+    </select>
+
+    <select id="getLangTestList" parameterType="AccountDto" resultType="AwardDto">
+        <![CDATA[
+        SELECT
+            'lang' AS AWARD_KEY
+             , LANG_TEST_ID
+             , ID
+             , RANDOM_ID
+             , LANG_NM
+             , LANG_TEST_NM
+             , LANG_ACQUIRE_DATE
+             , LANG_TEST_SCORE
+             , LANG_ACQUIRE_YN
+             , SEQ
+        from RESUME_LANG_TEST
+        where ID = #{id}
+          and RANDOM_ID = #{randomId}
+        ORDER BY SEQ, LANG_TEST_ID DESC
+        ]]>
+    </select>
+
+    <select id="getAwardList" parameterType="AccountDto" resultType="AwardDto">
+        <![CDATA[
+        SELECT
+             'award' AS AWARD_KEY
+             , AWARD_ID
+             , ID
+             , RANDOM_ID
+             , AWARD_NM
+             , AWARD_DATE
+             , AWARD_ORG
+             , SEQ
+        from RESUME_AWARD
+        where ID = #{id}
+          and RANDOM_ID = #{randomId}
+        ORDER BY SEQ, AWARD_ID DESC
+        ]]>
+    </select>
+
+    <insert id="insertLicense" parameterType="AwardDto">
+        <![CDATA[
+        INSERT INTO
+            RESUME_LICENSE(  LICENSE_ID
+                          , ID
+                          , RANDOM_ID
+                          , LICENSE_NM
+                          , LICENSE_ISSUE_ORG
+                          , LICENSE_PASS_YN
+                          , LICENSE_PASS_DATE
+                          , SEQ)
+        SELECT  COALESCE(NULLIF(MAX(LICENSE_ID), 0), 0) + 1
+             ,#{id}
+             ,#{randomId}
+             ,#{licenseNm}
+             ,#{licenseIssueOrg}
+             ,#{licensePassYn}
+             ,#{licensePassDate}
+             ,#{seq}
+        FROM RESUME_LICENSE
+        WHERE ID = #{id}
+          and RANDOM_ID = #{randomId}
+        ]]>
+    </insert>
+
+    <insert id="insertLangTest" parameterType="AwardDto">
+        <![CDATA[
+        INSERT INTO
+            RESUME_LANG_TEST(  LANG_TEST_ID
+                            , ID
+                            , RANDOM_ID
+                            , LANG_NM
+                            , LANG_TEST_NM
+                            , LANG_ACQUIRE_DATE
+                            , LANG_TEST_SCORE
+                            , LANG_ACQUIRE_YN
+                            , SEQ)
+        SELECT  COALESCE(NULLIF(MAX(LANG_TEST_ID), 0), 0) + 1
+             ,#{id}
+             ,#{randomId}
+             ,#{langNm}
+             ,#{langTestNm}
+             ,#{langAcquireDate}
+             ,#{langTestScore}
+             ,#{langAcquireYn}
+             ,#{seq}
+        FROM RESUME_LANG_TEST
+        WHERE ID = #{id}
+          and RANDOM_ID = #{randomId}
+        ]]>
+    </insert>
+
+    <insert id="insertAward" parameterType="AwardDto">
+        <![CDATA[
+        INSERT INTO
+            RESUME_AWARD(   AWARD_ID
+                        , ID
+                        , RANDOM_ID
+                        , AWARD_NM
+                        , AWARD_DATE
+                        , AWARD_ORG
+                        , SEQ)
+        SELECT  COALESCE(NULLIF(MAX(AWARD_ID), 0), 0) + 1
+             ,#{id}
+             ,#{randomId}
+             ,#{awardNm}
+             ,#{awardDate}
+             ,#{awardOrg}
+             ,#{seq}
+        FROM RESUME_AWARD
+        WHERE ID = #{id}
+          and RANDOM_ID = #{randomId}
+        ]]>
+    </insert>
+
+    <update id="updateLicense" parameterType="AwardDto">
+        <![CDATA[
+        update RESUME_LICENSE
+        set     LICENSE_NM = #{licenseNm}
+                ,LICENSE_iSSUE_ORG = #{licenseIssueOrg}
+                ,LICENSE_PASS_YN = #{licensePassYn}
+                ,LICENSE_PASS_DATE = #{licensePassDate}
+        where ID = #{id}
+          and RANDOM_ID = #{randomId}
+          and LICENSE_ID = #{licenseId}
+        ]]>
+    </update>
+
+    <update id="updateLangTest" parameterType="AwardDto">
+        <![CDATA[
+        update RESUME_LANG_TEST
+        set  LANG_NM = #{langNm}
+          ,LANG_TEST_NM = #{langTestNm}
+          ,LANG_ACQUIRE_DATE = #{langAcquireDate}
+          ,LANG_TEST_SCORE = #{langTestScore}
+          ,LANG_ACQUIRE_YN = #{langAcquireYn}
+        where ID = #{id}
+          and RANDOM_ID = #{randomId}
+          and LANG_TEST_ID = #{langTestId}
+        ]]>
+    </update>
+
+    <update id="updateAward" parameterType="AwardDto">
+        <![CDATA[
+        update RESUME_AWARD
+        set AWARD_NM = #{awardNm}
+          , AWARD_DATE = #{awardDate}
+          , AWARD_ORG= #{awardOrg}
+        where ID = #{id}
+          and RANDOM_ID = #{randomId}
+          and AWARD_ID = #{awardId}
+        ]]>
+    </update>
+
+
+
+    <delete id="deleteLicense" parameterType="AwardDto">
+        <![CDATA[
+        DELETE FROM RESUME_LICENSE
+        WHERE ID = #{id}
+          and RANDOM_ID = #{randomId}
+          and LICENSE_ID = #{licenseId}
+        ]]>
+    </delete>
+
+    <delete id="deleteLangTest" parameterType="AwardDto">
+        <![CDATA[
+        DELETE FROM RESUME_LANG_TEST
+        WHERE ID = #{id}
+          and RANDOM_ID = #{randomId}
+          and LANG_TEST_ID = #{langTestId}
+        ]]>
+    </delete>
+
+    <delete id="deleteAward" parameterType="AwardDto">
+        <![CDATA[
+        DELETE FROM RESUME_AWARD
+        WHERE ID = #{id}
+          and RANDOM_ID = #{randomId}
+          and AWARD_ID = #{awardId}
+        ]]>
+    </delete>
+
+    <update id="updateLicenseList" parameterType="AwardDto">
+        <![CDATA[
+        update RESUME_LICENSE
+        set  SEQ = #{seq}
+        where ID = #{id}
+          and RANDOM_ID = #{randomId}
+          and LICENSE_ID = #{licenseId}
+        ]]>
+    </update>
+
+    <update id="updateLangTestList" parameterType="AwardDto">
+        <![CDATA[
+        update RESUME_LANG_TEST
+        set  SEQ = #{seq}
+        where ID = #{id}
+          and RANDOM_ID = #{randomId}
+          and LANG_TEST_ID = #{langTestId}
+        ]]>
+    </update>
+
+    <update id="updateAwardList" parameterType="AwardDto">
+        <![CDATA[
+        update RESUME_AWARD
+        set  SEQ = #{seq}
+        where ID = #{id}
+          and RANDOM_ID = #{randomId}
+          and AWARD_ID = #{awardId}
+        ]]>
+    </update>
+
+</mapper>

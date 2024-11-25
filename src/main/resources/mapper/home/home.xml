@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ks.resumeproject.home.repository.HomeMapper">
+    <select id="selectTitle" parameterType="AccountDto" resultType="TitleDto">
+        <![CDATA[
+            SELECT *
+              FROM MAIN_INFO
+             WHERE ID         = #{id}
+               and RANDOM_ID  = #{randomId}
+        ]]>
+    </select>
+
+    <update id="updateTitle" parameterType="TitleDto" >
+        <![CDATA[
+            UPDATE MAIN_INFO
+               SET TITLE     = #{title}
+                 , SUBTITLE  = #{subtitle}
+                 , RESUME_YN = #{resumeYn}
+            WHERE ID         = #{id}
+              and RANDOM_ID  = #{randomId}
+        ]]>
+    </update>
+
+    <insert id="insertTitle" parameterType="TitleDto">
+        <![CDATA[
+            INSERT INTO MAIN_INFO
+                 ( ID
+                 , RANDOM_ID
+                 , TITLE
+                 , SUBTITLE
+                 , RESUME_YN  )
+            VALUES
+                ( #{id}
+                , #{randomId}
+                , #{title}
+                , #{subtitle}
+                , #{resumeYn} )
+        ]]>
+    </insert>
+
+    <select id="selectSiteInfo" parameterType="SiteInfoDto">
+        <![CDATA[
+            SELECT id, site_id, site_title, site_icon, site_url, site_content
+              FROM SITE_INFO
+             WHERE ID = #{id}
+        ]]>
+    </select>
+
+</mapper>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="changelog.c-1.09" author="KOBOOLEAN">
+
+        <createTable tableName="site_info">
+            <column name="ID" type="BIGINT" autoIncrement="false" remarks="사용자ID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="SITE_ID" type="BIGINT" autoIncrement="false" remarks="사이트ID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="SITE_TITLE" type="VARCHAR2" remarks="사이트 제목">
+            </column>
+            <column name="SITE_ICON" type="VARCHAR2" remarks="사이트 아이콘">
+            </column>
+            <column name="SITE_URL" type="VARCHAR2" remarks="사이트 URL">
+            </column>
+            <column name="SITE_CONTENT" type="VARCHAR2" remarks="사이트 내용">
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
