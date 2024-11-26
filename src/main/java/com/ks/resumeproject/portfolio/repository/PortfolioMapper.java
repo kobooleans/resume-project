@@ -68,4 +68,6 @@ public interface PortfolioMapper {
     int getAttachFileCnt(PortfolioDto portfolioDto);
 
     void updateAttachFileToNull(PortfolioDto portfolioDto);
+
+    List<PortfolioSkillDetailDto> selectSkillDtailDtos(PortfolioDto portfolioDto);
 }

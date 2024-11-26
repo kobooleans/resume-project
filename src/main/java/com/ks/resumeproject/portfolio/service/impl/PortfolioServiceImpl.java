@@ -287,5 +287,13 @@ public class PortfolioServiceImpl implements PortfolioService {
 
         portfolioMapper.updateFileUseYn(portfolioDto);
     }
+
+    @Override
+    public List<PortfolioSkillDetailDto> selectSkillDtailDtos(PortfolioDto portfolioDto) {
+        AccountDto account = securityService.selectUserAccount(portfolioDto.getUsername());
+        portfolioDto.setId(account.getId());
+
+        return portfolioMapper.selectSkillDtailDtos(portfolioDto);
+    }
 }
 
