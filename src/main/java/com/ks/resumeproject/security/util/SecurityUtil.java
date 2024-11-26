@@ -14,7 +14,7 @@ public class SecurityUtil {
 
     public AccountContext getAccount() {
         Authentication authentication = SecurityContextHolder.getContextHolderStrategy().getContext().getAuthentication();
-        if(!(authentication.isAuthenticated())){
+        if(!(authentication.isAuthenticated()) || authentication.getPrincipal().equals("anonymousUser")) {
             throw new CustomException(ErrorCode.USER_NOT_FOUND);
         }
         return ((AccountContext) authentication.getPrincipal());
