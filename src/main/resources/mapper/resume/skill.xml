@@ -56,6 +56,16 @@
         ]]>
     </insert>
 
+    <update id="updateSkill" parameterType="SkillDto">
+        <![CDATA[
+        UPDATE RESUME_SKILL
+        SET skill_title = #{skillTitle}
+        WHERE ID = #{id}
+          and RANDOM_ID = #{randomId}
+          and skill_id = #{skillId}
+        ]]>
+    </update>
+
     <insert id="insertSkillDetail" parameterType="SkillDto">
         <![CDATA[
             INSERT INTO RESUME_SKILL_DETAIL(ID, RANDOM_ID, SKILL_ID, SKILL_IMG_ID, SKILL_URI, SKILL_IMG_TITLE, SKILL_HEX)
