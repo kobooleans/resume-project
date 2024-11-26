@@ -2,6 +2,7 @@ package com.ks.resumeproject.portfolio.service;
 
 import com.ks.resumeproject.portfolio.domain.CategoryDto;
 import com.ks.resumeproject.portfolio.domain.PortfolioDto;
+import com.ks.resumeproject.portfolio.domain.PortfolioSkillDetailDto;
 import com.ks.resumeproject.security.domain.AccountDto;
 
 import java.util.List;
@@ -24,4 +25,6 @@ public interface PortfolioService {
     void updatePortfolioDetail(PortfolioDto portfolioDto);
 
     void deletePortfolio(PortfolioDto portfolioDto);
+
+    List<PortfolioSkillDetailDto> selectSkillDtailDtos(PortfolioDto portfolioDto);
 }

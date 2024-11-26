@@ -442,4 +442,27 @@
                AND PORT_ID      = #{portId}
         ]]>
     </update>
+
+    <select id="selectSkillDtailDtos" parameterType="PortfolioDto" resultType="PortfolioSkillDetailDto">
+        <![CDATA[
+            select a.id
+                 , a.random_id
+                 , a.port_id
+                 , a.skill_id
+                 , a.skill_img_id
+                 , a.skill_uri
+                 , a.skill_img_title
+                 , a.skill_hex
+              from portfolio_skill_detail a
+              join portfolio p
+                on a.id = p.id
+               and a.random_id = p.random_id
+               and a.port_id  = p.port_id
+             where a.id = #{id}
+               and a.random_id = #{randomId}
+        ]]>
+        <if test="categoryId != 0">
+            AND P.CATEGORY_ID    = #{categoryId}
+        </if>
+    </select>
 </mapper>
