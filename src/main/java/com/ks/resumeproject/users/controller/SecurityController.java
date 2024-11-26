@@ -8,6 +8,7 @@ import com.ks.resumeproject.security.util.SecurityUtil;
 import com.ks.resumeproject.test.domain.TestDto;
 import com.ks.resumeproject.users.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -33,6 +34,18 @@ public class SecurityController {
     private final UserService userService;
     private final CustomDynamicAuthorizationManager manager;
     private final SecurityUtil securityUtil;
+
+    @Operation(summary = "계정 일치여부 조회", description = "JWT 형식의 사용자 정보를 가져와 계정 일치여부를 확인한다.")
+    @GetMapping("/selectJsonData/{username}")
+    public ResponseEntity<Map<String, Boolean>> signIn(@Parameter(description = "사용자명", required = true, example = "admin") @PathVariable("username") String username) {
+        if(username.equals("null")){
+            return ResponseEntity.ok(Map.of("loginUserEq", Boolean.TRUE));
+        }
+        Boolean loginUserEq = securityUtil.getAccount().getAccountDto().getUsername().equals(username);
+
+        return ResponseEntity.ok(Map.of("loginUserEq", loginUserEq));
+
+    }
 
     @Operation(summary = "로그인", description = "JWT 형식의 사용자 정보를 가져옵니다.")
     @PostMapping("/signin")
