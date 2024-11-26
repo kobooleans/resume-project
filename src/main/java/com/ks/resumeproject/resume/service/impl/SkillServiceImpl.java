@@ -55,9 +55,9 @@ public class SkillServiceImpl implements SkillService {
         skillDto.setRandomId(randomId);
         skillDto.setSkillTitle(skillDtos.getSkillTitle());
 
+        //등록
         BigInteger skillId = skillMapper.selectSkillId(skillDto);
         skillDto.setSkillId(skillId);
-
         skillMapper.insertSkill(skillDto);
 
         skillDtos.getSkills().forEach(skill -> {
@@ -67,6 +67,36 @@ public class SkillServiceImpl implements SkillService {
 
             skillMapper.insertSkillDetail(skill);
         });
+
+    }
+
+    @Override
+    @Transactional
+    public void updateSkillSet(SkillSetDto skillDtos) {
+        skillDtos.setId(securityUtil.getAccount().getAccountDto().getId());
+        SkillDto skillDto = skillDtos.getSkills().get(0);
+
+        BigInteger id = skillDtos.getId();
+        String randomId = skillDtos.getRandomId();
+
+        skillDto.setId(id);
+        skillDto.setRandomId(randomId);
+        skillDto.setSkillTitle(skillDtos.getSkillTitle());
+
+        //수정
+        BigInteger skillId = skillDtos.getSkillId();
+        skillDto.setSkillId(skillId);
+
+        skillMapper.updateSkill(skillDto);
+        skillMapper.deleteSkillDetailSet(skillDtos);
+        skillDtos.getSkills().forEach(skill -> {
+            skill.setId(id);
+            skill.setRandomId(randomId);
+            skill.setSkillId(skillId);
+
+            skillMapper.insertSkillDetail(skill);
+        });
+
     }
 
     @Override

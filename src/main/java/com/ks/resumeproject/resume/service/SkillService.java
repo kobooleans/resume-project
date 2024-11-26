@@ -9,5 +9,6 @@ import java.util.List;
 public interface SkillService {
     List<SkillSetDto> getSkillSet(AccountDto accountDto);
     void insertSkillSet(SkillSetDto skillDtos);
+    void updateSkillSet(SkillSetDto skillDtos);
     void deleteSkillSet(SkillSetDto skillDtos);
 }
