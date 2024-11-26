@@ -36,12 +36,18 @@ public class SecurityController {
     private final SecurityUtil securityUtil;
 
     @Operation(summary = "계정 일치여부 조회", description = "JWT 형식의 사용자 정보를 가져와 계정 일치여부를 확인한다.")
-    @GetMapping("/selectJsonData/{username}")
-    public ResponseEntity<Map<String, Boolean>> signIn(@Parameter(description = "사용자명", required = true, example = "admin") @PathVariable("username") String username) {
-        if(username.equals("null")){
+    @GetMapping("/selectJsonData/{username}/{paramsName}")
+    public ResponseEntity<Map<String, Boolean>> signIn(
+            @Parameter(description = "사용자명", required = true, example = "admin") @PathVariable("username") String username,
+            @Parameter(description = "파라미터 사용자명", required = true, example = "admin") @PathVariable("paramsName") String paramsName) {
+
+        Authentication authentication = SecurityContextHolder.getContextHolderStrategy().getContext().getAuthentication();
+
+        if(authentication.getPrincipal().equals("anonymousUser")){
             return ResponseEntity.ok(Map.of("loginUserEq", Boolean.TRUE));
         }
-        Boolean loginUserEq = securityUtil.getAccount().getAccountDto().getUsername().equals(username);
+
+        Boolean loginUserEq = securityUtil.getAccount().getAccountDto().getUsername().equals(username) && username.equals(paramsName);
 
         return ResponseEntity.ok(Map.of("loginUserEq", loginUserEq));
 
