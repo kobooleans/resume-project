@@ -14,9 +14,8 @@ public interface SkillMapper {
     List<SkillDto> getSkillDetailSet(SkillSetDto skillSetDto);
     BigInteger selectSkillId(SkillDto skillDto);
     void insertSkillDetail(SkillDto skillDto);
-
     void insertSkill(SkillDto skillDto);
-
+    void updateSkill(SkillDto skillDto);
     void deleteSkillSet(SkillSetDto skillDtos);
     void deleteSkillDetailSet(SkillSetDto skillDtos);
 }
