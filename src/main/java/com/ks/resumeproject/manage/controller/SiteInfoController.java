@@ -2,6 +2,7 @@ package com.ks.resumeproject.manage.controller;
 
 import com.ks.resumeproject.manage.domain.SiteInfoDto;
 import com.ks.resumeproject.manage.service.SiteInfoService;
+import com.ks.resumeproject.users.domain.PageDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,14 @@ public class SiteInfoController {
         List<SiteInfoDto> siteInfoDtos = siteInfoService.getFooterSiteList();
 
         return ResponseEntity.ok(Map.of("result", siteInfoDtos));
+    }
+
+    @Operation(summary = "하단 사이트 등록 조회", description = "하단 사이트 등록 시 페이지 목록을 조회한다.")
+    @GetMapping("/selectPage")
+    public ResponseEntity<Map<String, List<PageDto>>> selectPage(){
+        List<PageDto> pageDtos = siteInfoService.selectPage();
+
+        return ResponseEntity.ok(Map.of("result", pageDtos));
     }
 
 
