@@ -42,9 +42,21 @@
 
     <select id="selectSiteInfo" parameterType="SiteInfoDto">
         <![CDATA[
-            SELECT id, site_id, site_title, site_icon, site_url, site_content
-              FROM SITE_INFO
-             WHERE ID = #{id}
+        SELECT ID
+             , SITE_ID
+             , SITE_TITLE
+             , SITE_ICON
+             , SITE_URL
+             , SITE_CONTENT
+        from ( select UNNEST(STRING_TO_ARRAY(PAGES_DATA
+                    , '|')) AS SPLIT_DATA
+                            , *
+                 from SITE_INFO
+                WHERE ID = #{id}
+         ) as TB
+        where TB.SPLIT_DATA = #{randomId}
+
+
         ]]>
     </select>
 
