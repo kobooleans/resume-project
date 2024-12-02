@@ -15,7 +15,7 @@
               LEFT OUTER JOIN ACCOUNT_MY_PAGE B
                 ON A.USERNAME = B.USERNAME
                AND B.USE_YN = 'Y'
-               AND B.PAGE_DESCRIPTION = 'MAIN'
+               AND B.PAGE_ID = 0
              WHERE A.USERNAME = #{userId}
                AND A.PASSWORD IS NOT NULL
                AND A.USE_YN = 'Y'
