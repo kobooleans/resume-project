@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/manageMain")
@@ -23,5 +24,11 @@ public class ManageMainController {
     public ResponseEntity<List<ProjectDto>> selectProjectCalList(@RequestBody ProjectDto projectDto){
         List<ProjectDto> projectList = manageMainService.selectProjectCalList(projectDto);
         return ResponseEntity.ok(projectList);
+    }
+
+    @GetMapping(value = "/getManageInfo")
+    @Operation(summary = "정보 조회", description = "사용자의 페이지, 이력서 및 포트폴리오 정보 조회")
+    public ResponseEntity<Map> selectManageInfo(){
+        return ResponseEntity.ok(Map.of("result",manageMainService.selectManageInfo()));
     }
 }
