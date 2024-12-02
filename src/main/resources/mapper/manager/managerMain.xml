@@ -19,5 +19,23 @@
         ]]>
     </select>
 
+    <select id="selectManageInfo" parameterType="AccountDto" resultType="Map">
+        <![CDATA[
+            SELECT SUM(PAGE) AS PAGE, SUM(RESUME) AS RESUME, SUM(PORTFOLIO) AS PORTFOLIO
+            FROM (SELECT COUNT(RANDOM_ID) AS PAGE, 0 AS RESUME, 0 AS PORTFOLIO
+                  FROM ACCOUNT_MY_PAGE
+                  WHERE USE_YN = 'Y'
+                    AND ID = #{id}
+                  UNION ALL
+                  SELECT 0 AS PAGE, COUNT(RANDOM_ID) AS RESUME, 0 AS PORTFOLIO
+                  FROM RESUME
+                  WHERE ID = #{id}
+                  UNION ALL
+                  SELECT 0 AS PAGE, 0 AS RESUME, COUNT(PORT_ID) AS PORTFOLIO
+                  FROM PORTFOLIO
+                  WHERE ID = #{id})
+        ]]>
+    </select>
+
 
 </mapper>

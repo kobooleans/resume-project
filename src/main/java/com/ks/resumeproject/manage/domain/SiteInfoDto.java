@@ -13,4 +13,5 @@ public class SiteInfoDto {
     private String siteIcon;
     private String siteUrl;
     private String siteContent;
+    private String pagesData;
 }

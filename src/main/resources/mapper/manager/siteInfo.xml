@@ -6,21 +6,31 @@
 
     <select id="getFooterSiteList" parameterType="AccountDto" resultType="SiteInfoDto">
         <![CDATA[
-            SELECT site_id as id, site_title, site_icon, site_url, site_content
+            SELECT site_id as id, site_title, site_icon, site_url, site_content, pages_data
               FROM site_info
              WHERE id = #{id}
         ]]>
     </select>
 
+    <select id="selectPage" resultType="PageDto" parameterType="AccountDto">
+        <![CDATA[
+            SELECT RANDOM_ID
+                 , PAGE_DESCRIPTION
+            FROM ACCOUNT_MY_PAGE
+            WHERE ID = #{id}
+        ]]>
+    </select>
+
     <insert id="insertFooterSite" parameterType="SiteInfoDto">
         <![CDATA[
-        INSERT INTO SITE_INFO(id, site_id, site_title, site_icon, site_url, site_content)
+        INSERT INTO SITE_INFO(id, site_id, site_title, site_icon, site_url, site_content, pages_data)
         SELECT #{id}
              , COALESCE(NULLIF(MAX(SITE_ID), 0), 0) + 1
              , #{siteTitle}
              , #{siteIcon}
              , #{siteUrl}
              , #{siteContent}
+             , #{pagesData}
           FROM SITE_INFO
          WHERE ID = #{id}
         ORDER BY MAX(SITE_ID) DESC
@@ -43,6 +53,7 @@
                  , site_icon = #{siteIcon}
                  , site_content = #{siteContent}
                  , site_url = #{siteUrl}
+                 , pages_data = #{pagesData}
              WHERE id = #{id}
                and site_id = #{siteId}
         ]]>

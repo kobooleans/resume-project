@@ -5,6 +5,7 @@ import com.ks.resumeproject.manage.repository.SiteInfoMapper;
 import com.ks.resumeproject.manage.service.SiteInfoService;
 import com.ks.resumeproject.security.domain.AccountDto;
 import com.ks.resumeproject.security.util.SecurityUtil;
+import com.ks.resumeproject.users.domain.PageDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -54,5 +55,13 @@ public class SiteInfoServiceImpl implements SiteInfoService {
 
         siteInfoMapper.updateFooterSite(siteInfoDto);
 
+    }
+
+    @Override
+    public List<PageDto> selectPage() {
+        AccountDto accountDto = securityUtil.getAccount().getAccountDto();
+
+
+        return siteInfoMapper.selectPage(accountDto);
     }
 }
