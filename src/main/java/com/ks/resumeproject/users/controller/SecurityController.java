@@ -4,6 +4,7 @@ import com.ks.resumeproject.security.domain.AccountContext;
 import com.ks.resumeproject.security.domain.AccountDto;
 import com.ks.resumeproject.security.domain.TokenDto;
 import com.ks.resumeproject.security.manager.CustomDynamicAuthorizationManager;
+import com.ks.resumeproject.security.util.CookieUtil;
 import com.ks.resumeproject.security.util.SecurityUtil;
 import com.ks.resumeproject.test.domain.TestDto;
 import com.ks.resumeproject.users.service.UserService;
@@ -15,6 +16,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,6 +37,7 @@ public class SecurityController {
     private final UserService userService;
     private final CustomDynamicAuthorizationManager manager;
     private final SecurityUtil securityUtil;
+    private final CookieUtil cookieUtil;
 
     @Operation(summary = "계정 일치여부 조회", description = "JWT 형식의 사용자 정보를 가져와 계정 일치여부를 확인한다.")
     @GetMapping("/selectJsonData/{username}/{paramsName}")
@@ -43,7 +47,7 @@ public class SecurityController {
 
         Authentication authentication = SecurityContextHolder.getContextHolderStrategy().getContext().getAuthentication();
 
-        if(authentication.getPrincipal().equals("anonymousUser")){
+        if (authentication.getPrincipal().equals("anonymousUser")) {
             return ResponseEntity.ok(Map.of("loginUserEq", Boolean.TRUE));
         }
 
@@ -53,12 +57,30 @@ public class SecurityController {
 
     }
 
+    @GetMapping("/isLogin")
+    @Operation(summary = "로그인 여부 확인", description = "로그인 여부를 확인한다.")
+    public ResponseEntity<Map<String,Boolean>> isLogin(HttpServletRequest request) {
+        return ResponseEntity.ok(Map.of("isLogin",cookieUtil.getCookie(request, "token") != null));
+    }
+
     @Operation(summary = "로그인", description = "JWT 형식의 사용자 정보를 가져옵니다.")
     @PostMapping("/signin")
-    public TokenDto signIn(@RequestBody AccountDto accountDto) {
+    public TokenDto signIn(@RequestBody AccountDto accountDto, HttpServletResponse response) {
         String username = accountDto.getUsername();
         String password = accountDto.getPassword();
-        return userService.signIn(username, password);
+
+        TokenDto tokenDto = userService.signIn(username, password);
+
+        String cookie = ResponseCookie.from("token", tokenDto.getAccessToken())
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(3600)
+                .build().toString() + "; SameSite=none"; // SameSite 설정 추가
+
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie);
+
+        return tokenDto;
     }
 
     @Operation(summary = "회원가입 아이디 중복검사", description = "ROLE_USER 계정의 사용자의 username의 중복여부를 확인합니다.")
@@ -82,12 +104,12 @@ public class SecurityController {
     @GetMapping(value = "/logout")
     public ResponseEntity<Map<String, String>> logout(HttpServletRequest request, HttpServletResponse response) {
 
-        AccountContext accountContext = securityUtil.getAccount();
-
         Authentication authentication = SecurityContextHolder.getContextHolderStrategy().getContext().getAuthentication();
         if (authentication != null) {
             new SecurityContextLogoutHandler().logout(request, response, authentication);
         }
+
+        cookieUtil.removeCookie(response, "token");
 
         return ResponseEntity.ok(Map.of("result", "logout"));
     }

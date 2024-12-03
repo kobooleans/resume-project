@@ -1,6 +1,7 @@
 package com.ks.resumeproject.security.filter;
 
 import com.ks.resumeproject.security.provider.TokenProvider;
+import com.ks.resumeproject.security.util.CookieUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
@@ -17,12 +18,14 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends GenericFilterBean {
     private final TokenProvider jwtTokenProvider;
-
+    private final CookieUtil cookieUtil;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         // 1. Request Header에서 JWT 토큰 추출
-        String token = resolveToken((HttpServletRequest) request);
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+
+        String token = cookieUtil.getCookie(httpRequest, "token");
 
         // 2. validateToken으로 토큰 유효성 검사
         if (token != null && !token.equals("null") && jwtTokenProvider.validateToken(token)) {

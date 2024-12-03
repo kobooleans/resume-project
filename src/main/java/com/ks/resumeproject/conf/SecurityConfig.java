@@ -4,6 +4,7 @@ import com.ks.resumeproject.security.entrypoint.RestAuthenticationEntryPoint;
 import com.ks.resumeproject.security.filter.JwtAuthenticationFilter;
 import com.ks.resumeproject.security.handler.JwtAccessDeniedHandler;
 import com.ks.resumeproject.security.provider.TokenProvider;
+import com.ks.resumeproject.security.util.CookieUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -31,7 +32,7 @@ public class SecurityConfig {
     @Value("${allowed.origins}")
     private String allowedOrigins;
 
-
+    private final CookieUtil cookieUtil;
     private final AuthorizationManager<RequestAuthorizationContext> authorizationManager;
     private final TokenProvider tokenProvider;
 
@@ -50,7 +51,7 @@ public class SecurityConfig {
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(new RestAuthenticationEntryPoint())
                         .accessDeniedHandler(new JwtAccessDeniedHandler()))
-                .addFilterBefore(new JwtAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtAuthenticationFilter(tokenProvider, cookieUtil), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
