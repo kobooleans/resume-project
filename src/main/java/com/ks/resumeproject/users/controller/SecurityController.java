@@ -67,7 +67,7 @@ public class SecurityController {
         String accessToken = cookieUtil.getCookie(request, "token");
         String refreshToken = cookieUtil.getCookie(request, "refreshed");
 
-        if(refreshToken == null){
+        if(refreshToken == null && accessToken == null){
             return ResponseEntity.ok(Map.of("isLogin", Boolean.FALSE));
         }
 
