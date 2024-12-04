@@ -4,6 +4,7 @@ import com.ks.resumeproject.security.domain.AccountContext;
 import com.ks.resumeproject.security.domain.AccountDto;
 import com.ks.resumeproject.security.domain.TokenDto;
 import com.ks.resumeproject.users.domain.AccountMyPageDto;
+import com.ks.resumeproject.users.repository.SecurityMapper;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -29,23 +30,22 @@ import java.util.stream.Collectors;
 public class TokenProvider {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
+    private final SecurityMapper securityMapper;
     private final Key key;
 
     // application.yml에서 secret 값 가져와서 key에 저장
-    public TokenProvider(@Value("${jwt.secret}") String secretKey) {
+    public TokenProvider(@Value("${jwt.secret}") String secretKey, SecurityMapper securityMapper) {
+        this.securityMapper = securityMapper;
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
     // Member 정보를 가지고 AccessToken, RefreshToken을 생성하는 메서드
     public TokenDto generateToken(Authentication authentication, List<AccountMyPageDto> accountMyPageDto) {
-        // 권한 가져오기
-
         long now = (new Date()).getTime();
 
-        /** timeout 시간 1시간으로 설정 */
-        //Date accessTokenExpiresIn = new Date(now + 1000 * 60 * 60);
-        Date accessTokenExpiresIn = new Date(now + 1000 * 60 * 60);
+        Date accessTokenExpiresIn = new Date(now + 15 * 60 * 1000); // 15분
+        Date refreshTokenExpiresIn = new Date(now + 24 * 60 * 60 * 1000); // 1일
         AccountDto accountDto = ((AccountContext)authentication.getPrincipal()).getAccountDto();
 
         accountDto.setPassword(null);
@@ -61,8 +61,9 @@ public class TokenProvider {
 
         // Refresh Token 생성
         String refreshToken = Jwts.builder()
-                /** timeout 시간 1시간으로 설정 */
-                .expiration(accessTokenExpiresIn)
+                .setSubject(authentication.getName())
+                .claim("auth", accountDto.getRoleType())
+                .expiration(refreshTokenExpiresIn)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
@@ -93,6 +94,25 @@ public class TokenProvider {
         LinkedHashMap map = (LinkedHashMap) claims.get("account");
         AccountDto accountDto = new AccountDto( new BigInteger(map.get("id").toString()) , map.get("username").toString(), null, map.get("roleType").toString(), map.get("randomId").toString());
 
+        UserDetails principal = new AccountContext(accountDto , (List<GrantedAuthority>) authorities, (List<AccountMyPageDto>) claims.get("accountMyPage"));
+        return new UsernamePasswordAuthenticationToken(principal, "", authorities);
+    }
+
+    // Jwt 토큰을 복호화하여 토큰에 들어있는 정보를 꺼내는 메서드
+    public Authentication getAuthenticationFromRefresh(String accessToken) {
+        // Jwt 토큰 복호화
+        Claims claims = parseClaims(accessToken);
+
+        if (claims.get("auth") == null) {
+            throw new RuntimeException("권한 정보가 없는 토큰입니다.");
+        }
+
+        // 클레임에서 권한 정보 가져오기
+        Collection<? extends GrantedAuthority> authorities = Arrays.stream(claims.get("auth").toString().split(","))
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+
+        AccountDto accountDto = securityMapper.selectAccount(claims.getSubject());
         UserDetails principal = new AccountContext(accountDto , (List<GrantedAuthority>) authorities, (List<AccountMyPageDto>) claims.get("accountMyPage"));
         return new UsernamePasswordAuthenticationToken(principal, "", authorities);
     }

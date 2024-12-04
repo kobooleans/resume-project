@@ -33,4 +33,15 @@ public class CookieUtil {
 
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString()); // 헤더에 쿠키 추가
     }
+
+    public void addCookie(HttpServletResponse response, String key, String value, int maxAge) {
+        String cookie = ResponseCookie.from(key, value)
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(maxAge)
+                .build().toString() + "; SameSite=none"; // SameSite 설정 추가
+
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie);
+    }
 }
