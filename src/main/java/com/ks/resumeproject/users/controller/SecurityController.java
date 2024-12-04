@@ -68,7 +68,7 @@ public class SecurityController {
 
     @GetMapping("/isLogin")
     @Operation(summary = "로그인 여부 확인", description = "로그인 여부를 확인한다.")
-    public ResponseEntity<Map<String,Boolean>> isLogin(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<Map<String,Object>> isLogin(HttpServletRequest request, HttpServletResponse response) {
 
         String accessToken = cookieUtil.getCookie(request, "token");
         String refreshToken = cookieUtil.getCookie(request, "refreshed");
@@ -77,14 +77,15 @@ public class SecurityController {
             return ResponseEntity.ok(Map.of("isLogin", Boolean.FALSE));
         }
 
+        TokenDto tokenDto = userService.refreshAccessToken(refreshToken);
+
         if(accessToken == null){
-            TokenDto tokenDto = userService.refreshAccessToken(refreshToken);
             cookieUtil.addCookie(response, "token", tokenDto.getAccessToken(), EXPIRES_IN);
         }
 
         cookieUtil.addCookie(response, "refreshed", refreshToken, R_EXPIRES_IN);
 
-        return ResponseEntity.ok(Map.of("isLogin", Boolean.TRUE));
+        return ResponseEntity.ok(Map.of("isLogin", Boolean.TRUE, "result", tokenDto));
     }
 
     @GetMapping("/refresh")
@@ -174,21 +175,6 @@ public class SecurityController {
         manager.mapping();
 
         return "Success ReMapping";
-    }
-
-    @GetMapping(value= "/testAdmin")
-    public String testAdmin(HttpServletRequest request) {
-        return "Admin Test";
-    }
-
-    @GetMapping(value= "/testManager")
-    public String testManager(HttpServletRequest request) {
-        return "Manager Test";
-    }
-
-    @GetMapping(value= "/testUser")
-    public String testUser(HttpServletRequest request) {
-        return "User Test";
     }
 
 }

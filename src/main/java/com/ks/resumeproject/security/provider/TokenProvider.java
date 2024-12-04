@@ -72,7 +72,8 @@ public class TokenProvider {
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .tokenExpiresIn(accessTokenExpiresIn.getTime())
-                .randomId(((AccountContext)authentication.getPrincipal()).getAccountDto().getRandomId())
+                .randomId(accountDto.getRandomId())
+                .username(accountDto.getUsername())
                 .build();
     }
 
