@@ -1,5 +1,9 @@
 package com.ks.resumeproject.users.service.impl;
 
+import com.ks.resumeproject.error.domain.ErrorCode;
+import com.ks.resumeproject.error.domain.ErrorDto;
+import com.ks.resumeproject.error.exception.CustomCodeException;
+import com.ks.resumeproject.error.exception.CustomException;
 import com.ks.resumeproject.security.domain.AccountContext;
 import com.ks.resumeproject.security.domain.AccountDto;
 import com.ks.resumeproject.security.domain.TokenDto;
@@ -48,6 +52,19 @@ public class UserServiceImpl implements UserService {
         map.put("id",userMapper.getAccountId(accountDto));
 
         return userMapper.checkAccessYn(map);
+    }
+
+    @Override
+    public String refreshAccessToken(String refreshToken) {
+        if (!jwtTokenProvider.validateToken(refreshToken)) {
+            throw new CustomException(ErrorCode.USER_NOT_FOUND);
+        }
+
+        Authentication authentication = jwtTokenProvider.getAuthenticationFromRefresh(refreshToken);
+        List<AccountMyPageDto> accountMyPageDto = userMapper.pageList(new BigInteger(((AccountContext)authentication.getPrincipal()).getAccountDto().getId().toString()));
+
+        // 새로운 Access Token 발급
+        return jwtTokenProvider.generateToken(authentication, accountMyPageDto).getAccessToken();
     }
 
     @Override

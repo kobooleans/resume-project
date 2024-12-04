@@ -4,6 +4,7 @@ import com.ks.resumeproject.security.domain.AccountContext;
 import com.ks.resumeproject.security.domain.AccountDto;
 import com.ks.resumeproject.security.domain.TokenDto;
 import com.ks.resumeproject.security.manager.CustomDynamicAuthorizationManager;
+import com.ks.resumeproject.security.util.CookieUtil;
 import com.ks.resumeproject.security.util.SecurityUtil;
 import com.ks.resumeproject.test.domain.TestDto;
 import com.ks.resumeproject.users.service.UserService;
@@ -15,6 +16,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,6 +37,10 @@ public class SecurityController {
     private final UserService userService;
     private final CustomDynamicAuthorizationManager manager;
     private final SecurityUtil securityUtil;
+    private final CookieUtil cookieUtil;
+
+    private final int EXPIRES_IN = 900; // 토큰사용 가능시간
+    private final int R_EXPIRES_IN = 3600 * 24; // 리프레시 토큰 가능시간
 
     @Operation(summary = "계정 일치여부 조회", description = "JWT 형식의 사용자 정보를 가져와 계정 일치여부를 확인한다.")
     @GetMapping("/selectJsonData/{username}/{paramsName}")
@@ -43,7 +50,7 @@ public class SecurityController {
 
         Authentication authentication = SecurityContextHolder.getContextHolderStrategy().getContext().getAuthentication();
 
-        if(authentication.getPrincipal().equals("anonymousUser")){
+        if (authentication.getPrincipal().equals("anonymousUser")) {
             return ResponseEntity.ok(Map.of("loginUserEq", Boolean.TRUE));
         }
 
@@ -53,12 +60,49 @@ public class SecurityController {
 
     }
 
+    @GetMapping("/isLogin")
+    @Operation(summary = "로그인 여부 확인", description = "로그인 여부를 확인한다.")
+    public ResponseEntity<Map<String,Boolean>> isLogin(HttpServletRequest request, HttpServletResponse response) {
+
+        String accessToken = cookieUtil.getCookie(request, "token");
+        String refreshToken = cookieUtil.getCookie(request, "refreshed");
+
+        if(refreshToken == null){
+            return ResponseEntity.ok(Map.of("isLogin", Boolean.FALSE));
+        }
+
+        if(accessToken == null){
+            accessToken = userService.refreshAccessToken(refreshToken);
+            cookieUtil.addCookie(response, "token", accessToken, EXPIRES_IN);
+        }
+
+        return ResponseEntity.ok(Map.of("isLogin", Boolean.TRUE));
+    }
+
+    @GetMapping("/refresh")
+    @Operation(summary = "토큰 재생성", description = "시간 초과 시 토큰을 재생성한다.")
+    public ResponseEntity<Map<String,Boolean>> refresh(HttpServletRequest request, HttpServletResponse response) {
+
+        String refreshToken = cookieUtil.getCookie(request, "refreshed");
+
+        String accessToken = userService.refreshAccessToken(refreshToken);
+        cookieUtil.addCookie(response, "token", accessToken, EXPIRES_IN);
+
+        return ResponseEntity.ok(Map.of("isLogin", Boolean.TRUE));
+    }
+
     @Operation(summary = "로그인", description = "JWT 형식의 사용자 정보를 가져옵니다.")
     @PostMapping("/signin")
-    public TokenDto signIn(@RequestBody AccountDto accountDto) {
+    public TokenDto signIn(@RequestBody AccountDto accountDto, HttpServletResponse response) {
         String username = accountDto.getUsername();
         String password = accountDto.getPassword();
-        return userService.signIn(username, password);
+
+        TokenDto tokenDto = userService.signIn(username, password);
+
+        cookieUtil.addCookie(response, "token", tokenDto.getAccessToken(), EXPIRES_IN);
+        cookieUtil.addCookie(response, "refreshed", tokenDto.getRefreshToken(), R_EXPIRES_IN); // 하루
+
+        return tokenDto;
     }
 
     @Operation(summary = "회원가입 아이디 중복검사", description = "ROLE_USER 계정의 사용자의 username의 중복여부를 확인합니다.")
@@ -82,12 +126,13 @@ public class SecurityController {
     @GetMapping(value = "/logout")
     public ResponseEntity<Map<String, String>> logout(HttpServletRequest request, HttpServletResponse response) {
 
-        AccountContext accountContext = securityUtil.getAccount();
-
         Authentication authentication = SecurityContextHolder.getContextHolderStrategy().getContext().getAuthentication();
         if (authentication != null) {
             new SecurityContextLogoutHandler().logout(request, response, authentication);
         }
+
+        cookieUtil.removeCookie(response, "token");
+        cookieUtil.removeCookie(response, "refreshed");
 
         return ResponseEntity.ok(Map.of("result", "logout"));
     }

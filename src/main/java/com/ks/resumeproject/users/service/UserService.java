@@ -13,4 +13,6 @@ public interface UserService {
     boolean checkUsername(AccountDto accountDto);
 
     Map checkAccessYn(Map map);
+
+    String refreshAccessToken(String refreshToken);
 }
