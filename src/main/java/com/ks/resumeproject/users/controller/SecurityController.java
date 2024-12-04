@@ -40,7 +40,7 @@ public class SecurityController {
     private final CookieUtil cookieUtil;
 
     private final int EXPIRES_IN = 900; // 토큰사용 가능시간
-    private final int R_EXPIRES_IN = 3600 * 24; // 리프레시 토큰 가능시간
+    private final int R_EXPIRES_IN = 3600; // 리프레시 토큰 가능시간 1시간
 
 
     @GetMapping("/dummy")
@@ -78,9 +78,11 @@ public class SecurityController {
         }
 
         if(accessToken == null){
-            accessToken = userService.refreshAccessToken(refreshToken);
-            cookieUtil.addCookie(response, "token", accessToken, EXPIRES_IN);
+            TokenDto tokenDto = userService.refreshAccessToken(refreshToken);
+            cookieUtil.addCookie(response, "token", tokenDto.getAccessToken(), EXPIRES_IN);
         }
+
+        cookieUtil.addCookie(response, "refreshed", refreshToken, R_EXPIRES_IN);
 
         return ResponseEntity.ok(Map.of("isLogin", Boolean.TRUE));
     }
@@ -91,8 +93,9 @@ public class SecurityController {
 
         String refreshToken = cookieUtil.getCookie(request, "refreshed");
 
-        String accessToken = userService.refreshAccessToken(refreshToken);
-        cookieUtil.addCookie(response, "token", accessToken, EXPIRES_IN);
+        TokenDto tokenDto = userService.refreshAccessToken(refreshToken);
+        cookieUtil.addCookie(response, "token", tokenDto.getAccessToken(), EXPIRES_IN);
+        cookieUtil.addCookie(response, "token", tokenDto.getRefreshToken(), R_EXPIRES_IN);
 
         return ResponseEntity.ok(Map.of("isLogin", Boolean.TRUE));
     }

@@ -45,7 +45,7 @@ public class TokenProvider {
         long now = (new Date()).getTime();
 
         Date accessTokenExpiresIn = new Date(now + 15 * 60 * 1000); // 15분
-        Date refreshTokenExpiresIn = new Date(now + 24 * 60 * 60 * 1000); // 1일
+        Date refreshTokenExpiresIn = new Date(now + 60 * 60 * 1000); // 1시간
         AccountDto accountDto = ((AccountContext)authentication.getPrincipal()).getAccountDto();
 
         accountDto.setPassword(null);
