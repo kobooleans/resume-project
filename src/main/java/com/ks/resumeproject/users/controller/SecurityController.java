@@ -39,6 +39,9 @@ public class SecurityController {
     private final SecurityUtil securityUtil;
     private final CookieUtil cookieUtil;
 
+    private final int EXPIRES_IN = 900; // 토큰사용 가능시간
+    private final int R_EXPIRES_IN = 3600 * 24; // 리프레시 토큰 가능시간
+
     @Operation(summary = "계정 일치여부 조회", description = "JWT 형식의 사용자 정보를 가져와 계정 일치여부를 확인한다.")
     @GetMapping("/selectJsonData/{username}/{paramsName}")
     public ResponseEntity<Map<String, Boolean>> signIn(
@@ -59,8 +62,33 @@ public class SecurityController {
 
     @GetMapping("/isLogin")
     @Operation(summary = "로그인 여부 확인", description = "로그인 여부를 확인한다.")
-    public ResponseEntity<Map<String,Boolean>> isLogin(HttpServletRequest request) {
-        return ResponseEntity.ok(Map.of("isLogin",cookieUtil.getCookie(request, "token") != null));
+    public ResponseEntity<Map<String,Boolean>> isLogin(HttpServletRequest request, HttpServletResponse response) {
+
+        String accessToken = cookieUtil.getCookie(request, "token");
+        String refreshToken = cookieUtil.getCookie(request, "refreshed");
+
+        if(refreshToken == null){
+            return ResponseEntity.ok(Map.of("isLogin", Boolean.FALSE));
+        }
+
+        if(accessToken == null){
+            accessToken = userService.refreshAccessToken(refreshToken);
+            cookieUtil.addCookie(response, "token", accessToken, EXPIRES_IN);
+        }
+
+        return ResponseEntity.ok(Map.of("isLogin", Boolean.TRUE));
+    }
+
+    @GetMapping("/refresh")
+    @Operation(summary = "토큰 재생성", description = "시간 초과 시 토큰을 재생성한다.")
+    public ResponseEntity<Map<String,Boolean>> refresh(HttpServletRequest request, HttpServletResponse response) {
+
+        String refreshToken = cookieUtil.getCookie(request, "refreshed");
+
+        String accessToken = userService.refreshAccessToken(refreshToken);
+        cookieUtil.addCookie(response, "token", accessToken, EXPIRES_IN);
+
+        return ResponseEntity.ok(Map.of("isLogin", Boolean.TRUE));
     }
 
     @Operation(summary = "로그인", description = "JWT 형식의 사용자 정보를 가져옵니다.")
@@ -71,14 +99,8 @@ public class SecurityController {
 
         TokenDto tokenDto = userService.signIn(username, password);
 
-        String cookie = ResponseCookie.from("token", tokenDto.getAccessToken())
-                .httpOnly(true)
-                .secure(true)
-                .path("/")
-                .maxAge(3600)
-                .build().toString() + "; SameSite=none"; // SameSite 설정 추가
-
-        response.addHeader(HttpHeaders.SET_COOKIE, cookie);
+        cookieUtil.addCookie(response, "token", tokenDto.getAccessToken(), EXPIRES_IN);
+        cookieUtil.addCookie(response, "refreshed", tokenDto.getRefreshToken(), R_EXPIRES_IN); // 하루
 
         return tokenDto;
     }
@@ -110,6 +132,7 @@ public class SecurityController {
         }
 
         cookieUtil.removeCookie(response, "token");
+        cookieUtil.removeCookie(response, "refreshed");
 
         return ResponseEntity.ok(Map.of("result", "logout"));
     }
