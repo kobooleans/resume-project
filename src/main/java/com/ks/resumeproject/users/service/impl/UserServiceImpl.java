@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String refreshAccessToken(String refreshToken) {
+    public TokenDto refreshAccessToken(String refreshToken) {
         if (!jwtTokenProvider.validateToken(refreshToken)) {
             throw new CustomException(ErrorCode.USER_NOT_FOUND);
         }
@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
         List<AccountMyPageDto> accountMyPageDto = userMapper.pageList(new BigInteger(((AccountContext)authentication.getPrincipal()).getAccountDto().getId().toString()));
 
         // 새로운 Access Token 발급
-        return jwtTokenProvider.generateToken(authentication, accountMyPageDto).getAccessToken();
+        return jwtTokenProvider.generateToken(authentication, accountMyPageDto);
     }
 
     @Override
