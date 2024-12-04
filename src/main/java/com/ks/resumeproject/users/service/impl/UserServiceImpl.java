@@ -51,7 +51,12 @@ public class UserServiceImpl implements UserService {
         accountDto.setUsername(map.get("username").toString());
         map.put("id",userMapper.getAccountId(accountDto));
 
-        return userMapper.checkAccessYn(map);
+        Map resultMap = userMapper.checkAccessYn(map);
+        if(resultMap != null){
+            return resultMap;
+        }
+
+        return Map.of("accessYn",false);
     }
 
     @Override

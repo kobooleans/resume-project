@@ -42,6 +42,12 @@ public class SecurityController {
     private final int EXPIRES_IN = 900; // 토큰사용 가능시간
     private final int R_EXPIRES_IN = 3600 * 24; // 리프레시 토큰 가능시간
 
+
+    @GetMapping("/dummy")
+    public ResponseEntity<Map<String,Object>> dummy(HttpServletRequest request, HttpServletResponse response) {
+        return ResponseEntity.ok(Map.of("result", "dummy"));
+    }
+
     @Operation(summary = "계정 일치여부 조회", description = "JWT 형식의 사용자 정보를 가져와 계정 일치여부를 확인한다.")
     @GetMapping("/selectJsonData/{username}/{paramsName}")
     public ResponseEntity<Map<String, Boolean>> signIn(
@@ -139,11 +145,11 @@ public class SecurityController {
 
     @Operation(summary = "페이지 접근", description = "페이지 접근 가능여부를 확인한다.")
     @PostMapping(value = "/access")
-    public ResponseEntity<Map<String, Boolean>> access(@RequestBody Map map){
+    public ResponseEntity<Map<String, Map>> access(@RequestBody Map map){
 
         Map result = userService.checkAccessYn(map);
 
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(Map.of("result",result));
     }
 
 
