@@ -1,12 +1,10 @@
 package com.ks.resumeproject.users.controller;
 
-import com.ks.resumeproject.security.domain.AccountContext;
 import com.ks.resumeproject.security.domain.AccountDto;
 import com.ks.resumeproject.security.domain.TokenDto;
 import com.ks.resumeproject.security.manager.CustomDynamicAuthorizationManager;
 import com.ks.resumeproject.security.util.CookieUtil;
 import com.ks.resumeproject.security.util.SecurityUtil;
-import com.ks.resumeproject.test.domain.TestDto;
 import com.ks.resumeproject.users.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -16,8 +14,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,7 +21,6 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Security;
 import java.util.Map;
 
 @RestController
@@ -121,6 +116,14 @@ public class SecurityController {
         Boolean success = userService.checkUsername(accountDto);
 
         return ResponseEntity.ok(Map.of("isSuccess", success));
+    }
+
+    @Operation(summary = "이메일 인증 코드 전송", description = "ROLE_USER 계정의 사용자의 username의 중복여부를 확인합니다.")
+    @PostMapping(value = "/signup/sendEmail")
+    public ResponseEntity<Map<String,Object>> sendEmail(@Valid @RequestBody AccountDto accountDto) {
+        Map<String,Object> success = userService.sendEmail(accountDto);
+
+        return ResponseEntity.ok(Map.of("isSuccess", success.get("success"), "message", success.get("message")));
     }
 
     @Operation(summary = "회원가입", description = "ROLE_USER 계정의 사용자를 등록합니다.")
