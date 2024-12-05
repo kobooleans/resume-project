@@ -12,14 +12,38 @@
         ]]>
     </select>
 
+    <select id="checkEmail" parameterType="AccountDto" resultType="java.lang.String">
+        <![CDATA[
+        SELECT CASE WHEN COUNT(*) = 0 THEN 'Y' ELSE 'N' END EMAIL_USE_YN
+        FROM ACCOUNT
+        WHERE USER_EMAIL = #{userEmail}
+        ]]>
+    </select>
+
     <insert id="signUp" parameterType="AccountDto">
         <![CDATA[
-            INSERT INTO ACCOUNT(ID, USERNAME, PASSWORD, ROLE_TYPE)
-            SELECT COALESCE(NULLIF(MAX(ID), 0), 0) + 1, #{username}, #{password}, #{roleType}
+            INSERT INTO ACCOUNT(ID, USERNAME, PASSWORD, USER_EMAIL, ROLE_TYPE)
+            SELECT COALESCE(NULLIF(MAX(ID), 0), 0) + 1, #{username}, #{password}, #{userEmail}, #{roleType}
               FROM ACCOUNT
              ORDER BY MAX(ID) DESC
         ]]>
     </insert>
+
+    <insert id="insertAuthCode" parameterType="EmailCodeDto">
+        <![CDATA[
+        INSERT INTO EMAIL_AUTH(ID, USER_EMAIL, AUTH_CODE, CODE_SEND_DATE)
+        SELECT COALESCE(NULLIF(MAX(ID), 0), 0) + 1, #{userEmail}, #{authCode}, TO_CHAR(NOW(), 'YYYYMMDDHH24MISS')
+        FROM EMAIL_AUTH
+        ORDER BY MAX(ID) DESC
+        ]]>
+    </insert>
+
+    <select id="selectAuthCode" parameterType="EmailCodeDto" resultType="java.util.Map">
+        SELECT MAX(CODE_SEND_DATE)
+        FROM EMAIL_AUTH
+        WHERE USER_EMAIL = #{userEmail}
+          AND AUTH_CODE = #{authCode}
+    </select>
 
     <select id="getAccountId" parameterType="AccountDto" resultType="java.math.BigInteger">
         SELECT ID

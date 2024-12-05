@@ -12,6 +12,8 @@ public interface UserService {
     TokenDto signIn(String username, String password);
 
     boolean checkUsername(AccountDto accountDto);
+    boolean checkEmail(AccountDto accountDto);
+    Map<String,Object> sendEmail(AccountDto accountDto);
 
     Map checkAccessYn(Map map);
 

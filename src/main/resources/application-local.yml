@@ -24,6 +24,23 @@ spring:
       max-file-size: 10MB
       max-request-size: 30MB
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ***REMOVED***
+    password: ***REMOVED***
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+      auth-code-expiration-millis: 1800000
+
 server:
   port: 8080
   servlet:
@@ -53,3 +70,4 @@ allowed:
 
 jwt:
   secret: ***REMOVED***
+

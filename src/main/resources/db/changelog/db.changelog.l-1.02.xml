@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="changelog.l-1.02" author="LJW">
+
+        <addColumn tableName="ACCOUNT">
+            <column name="USER_EMAIL" type="varchar2" remarks="사용자 이메일">
+                <constraints primaryKey="false"/>
+            </column>
+        </addColumn>
+
+
+
+        <createTable tableName="EMAIL_AUTH">
+            <column name="ID" type="bigint" remarks="ID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="USER_EMAIL" type="varchar2" remarks="사용자 EMAIL">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="AUTH_CODE" type="varchar2" remarks="EMAIL 인증 코드">
+                <constraints primaryKey="false" nullable="false"/>
+            </column>
+            <column name="CODE_SEND_DATE" type="varchar2" remarks="인증코드 발송일시">
+                <constraints primaryKey="false" nullable="false"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+</databaseChangeLog>
