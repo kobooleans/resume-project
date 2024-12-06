@@ -71,3 +71,9 @@ allowed:
 jwt:
   secret: ***REMOVED***
 
+aws:
+  s3:
+    bucket-name: cv-fit-s3
+    region: ap-northeast-2
+    access-key: ***REMOVED***
+    secret-key: ***REMOVED***

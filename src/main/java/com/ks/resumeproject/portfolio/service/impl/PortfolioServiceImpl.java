@@ -3,6 +3,7 @@ package com.ks.resumeproject.portfolio.service.impl;
 import com.ks.resumeproject.error.domain.ErrorDto;
 import com.ks.resumeproject.error.exception.CustomCodeException;
 import com.ks.resumeproject.error.exception.CustomException;
+import com.ks.resumeproject.multi.domain.FileDto;
 import com.ks.resumeproject.multi.service.MultiFileService;
 import com.ks.resumeproject.portfolio.domain.*;
 import com.ks.resumeproject.portfolio.repository.PortfolioMapper;
@@ -90,7 +91,15 @@ public class PortfolioServiceImpl implements PortfolioService {
         AccountDto account = securityService.selectUserAccount(portfolioDto.getUsername());
         portfolioDto.setId(account.getId());
 
-        return portfolioMapper.portfolioAllList(portfolioDto);
+        List<PortfolioDto> portfolioDtoList = portfolioMapper.portfolioAllList(portfolioDto);
+
+        for(PortfolioDto portDto : portfolioDtoList){
+            if(portDto.getImgBucketKey() != null){
+                portDto.setImgFile(multiFileService.downloadFile(portDto.getImgBucketKey()));
+            }
+        }
+
+        return portfolioDtoList;
     }
 
     @Override
@@ -195,10 +204,20 @@ public class PortfolioServiceImpl implements PortfolioService {
         portfolioDto.setId(account.getId());
 
         PortfolioDto portDto = portfolioMapper.portfolioList(portfolioDto);
+
+        if(portDto.getImgBucketKey() != null){
+            portDto.setImgFile(multiFileService.downloadFile(portDto.getImgBucketKey()));
+        }
+
         portDto.setDetailList(portfolioMapper.portfolioDetailList(portfolioDto));
 
         if(portDto.getFileId() != null){
-            portDto.setFileList(portfolioMapper.fileList(portDto));
+            List<FileDto> fileDtoList = portfolioMapper.fileList(portDto);
+            for(FileDto fileDto : fileDtoList){
+                byte[] bytes = multiFileService.downloadFile(fileDto.getBucketKey());
+                fileDto.setFile(bytes);
+            }
+            portDto.setFileList(fileDtoList);
         }
 
         BigInteger skillId = portfolioMapper.selectPortSkillId(portfolioDto);

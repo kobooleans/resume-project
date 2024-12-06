@@ -16,8 +16,8 @@
     <insert id="setFile" parameterType="FileDto">
         <![CDATA[
             INSERT
-              INTO FILE(file_id, file_sub_id, file_nm, file, file_type, use_yn)
-            VALUES (#{fileId}, #{fileSubId}, #{fileNm}, #{file, jdbcType=BLOB, javaType=[B}, #{fileType}, #{useYn})
+              INTO FILE(file_id, file_sub_id, file_nm, file_type, use_yn, bucket_key)
+            VALUES (#{fileId}, #{fileSubId}, #{fileNm}, #{fileType}, #{useYn}, #{bucketKey})
         ]]>
     </insert>
 
@@ -51,7 +51,7 @@
 
     <select id="getFileList" resultType="FileDto" parameterType="java.math.BigInteger">
         <![CDATA[
-            SELECT FILE_ID, FILE_SUB_ID, FILE_NM, FILE, FILE_TYPE, USE_YN
+            SELECT FILE_ID, FILE_SUB_ID, FILE_NM, FILE, FILE_TYPE, USE_YN, bucket_key
              FROM FILE
             WHERE FILE_ID = #{fileId}
               AND USE_YN = 'Y'

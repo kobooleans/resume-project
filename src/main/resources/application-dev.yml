@@ -62,3 +62,10 @@ jwt:
 
 allowed:
   origins: http://study.koboolean.site:2023/,http://192.168.45.161:2023/
+
+aws:
+  s3:
+    bucket-name: cv-fit-s3
+    region: ap-northeast-2
+    access-key: ***REMOVED***
+    secret-key: ***REMOVED***

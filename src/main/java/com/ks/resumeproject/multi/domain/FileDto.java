@@ -12,4 +12,5 @@ public class FileDto {
     private byte[] file;
     private String fileType;
     private String useYn;
+    private String bucketKey;
 }
