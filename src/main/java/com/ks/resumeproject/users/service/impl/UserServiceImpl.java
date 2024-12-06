@@ -1,8 +1,6 @@
 package com.ks.resumeproject.users.service.impl;
 
 import com.ks.resumeproject.error.domain.ErrorCode;
-import com.ks.resumeproject.error.domain.ErrorDto;
-import com.ks.resumeproject.error.exception.CustomCodeException;
 import com.ks.resumeproject.error.exception.CustomException;
 import com.ks.resumeproject.security.domain.AccountContext;
 import com.ks.resumeproject.security.domain.AccountDto;
@@ -25,6 +23,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
@@ -46,6 +46,8 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final ComUtil comUtil;
     private final MailUtil mailUtil;
+
+    private final TemplateEngine templateEngine;
 
     private static final String EMAIL_REGEX =
             "^[a-zA-Z0-9_+&*-]+(?:\\." +
@@ -84,8 +86,15 @@ public class UserServiceImpl implements UserService {
         emailCodeDto.setAuthCode(authCode);
         boolean emailCodeChk = userMapper.insertAuthCode(emailCodeDto);
         if(emailCodeChk) {
+
+            Context context = new Context();
+            context.setVariable("username", email);
+            context.setVariable("authCode", authCode);
+
+            String htmlContent = templateEngine.process("email-template", context);
+
             //이메일 전송
-            mailUtil.sendEmail(accountDto.getUserEmail(), "CVFit 인증 메일 입니다.", authCode);
+            mailUtil.sendEmail(email, "CVFit 인증 메일 입니다.", htmlContent);
             return Map.of("success", true, "message", "");
         }else{
             return Map.of("success", false, "message", "이메일 전송에 실패하였습니다.");
