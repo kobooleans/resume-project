@@ -55,7 +55,7 @@ public class TokenProvider {
                 .claim("auth", accountDto.getRoleType())
                 .claim("accountMyPage", accountMyPageDto)
                 .claim("account", accountDto) // account 추가 반영
-                .setExpiration(accessTokenExpiresIn)
+                .expiration(accessTokenExpiresIn)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
@@ -74,6 +74,7 @@ public class TokenProvider {
                 .tokenExpiresIn(accessTokenExpiresIn.getTime())
                 .randomId(accountDto.getRandomId())
                 .username(accountDto.getUsername())
+                .tokenExpires(accessTokenExpiresIn)
                 .build();
     }
 
