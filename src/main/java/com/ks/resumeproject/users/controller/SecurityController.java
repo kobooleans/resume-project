@@ -21,6 +21,7 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -72,28 +73,13 @@ public class SecurityController {
             return ResponseEntity.ok(Map.of("isLogin", Boolean.FALSE));
         }
 
-        TokenDto tokenDto = userService.refreshAccessToken(refreshToken);
+        AccountDto dto = securityUtil.getAccount().getAccountDto();
 
-        if(accessToken == null){
-            cookieUtil.addCookie(response, "token", tokenDto.getAccessToken(), EXPIRES_IN);
-        }
+        Map<String, String> result = new HashMap<>();
+        result.put("username", dto.getUsername());
+        result.put("randomId", dto.getRandomId());
 
-        cookieUtil.addCookie(response, "refreshed", refreshToken, R_EXPIRES_IN);
-
-        return ResponseEntity.ok(Map.of("isLogin", Boolean.TRUE, "result", tokenDto));
-    }
-
-    @GetMapping("/refresh")
-    @Operation(summary = "토큰 재생성", description = "시간 초과 시 토큰을 재생성한다.")
-    public ResponseEntity<Map<String,Boolean>> refresh(HttpServletRequest request, HttpServletResponse response) {
-
-        String refreshToken = cookieUtil.getCookie(request, "refreshed");
-
-        TokenDto tokenDto = userService.refreshAccessToken(refreshToken);
-        cookieUtil.addCookie(response, "token", tokenDto.getAccessToken(), EXPIRES_IN);
-        cookieUtil.addCookie(response, "token", tokenDto.getRefreshToken(), R_EXPIRES_IN);
-
-        return ResponseEntity.ok(Map.of("isLogin", Boolean.TRUE));
+        return ResponseEntity.ok(Map.of("isLogin", Boolean.TRUE, "result", result));
     }
 
     @Operation(summary = "로그인", description = "JWT 형식의 사용자 정보를 가져옵니다.")
