@@ -22,4 +22,6 @@ public interface MultiFileService {
     BigInteger deleteFile(MultiFormDto fileId);
 
     FileDto inputImage(@Valid MultiFormDto form);
+
+    byte[] downloadFile(String fileId);
 }

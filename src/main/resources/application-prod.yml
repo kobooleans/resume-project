@@ -58,3 +58,11 @@ jwt:
 
 allowed:
   origins: https://www.cv-fit.com,https://cv-fit.com
+
+aws:
+  s3:
+    bucket-name: cv-fit-s3
+    region: ap-northeast-2
+    access-key: AKIA3YKFWDKX42JSB7N7
+    secret-key: 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
+

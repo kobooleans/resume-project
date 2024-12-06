@@ -71,3 +71,9 @@ allowed:
 jwt:
   secret: 511b0f52445969be5e0cedb7e7f89a183758eeb27c7270711c83cc057222587
 
+aws:
+  s3:
+    bucket-name: cv-fit-s3
+    region: ap-northeast-2
+    access-key: AKIA3YKFWDKX42JSB7N7
+    secret-key: 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

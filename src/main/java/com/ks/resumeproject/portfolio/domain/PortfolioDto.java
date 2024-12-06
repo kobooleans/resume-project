@@ -20,6 +20,7 @@ public class PortfolioDto {
     private BigInteger fileId;
     private BigInteger imgFileId;
     private byte[] imgFile;
+    private String imgBucketKey;
     private Date startYmd;
     private Date endYmd;
     private Boolean mdUseYn;
