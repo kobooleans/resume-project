@@ -14,6 +14,7 @@ public interface UserService {
     boolean checkUsername(AccountDto accountDto);
     boolean checkEmail(AccountDto accountDto);
     Map<String,Object> sendEmail(AccountDto accountDto);
+    Map updateEmail(AccountDto accountDto);
 
     Map checkAccessYn(Map map);
 

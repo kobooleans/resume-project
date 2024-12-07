@@ -112,6 +112,13 @@ public class SecurityController {
         return ResponseEntity.ok(Map.of("isSuccess", success.get("success"), "message", success.get("message")));
     }
 
+    @Operation(summary = "이메일 변경", description = "이메일 변경한다.")
+    @PostMapping("/memberManage/updateEmail")
+    public ResponseEntity<Map> updateEmail(@RequestBody AccountDto accountDto){
+        Map<String,Object> success = userService.updateEmail(accountDto);
+        return ResponseEntity.ok(Map.of("result",success.get("success")));
+    }
+
     @Operation(summary = "회원가입", description = "ROLE_USER 계정의 사용자를 등록합니다.")
     @PostMapping(value = "/signup")
     public ResponseEntity<Map<String, String>> signup(@Valid @RequestBody AccountDto accountDto) {

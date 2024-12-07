@@ -18,6 +18,7 @@ public interface UserMapper {
     String checkEmail(AccountDto accountDto);
     boolean insertAuthCode(EmailCodeDto emailCodeDto);
     Map selectAuthCode(EmailCodeDto emailCodeDto);
+    boolean updateEmail(AccountDto accountDto);
     void signUp(AccountDto accountDto);
 
     BigInteger getAccountId(AccountDto accountDto);
