@@ -7,6 +7,7 @@ import com.ks.resumeproject.security.domain.AccountDto;
 import com.ks.resumeproject.security.domain.EmailCodeDto;
 import com.ks.resumeproject.security.domain.TokenDto;
 import com.ks.resumeproject.security.provider.TokenProvider;
+import com.ks.resumeproject.security.util.SecurityUtil;
 import com.ks.resumeproject.users.domain.AccountMyPageDto;
 import com.ks.resumeproject.users.domain.PageDto;
 import com.ks.resumeproject.users.repository.UserMapper;
@@ -46,7 +47,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final ComUtil comUtil;
     private final MailUtil mailUtil;
-
+    private final SecurityUtil securityUtil;
     private final TemplateEngine templateEngine;
 
     private static final String EMAIL_REGEX =
@@ -98,6 +99,28 @@ public class UserServiceImpl implements UserService {
             return Map.of("success", true, "message", "");
         }else{
             return Map.of("success", false, "message", "이메일 전송에 실패하였습니다.");
+        }
+
+    }
+
+
+    @Override
+    public Map updateEmail(AccountDto accountDto) {
+        EmailCodeDto emailCodeDto = new EmailCodeDto();
+        emailCodeDto.setAuthCode(accountDto.getAuthCode());
+        emailCodeDto.setUserEmail(accountDto.getUserEmail());
+        Map authCodeChk = userMapper.selectAuthCode(emailCodeDto);
+        if(authCodeChk == null || authCodeChk.isEmpty()){
+            throw new AuthenticationServiceException("이메일 인증에 실패하였습니다.");
+        }
+        AccountDto account  = securityUtil.getAccount().getAccountDto();
+        accountDto.setUsername(account.getUsername());
+        accountDto.setId(account.getId());
+        boolean updateEmailChk = userMapper.updateEmail(accountDto);
+        if(updateEmailChk) {
+            return Map.of("success", true);
+        }else{
+            return Map.of("success", false);
         }
 
     }

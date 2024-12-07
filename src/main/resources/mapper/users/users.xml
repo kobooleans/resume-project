@@ -29,6 +29,15 @@
         ]]>
     </insert>
 
+
+    <update id="updateEmail" parameterType="AccountDto">
+        <![CDATA[
+        UPDATE ACCOUNT
+        SET USER_EMAIL = #{userEmail}
+        WHERE id       = #{id}
+          AND username = #{username}
+        ]]>
+    </update>
     <insert id="insertAuthCode" parameterType="EmailCodeDto">
         <![CDATA[
         INSERT INTO EMAIL_AUTH(ID, USER_EMAIL, AUTH_CODE, CODE_SEND_DATE)
