@@ -112,6 +112,14 @@ public class SecurityController {
         return ResponseEntity.ok(Map.of("isSuccess", success.get("success"), "message", success.get("message")));
     }
 
+
+    @Operation(summary = "이메일 인증 확인", description = "이메일 인증을 확인한다.")
+    @PostMapping("/memberManage/checkEmailAuth")
+    public ResponseEntity<Map> checkEmailAuth(@RequestBody AccountDto accountDto){
+        boolean success = userService.checkEmailAuth(accountDto);
+        return ResponseEntity.ok(Map.of("result",success));
+    }
+
     @Operation(summary = "이메일 변경", description = "이메일 변경한다.")
     @PostMapping("/memberManage/updateEmail")
     public ResponseEntity<Map> updateEmail(@RequestBody AccountDto accountDto){

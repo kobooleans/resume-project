@@ -16,6 +16,7 @@ public interface UserMapper {
 
     String userNameCheck(AccountDto accountDto);
     String checkEmail(AccountDto accountDto);
+    String checkEmailAuth(AccountDto accountDto);
     boolean insertAuthCode(EmailCodeDto emailCodeDto);
     Map selectAuthCode(EmailCodeDto emailCodeDto);
     boolean updateEmail(AccountDto accountDto);

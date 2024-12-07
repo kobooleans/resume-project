@@ -66,6 +66,13 @@ public class UserServiceImpl implements UserService {
         return userMapper.checkEmail(accountDto).equals("Y");
     }
 
+    @Override
+    public boolean checkEmailAuth(AccountDto accountDto) {
+        AccountDto account  = securityUtil.getAccount().getAccountDto();
+        accountDto.setUsername(account.getUsername());
+        accountDto.setId(account.getId());
+        return userMapper.checkEmailAuth(accountDto).equals("Y");
+    }
 
     @Override
     public Map<String,Object> sendEmail(AccountDto accountDto) {

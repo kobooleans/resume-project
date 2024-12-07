@@ -12,14 +12,6 @@
         ]]>
     </select>
 
-    <select id="checkEmail" parameterType="AccountDto" resultType="java.lang.String">
-        <![CDATA[
-        SELECT CASE WHEN COUNT(*) = 0 THEN 'Y' ELSE 'N' END EMAIL_USE_YN
-        FROM ACCOUNT
-        WHERE USER_EMAIL = #{userEmail}
-        ]]>
-    </select>
-
     <insert id="signUp" parameterType="AccountDto">
         <![CDATA[
             INSERT INTO ACCOUNT(ID, USERNAME, PASSWORD, USER_EMAIL, ROLE_TYPE)
@@ -30,6 +22,22 @@
     </insert>
 
 
+    <select id="checkEmail" parameterType="AccountDto" resultType="java.lang.String">
+        <![CDATA[
+        SELECT CASE WHEN COUNT(*) = 0 THEN 'Y' ELSE 'N' END EMAIL_USE_YN
+        FROM ACCOUNT
+        WHERE USER_EMAIL = #{userEmail}
+        ]]>
+    </select>
+
+    <select id="checkEmailAuth" parameterType="AccountDto" resultType="java.lang.String">
+        <![CDATA[
+        SELECT CASE WHEN NULLIF(USER_EMAIL, '') IS NULL THEN 'N' ELSE 'Y' END EMAIL_AUTH
+        FROM ACCOUNT
+        WHERE id       = #{id}
+          AND username = #{username}
+        ]]>
+    </select>
     <update id="updateEmail" parameterType="AccountDto">
         <![CDATA[
         UPDATE ACCOUNT
