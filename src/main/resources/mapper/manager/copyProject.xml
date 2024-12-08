@@ -320,7 +320,7 @@
 
     <select id="selectPortfolioFileList" parameterType="ProjectDto" resultType="FileDto">
         <![CDATA[
-           select b.file_id, b.file_sub_id, b.file_nm, b.file, b.file_type, b.use_yn
+           select b.file_id, b.file_sub_id, b.file_nm, b.bucket_key, b.file_type, b.use_yn
              from portfolio a
              join file b
                on a.file_id = b.file_id
@@ -331,7 +331,7 @@
 
     <select id="selectPortfolioImgFileList" parameterType="ProjectDto" resultType="FileDto">
         <![CDATA[
-        select f.file_id, f.file_sub_id, f.file_nm, f.file, f.file_type, f.use_yn
+        select f.file_id, f.file_sub_id, f.file_nm, f.bucket_key, f.file_type, f.use_yn
           from portfolio p
           join file f
             on p.img_file_id = f.file_id
@@ -342,8 +342,8 @@
 
     <insert id="copyFile" parameterType="ProjectDto">
         <![CDATA[
-            insert into file(file_id, file_sub_id, file_nm, file, file_type, use_yn)
-            select #{copyFileId}, file_sub_id, file_nm, file, file_type, use_yn
+            insert into file(file_id, file_sub_id, file_nm, file_type, use_yn, bucket_key)
+            select #{copyFileId}, file_sub_id, file_nm, file_type, use_yn, bucket_key
             from file
             where file_id = #{fileId}
         ]]>
