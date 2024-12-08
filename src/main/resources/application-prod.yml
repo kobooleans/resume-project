@@ -16,6 +16,22 @@ spring:
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.xml
     enabled: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ***REMOVED***
+    password: ***REMOVED***
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+      auth-code-expiration-millis: 1800000
 
 server:
   port: 80
@@ -23,6 +39,8 @@ server:
     encoding:
       charset: UTF-8
       force: true
+
+
 
 mybatis:
   mapper-locations: classpath:mapper/**/*.xml
@@ -40,3 +58,11 @@ jwt:
 
 allowed:
   origins: https://www.cv-fit.com,https://cv-fit.com
+
+aws:
+  s3:
+    bucket-name: cv-fit-s3
+    region: ap-northeast-2
+    access-key: ***REMOVED***
+    secret-key: ***REMOVED***
+

@@ -1,12 +1,10 @@
 package com.ks.resumeproject.users.controller;
 
-import com.ks.resumeproject.security.domain.AccountContext;
 import com.ks.resumeproject.security.domain.AccountDto;
 import com.ks.resumeproject.security.domain.TokenDto;
 import com.ks.resumeproject.security.manager.CustomDynamicAuthorizationManager;
 import com.ks.resumeproject.security.util.CookieUtil;
 import com.ks.resumeproject.security.util.SecurityUtil;
-import com.ks.resumeproject.test.domain.TestDto;
 import com.ks.resumeproject.users.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -16,8 +14,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,7 +21,7 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Security;
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -77,28 +73,13 @@ public class SecurityController {
             return ResponseEntity.ok(Map.of("isLogin", Boolean.FALSE));
         }
 
-        TokenDto tokenDto = userService.refreshAccessToken(refreshToken);
+        AccountDto dto = securityUtil.getAccount().getAccountDto();
 
-        if(accessToken == null){
-            cookieUtil.addCookie(response, "token", tokenDto.getAccessToken(), EXPIRES_IN);
-        }
+        Map<String, String> result = new HashMap<>();
+        result.put("username", dto.getUsername());
+        result.put("randomId", dto.getRandomId());
 
-        cookieUtil.addCookie(response, "refreshed", refreshToken, R_EXPIRES_IN);
-
-        return ResponseEntity.ok(Map.of("isLogin", Boolean.TRUE, "result", tokenDto));
-    }
-
-    @GetMapping("/refresh")
-    @Operation(summary = "토큰 재생성", description = "시간 초과 시 토큰을 재생성한다.")
-    public ResponseEntity<Map<String,Boolean>> refresh(HttpServletRequest request, HttpServletResponse response) {
-
-        String refreshToken = cookieUtil.getCookie(request, "refreshed");
-
-        TokenDto tokenDto = userService.refreshAccessToken(refreshToken);
-        cookieUtil.addCookie(response, "token", tokenDto.getAccessToken(), EXPIRES_IN);
-        cookieUtil.addCookie(response, "token", tokenDto.getRefreshToken(), R_EXPIRES_IN);
-
-        return ResponseEntity.ok(Map.of("isLogin", Boolean.TRUE));
+        return ResponseEntity.ok(Map.of("isLogin", Boolean.TRUE, "result", result));
     }
 
     @Operation(summary = "로그인", description = "JWT 형식의 사용자 정보를 가져옵니다.")
@@ -121,6 +102,29 @@ public class SecurityController {
         Boolean success = userService.checkUsername(accountDto);
 
         return ResponseEntity.ok(Map.of("isSuccess", success));
+    }
+
+    @Operation(summary = "이메일 인증 코드 전송", description = "ROLE_USER 계정의 사용자의 username의 중복여부를 확인합니다.")
+    @PostMapping(value = "/signup/sendEmail")
+    public ResponseEntity<Map<String,Object>> sendEmail(@Valid @RequestBody AccountDto accountDto) {
+        Map<String,Object> success = userService.sendEmail(accountDto);
+
+        return ResponseEntity.ok(Map.of("isSuccess", success.get("success"), "message", success.get("message")));
+    }
+
+
+    @Operation(summary = "이메일 인증 확인", description = "이메일 인증을 확인한다.")
+    @PostMapping("/memberManage/checkEmailAuth")
+    public ResponseEntity<Map> checkEmailAuth(@RequestBody AccountDto accountDto){
+        boolean success = userService.checkEmailAuth(accountDto);
+        return ResponseEntity.ok(Map.of("result",success));
+    }
+
+    @Operation(summary = "이메일 변경", description = "이메일 변경한다.")
+    @PostMapping("/memberManage/updateEmail")
+    public ResponseEntity<Map> updateEmail(@RequestBody AccountDto accountDto){
+        Map<String,Object> success = userService.updateEmail(accountDto);
+        return ResponseEntity.ok(Map.of("result",success.get("success")));
     }
 
     @Operation(summary = "회원가입", description = "ROLE_USER 계정의 사용자를 등록합니다.")

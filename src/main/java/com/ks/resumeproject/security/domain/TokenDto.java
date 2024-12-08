@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,5 +17,6 @@ public class TokenDto {
     private String accessToken;
     private String refreshToken;
     private long tokenExpiresIn;
+    private Date tokenExpires;
     private String randomId;
 }

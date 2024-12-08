@@ -83,7 +83,7 @@
                  , A.IMG_FILE_ID
                  , A.START_YMD
                  , A.END_YMD
-                 , B.FILE AS IMG_FILE
+                 , B.BUCKET_KEY AS IMG_BUCKET_KEY
               FROM PORTFOLIO A
               LEFT OUTER JOIN category C
                 ON A.category_id = C.category_id
@@ -241,7 +241,7 @@
                  , A.START_YMD
                  , A.END_YMD
                  , B.CATEGORY_NM
-                 , C.FILE AS IMG_FILE
+                 , C.BUCKET_KEY AS IMG_BUCKET_KEY
                  , A.MD_USE_YN
                  , A.MD_DATA
               FROM PORTFOLIO A
@@ -263,9 +263,9 @@
             SELECT FILE_ID
                  , FILE_SUB_ID
                  , FILE_NM
-                 , FILE
                  , FILE_TYPE
                  , USE_YN
+                 , BUCKET_KEY
               FROM FILE
              WHERE FILE_ID  = #{fileId}
                AND USE_YN   = 'Y'

@@ -6,8 +6,15 @@ import com.ks.resumeproject.multi.service.MultiFileService;
 import com.ks.resumeproject.multi.domain.FileDto;
 import com.ks.resumeproject.security.domain.AccountDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.core.ResponseBytes;
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectResponse;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -19,6 +26,13 @@ import java.util.stream.Stream;
 public class MultiFileServiceImpl implements MultiFileService {
 
     private final MultiFileMapper multiFileMapper;
+    private final S3Client s3Client;
+
+    @Value("${aws.s3.bucket-name}")
+    private String bucketName;
+
+    @Value("${spring.profiles.active}")
+    private String active;
 
     @Override
     public BigInteger setFile(MultiFormDto form) {
@@ -36,13 +50,15 @@ public class MultiFileServiceImpl implements MultiFileService {
             try {
                 MultipartFile f = (MultipartFile) file;
 
+                String key = uploadFile(f);
+
                 FileDto fileDto = new FileDto();
-                fileDto.setFile(f.getBytes());
                 fileDto.setFileType(f.getContentType());
                 fileDto.setFileNm(f.getOriginalFilename());
                 fileDto.setUseYn("N");
                 fileDto.setFileId(result);
                 fileDto.setFileSubId(file_sub_title);
+                fileDto.setBucketKey(key);
                 multiFileMapper.setFile(fileDto);
 
                 file_sub_title++;
@@ -56,7 +72,11 @@ public class MultiFileServiceImpl implements MultiFileService {
 
     @Override
     public List<FileDto> getFileList(BigInteger fileId) {
-        return multiFileMapper.getFileList(fileId);
+        List<FileDto> fileList = multiFileMapper.getFileList(fileId);
+        for(final FileDto fileDto : fileList){
+            if(fileDto.getBucketKey() != null) fileDto.setFile(downloadFile(fileDto.getBucketKey()));
+        }
+        return fileList;
     }
 
     @Override
@@ -90,13 +110,15 @@ public class MultiFileServiceImpl implements MultiFileService {
                 try {
                     MultipartFile f = (MultipartFile) file;
 
+                    String key = uploadFile(f);
+
                     FileDto fileDto = new FileDto();
-                    fileDto.setFile(f.getBytes());
                     fileDto.setFileType(f.getContentType());
                     fileDto.setFileNm(f.getOriginalFilename());
                     fileDto.setUseYn("N");
                     fileDto.setFileId(result);
                     fileDto.setFileSubId(file_sub_id);
+                    fileDto.setBucketKey(key);
                     multiFileMapper.setFile(fileDto);
 
                     file_sub_id++;
@@ -148,4 +170,33 @@ public class MultiFileServiceImpl implements MultiFileService {
 
         return fileDto;
     }
+
+    public String uploadFile(MultipartFile file) throws IOException {
+        String key = active + "_" + UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+
+        PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+                .bucket(bucketName)
+                .key(key)
+                //.acl("public-read") // 파일을 공개적으로 설정
+                .build();
+
+        s3Client.putObject(putObjectRequest, RequestBody.fromInputStream(
+                file.getInputStream(), file.getSize()));
+
+        //String.format("https://%s.s3.%s.amazonaws.com/%s", bucketName, region, key);
+
+        return key;
+    }
+
+    @Override
+    public byte[] downloadFile(String key) {
+        GetObjectRequest getObjectRequest = GetObjectRequest.builder()
+                .bucket(bucketName)
+                .key(key)
+                .build();
+
+        ResponseBytes<GetObjectResponse> objectBytes = s3Client.getObjectAsBytes(getObjectRequest);
+        return ((ResponseBytes<?>) objectBytes).asByteArray();
+    }
+
 }
