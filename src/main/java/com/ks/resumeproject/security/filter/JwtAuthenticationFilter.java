@@ -36,20 +36,17 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 
         String token = cookieUtil.getCookie(httpRequest, "token");
         String refreshToken = cookieUtil.getCookie(httpRequest, "refreshed");
+
         if(refreshToken != null){
-            TokenDto tokenDto = userService.refreshAccessToken(refreshToken);
 
             if(token == null || token.equals("null")) {
-
+                TokenDto tokenDto = userService.refreshAccessToken(refreshToken);
                 token = tokenDto.getAccessToken();
 
                 cookieUtil.addCookie((HttpServletResponse) response, "token", tokenDto.getAccessToken(), EXPIRES_IN);
             }
 
-            // RefreshToken 갱신 조건 확인 후 만료 시간 연장
-            if (shouldExtendRefreshToken(tokenDto)) {
-                cookieUtil.addCookie((HttpServletResponse) response, "refreshed", refreshToken, R_EXPIRES_IN);
-            }
+            cookieUtil.addCookie((HttpServletResponse) response, "refreshed", refreshToken, R_EXPIRES_IN);
         }
 
         // 2. validateToken으로 토큰 유효성 검사
@@ -60,20 +57,6 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         }
 
         chain.doFilter(request, response);
-    }
-
-    /**
-     * Refresh Token 갱신 여부를 결정하는 메서드
-     */
-    private boolean shouldExtendRefreshToken(TokenDto tokenDto) {
-        // Refresh Token 만료 시간을 가져옵니다 (예: JWT에서 만료 시간 추출)
-        Date expirationTime = tokenDto.getTokenExpires();
-
-        // 현재 시간과 만료 시간의 차이를 계산
-        long timeRemaining = expirationTime.getTime() - System.currentTimeMillis();
-
-        // 만료까지 남은 시간이 10분 이하라면 갱신
-        return timeRemaining <= TimeUnit.MINUTES.toMillis(10);
     }
 
     // Request Header에서 토큰 정보 추출
