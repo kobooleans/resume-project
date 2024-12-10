@@ -45,7 +45,7 @@ public class TokenProvider {
         long now = (new Date()).getTime();
 
         Date accessTokenExpiresIn = new Date(now + 15 * 60 * 1000); // 15분
-        Date refreshTokenExpiresIn = new Date(now + 60 * 60 * 1000); // 1시간
+        Date refreshTokenExpiresIn = new Date(now + 70 * 60 * 1000); // 1시간 10분 (쿠키 시간을 1시간으로 설정하여 이 값은 1시간만 유지된다.)
         AccountDto accountDto = ((AccountContext)authentication.getPrincipal()).getAccountDto();
 
         accountDto.setPassword(null);
