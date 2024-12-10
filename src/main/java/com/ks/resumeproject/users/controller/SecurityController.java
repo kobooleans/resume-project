@@ -91,7 +91,7 @@ public class SecurityController {
         TokenDto tokenDto = userService.signIn(username, password);
 
         cookieUtil.addCookie(response, "token", tokenDto.getAccessToken(), EXPIRES_IN);
-        cookieUtil.addCookie(response, "refreshed", tokenDto.getRefreshToken(), R_EXPIRES_IN); // 하루
+        cookieUtil.addCookie(response, "refreshed", tokenDto.getRefreshToken(), R_EXPIRES_IN); // 1시간
 
         return tokenDto;
     }
