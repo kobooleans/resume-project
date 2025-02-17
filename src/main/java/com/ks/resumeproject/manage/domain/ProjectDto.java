@@ -21,6 +21,7 @@ public class ProjectDto {
     private int portSize;
     private Date startYmd;
     private Date endYmd;
+    private boolean mainYn;
 
     private String copyRandomId;
     private BigInteger fileId;

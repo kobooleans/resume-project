@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ks.resumeproject.viewer.repository.ViewerMapper">
+
+    <select id="selectRandomId" parameterType="AccountDto" resultType="java.lang.String">
+        <![CDATA[
+        SELECT RANDOM_ID
+          FROM ACCOUNT_MY_PAGE A
+         WHERE A.MAIN_YN = TRUE
+           AND A.USERNAME = #{username}
+        ]]>
+    </select>
+
+</mapper>

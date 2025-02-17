@@ -7,6 +7,7 @@ import com.ks.resumeproject.security.domain.AccountDto;
 import com.ks.resumeproject.security.domain.EmailCodeDto;
 import com.ks.resumeproject.security.domain.TokenDto;
 import com.ks.resumeproject.security.provider.TokenProvider;
+import com.ks.resumeproject.security.util.CookieUtil;
 import com.ks.resumeproject.security.util.SecurityUtil;
 import com.ks.resumeproject.users.domain.AccountMyPageDto;
 import com.ks.resumeproject.users.domain.PageDto;
@@ -14,6 +15,8 @@ import com.ks.resumeproject.users.repository.UserMapper;
 import com.ks.resumeproject.users.service.UserService;
 import com.ks.resumeproject.util.ComUtil;
 import com.ks.resumeproject.util.MailUtil;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -32,7 +35,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -49,6 +51,7 @@ public class UserServiceImpl implements UserService {
     private final MailUtil mailUtil;
     private final SecurityUtil securityUtil;
     private final TemplateEngine templateEngine;
+    private final CookieUtil cookieUtil;
 
     private static final String EMAIL_REGEX =
             "^[a-zA-Z0-9_+&*-]+(?:\\." +
@@ -58,6 +61,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean checkUsername(AccountDto accountDto) {
+
+        String[] arr = {"page", "manage", "resume", "port", "signup"};
+
+        for(String systemId : arr){
+            if(accountDto.getUsername().equals(systemId)){
+                return false;
+            }
+        }
+
+        if(accountDto.getUsername().matches(".*[^a-zA-Z0-9].*")){
+            return false;
+        }
+
         return userMapper.userNameCheck(accountDto).equals("Y");
     }
 
@@ -159,6 +175,8 @@ public class UserServiceImpl implements UserService {
         map.put("id",userMapper.getAccountId(accountDto));
 
         Map resultMap = userMapper.checkAccessYn(map);
+
+
         if(resultMap != null){
             return resultMap;
         }
@@ -167,8 +185,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public TokenDto refreshAccessToken(String refreshToken) {
+    public TokenDto refreshAccessToken(String refreshToken, ServletResponse response) {
         if (!jwtTokenProvider.validateToken(refreshToken)) {
+            cookieUtil.removeCookie((HttpServletResponse) response, "refreshed");
             throw new CustomException(ErrorCode.USER_NOT_FOUND);
         }
 

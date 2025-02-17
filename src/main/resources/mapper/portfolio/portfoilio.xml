@@ -73,6 +73,7 @@
         /* PortfolioMapper.portfolioAllList */
         <![CDATA[
             SELECT A.ID
+                 , #{username} as username
                  , A.RANDOM_ID
                  , A.PORT_ID
                  , A.TITLE
