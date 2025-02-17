@@ -16,4 +16,7 @@ public class MyinfoDto {
     private String call;
     private String location;
     private String pageMainYn;
+    private String title;
+    private String subtitle;
+    private String mySelfContent;
 }

@@ -97,4 +97,8 @@ public interface CopyProjectMapper {
     void deleteCategory(ProjectDto projectDto);
 
     void deleteMainInfo(ProjectDto projectDto);
+
+    void setMainProject(ProjectDto projectDto);
+
+    void setMainDelProject(ProjectDto projectDto);
 }

@@ -163,4 +163,16 @@ public class CopyProjectServiceImpl implements CopyProjectService {
             copyProjectMapper.deleteMainInfo(projectDto);
         }
     }
+
+    @Override
+    public void setMainProject(ProjectDto projectDto) {
+
+        AccountDto accountDto = securityUtil.getAccount().getAccountDto();
+
+        projectDto.setUsername(accountDto.getUsername());
+        projectDto.setMainYn(true);
+
+        copyProjectMapper.setMainDelProject(projectDto);
+        copyProjectMapper.setMainProject(projectDto);
+    }
 }

@@ -2,7 +2,7 @@ package com.ks.resumeproject.users.service;
 
 import com.ks.resumeproject.security.domain.AccountDto;
 import com.ks.resumeproject.security.domain.TokenDto;
-import org.apache.el.parser.Token;
+import jakarta.servlet.ServletResponse;
 
 import java.util.Map;
 
@@ -19,5 +19,5 @@ public interface UserService {
 
     Map checkAccessYn(Map map);
 
-    TokenDto refreshAccessToken(String refreshToken);
+    TokenDto refreshAccessToken(String refreshToken, ServletResponse response);
 }
