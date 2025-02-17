@@ -40,9 +40,6 @@ public class ResumeServiceImpl implements ResumeService {
             resumeDto.setAwardYn(false);
             resumeDto.setActionYn(false);
             resumeDto.setCoverLetterYn(false);
-
-            resumeMapper.setResumeSet(resumeDto);
-
         }
 
         return resumeDto;

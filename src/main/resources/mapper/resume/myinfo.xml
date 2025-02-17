@@ -16,10 +16,16 @@
              , A.CALL
              , A.LOCATION
              , CASE WHEN B.PAGE_DESCRIPTION = 'MAIN' THEN 'Y' ELSE 'N' END PAGE_MAIN_YN
+             , C.title
+             , C.subtitle
+             , A.MY_SELF_CONTENT
           FROM RESUME_INFO A
           LEFT OUTER JOIN ACCOUNT_MY_PAGE B
             ON A.ID = B.ID
            AND A.RANDOM_ID = B.RANDOM_ID
+          JOIN MAIN_INFO C
+            ON A.ID = C.id
+           AND A.random_id = C.random_id
          WHERE A.ID = #{id}
            AND A.RANDOM_ID = #{randomId}
         ]]>
@@ -42,6 +48,7 @@
                  , EMAIL = #{email}
                  , CALL = #{call}
                  , LOCATION = #{location}
+                 , MY_SELF_CONTENT = #{mySelfContent}
              WHERE ID = #{id}
                AND RANDOM_ID = #{randomId}
         ]]>

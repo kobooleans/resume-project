@@ -5,7 +5,6 @@ import com.ks.resumeproject.manage.service.CopyProjectService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +15,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/api/copyProject")
 @Tag(name = "multi", description = "파일 관리를 위한 Controller")
-public class CopyProject {
+public class CopyProjectController {
 
     private final CopyProjectService copyProjectService;
 
@@ -50,6 +49,15 @@ public class CopyProject {
     public ResponseEntity<Map<String,String>> deleteProject(@RequestBody List<ProjectDto> projectDto){
 
         copyProjectService.deleteProject(projectDto);
+
+        return ResponseEntity.ok(Map.of("result","success"));
+    }
+
+    @PostMapping("/main")
+    @Operation(summary = "페이지 메인 설정", description = "페이지를 메인으로 설정한다.")
+    public ResponseEntity<Map<String,String>> mainSet(@RequestBody List<ProjectDto> projectDto){
+
+        copyProjectService.setMainProject(projectDto.get(0));
 
         return ResponseEntity.ok(Map.of("result","success"));
     }

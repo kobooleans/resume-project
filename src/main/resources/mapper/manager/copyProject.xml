@@ -20,6 +20,7 @@
              , A.START_YMD
              , A.END_YMD
              , case when A.page_id = 0 then true else false end as disabled
+             , A.MAIN_YN
         FROM ACCOUNT_MY_PAGE A
         LEFT OUTER JOIN RESUME B
                         ON A.ACCOUNT_ID = B.ID
@@ -44,6 +45,7 @@
                , B.COVER_LETTER_YN
                , A.START_YMD
                , A.END_YMD
+               , A.MAIN_YN
         ORDER BY PAGE_ID
         ]]>
     </select>
@@ -263,9 +265,9 @@
     <insert id="copyResumeInfo" parameterType="ProjectDto">
         <![CDATA[
             insert into resume_info(
-                id, random_id, name, firstname, lastname, job, email, call, location
+                id, random_id, name, firstname, lastname, job, email, call, location, my_self_content
             )
-            select id, #{copyRandomId}, name, firstname, lastname, job, email, call, location
+            select id, #{copyRandomId}, name, firstname, lastname, job, email, call, location, my_self_content
               from resume_info
              where ID = #{id}
                AND RANDOM_ID = #{randomId}
@@ -534,5 +536,21 @@
         ]]>
     </delete>
 
+    <update id="setMainProject" parameterType="ProjectDto">
+        <![CDATA[
+            UPDATE ACCOUNT_MY_PAGE
+               SET main_yn = #{mainYn}
+             WHERE username = #{username}
+               AND random_id = #{randomId}
+        ]]>
+    </update>
+
+    <update id="setMainDelProject" parameterType="ProjectDto">
+        <![CDATA[
+           UPDATE ACCOUNT_MY_PAGE
+              SET main_yn = false
+            WHERE username = #{username}
+        ]]>
+    </update>
 
 </mapper>

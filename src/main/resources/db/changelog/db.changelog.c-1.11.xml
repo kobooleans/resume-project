@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="changelog.c-1.11" author="KOBOOLEAN">
+
+        <addColumn tableName="ACCOUNT_MY_PAGE">
+            <column name="MAIN_YN" type="boolean" defaultValueBoolean="false" remarks="메인 여부">
+            </column>
+        </addColumn>
+
+        <!-- 이력서 정보에 자기소개 추가 -->
+        <addColumn tableName="resume_info">
+            <column name="MY_SELF_CONTENT" type="varchar2" remarks="자기 소개 내용">
+            </column>
+        </addColumn>
+
+    </changeSet>
+</databaseChangeLog>

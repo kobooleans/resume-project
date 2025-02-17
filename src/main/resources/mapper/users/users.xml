@@ -96,8 +96,7 @@
     <select id="checkAccessYn" parameterType="java.util.Map" resultType="java.util.Map">
         <![CDATA[
             SELECT CASE when END_YMD is null then TRUE
-                        WHEN TO_CHAR(NOW(), 'YYYYMMDD')
-                        BETWEEN TO_CHAR(START_YMD, 'YYYYMMDD') AND TO_CHAR(END_YMD, 'YYYYMMDD')
+                        WHEN NOW() BETWEEN START_YMD AND END_YMD + INTERVAL '1 day' - INTERVAL '1 second'
                         THEN TRUE
                         ELSE FALSE
                     END AS ACCESSYN

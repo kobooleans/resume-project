@@ -40,7 +40,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         if(refreshToken != null){
 
             if(token == null || token.equals("null")) {
-                TokenDto tokenDto = userService.refreshAccessToken(refreshToken);
+                TokenDto tokenDto = userService.refreshAccessToken(refreshToken, response);
                 token = tokenDto.getAccessToken();
 
                 cookieUtil.addCookie((HttpServletResponse) response, "token", tokenDto.getAccessToken(), EXPIRES_IN);
