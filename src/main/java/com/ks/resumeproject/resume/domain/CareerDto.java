@@ -15,6 +15,7 @@ public class CareerDto {
     private Date endDay;
     private String companyName;
     private String role;
+    private String title;
     private String position;
     private String job;
     private String salary;
