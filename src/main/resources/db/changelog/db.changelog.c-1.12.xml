@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="changelog.c-1.12" author="KOBOOLEAN">
+
+        <!-- 경력에 타이틀 추가 -->
+        <addColumn tableName="resume_career">
+            <column name="TITLE" type="varchar2" remarks="타이틀">
+            </column>
+        </addColumn>
+
+    </changeSet>
+</databaseChangeLog>

@@ -289,9 +289,9 @@
     <insert id="copyResumeCareer" parameterType="ProjectDto">
         <![CDATA[
             insert into resume_career(
-                career_id, id, random_id, start_day, end_day, company_name, role, position, job, salary, location, content
+                career_id, id, random_id, title, start_day, end_day, company_name, role, position, job, salary, location, content
             )
-            select career_id, id, #{copyRandomId}, start_day, end_day, company_name, role, position, job, salary, location, content
+            select career_id, id, #{copyRandomId}, title, start_day, end_day, company_name, role, position, job, salary, location, content
               from resume_career
              where ID = #{id}
                AND RANDOM_ID = #{randomId}
