@@ -13,6 +13,7 @@
              , END_DAY
              , COMPANY_NAME
              , ROLE
+             , TITLE
              , POSITION
              , JOB
              , SALARY
@@ -31,6 +32,7 @@
             RESUME_CAREER( CAREER_ID
                          , ID
                          , RANDOM_ID
+                         , TITLE
                          , START_DAY
                          , END_DAY
                          , COMPANY_NAME
@@ -43,6 +45,7 @@
          SELECT  COALESCE(NULLIF(MAX(CAREER_ID), 0), 0) + 1
                , #{id}
                , #{randomId}
+               , #{title}
                , #{startDay}
                , #{endDay}
                , #{companyName}
@@ -61,7 +64,8 @@
     <update id="updateCareer" parameterType="CareerDto">
         <![CDATA[
          update resume_career
-            set start_day = #{startDay}
+            set title = #{title}
+              , start_day = #{startDay}
               , end_day = #{endDay}
               , company_name = #{companyName}
               , role = #{role}
