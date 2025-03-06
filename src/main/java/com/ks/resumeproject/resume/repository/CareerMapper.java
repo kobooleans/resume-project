@@ -9,6 +9,7 @@ import java.util.List;
 @Mapper
 public interface CareerMapper {
     List<CareerDto> getCareerList(AccountDto accountDto);
+    boolean isSideProjectYn(AccountDto accountDto);
 
     void insertCareer(CareerDto careerDto);
 

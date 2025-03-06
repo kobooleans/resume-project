@@ -4,6 +4,16 @@
 
 <mapper namespace="com.ks.resumeproject.resume.repository.CareerMapper">
 
+    <select id="isSideProjectYn" parameterType="AccountDto" resultType="boolean">
+        <![CDATA[
+            SELECT CASE WHEN COUNT(*) > 0 THEN TRUE ELSE FALSE END
+              FROM RESUME_CAREER
+             WHERE ID = #{id}
+               and RANDOM_ID = #{randomId}
+               AND SIDE_PROJECT_YN = TRUE
+        ]]>
+    </select>
+
     <select id="getCareerList" parameterType="AccountDto" resultType="CareerDto">
         <![CDATA[
         SELECT CAREER_ID

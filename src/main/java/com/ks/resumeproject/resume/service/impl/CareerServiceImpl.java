@@ -46,4 +46,9 @@ public class CareerServiceImpl implements CareerService {
     public void deleteCareer(CareerDto careerDto) {
         careerMapper.deleteCareer(careerDto);
     }
+
+    @Override
+    public boolean isSideProjectYn(AccountDto accountDto) {
+        return careerMapper.isSideProjectYn(accountDto);
+    }
 }

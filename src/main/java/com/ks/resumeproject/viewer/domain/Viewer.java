@@ -12,18 +12,20 @@ import java.util.Map;
 @Data
 public class Viewer {
 
-    ResumeDto resumeDto; // 이력서 내역 확인
-    MyinfoDto myinfoDto; // 내 개인정보 가져오기
+    private ResumeDto resumeDto; // 이력서 내역 확인
+    private MyinfoDto myinfoDto; // 내 개인정보 가져오기
 
-    List<SkillSetDto> skillSetDtos;
-    List<CareerDto> careerDtos;
-    List<EduDto> eduDtos;
-    Map<String, Object> awardDtos;
-    List<ActivityDto> activityDtos;
-    List<CoverLetterDto> coverLetterDtos;
+    private Boolean isSideProjectYn;
 
-    List<PortfolioDto> portfolioDtos;
-    List<PortfolioSkillDetailDto> portfolioSkillDetailDtos;
+    private List<SkillSetDto> skillSetDtos;
+    private List<CareerDto> careerDtos;
+    private List<EduDto> eduDtos;
+    private Map<String, Object> awardDtos;
+    private List<ActivityDto> activityDtos;
+    private List<CoverLetterDto> coverLetterDtos;
 
-    List<SiteInfoDto> siteInfoDtos;
+    private List<PortfolioDto> portfolioDtos;
+    private List<PortfolioSkillDetailDto> portfolioSkillDetailDtos;
+
+    private List<SiteInfoDto> siteInfoDtos;
 }
