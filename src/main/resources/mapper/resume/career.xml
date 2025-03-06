@@ -33,7 +33,7 @@
         from RESUME_CAREER
         where ID = #{id}
           and RANDOM_ID = #{randomId}
-        ORDER BY side_project_yn desc, start_day
+        ORDER BY side_project_yn desc, start_day desc
         ]]>
     </select>
 
