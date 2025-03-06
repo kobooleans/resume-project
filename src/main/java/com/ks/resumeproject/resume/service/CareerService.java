@@ -13,4 +13,6 @@ public interface CareerService {
     void updateCareer(CareerDto careerDto);
 
     void deleteCareer(CareerDto careerDto);
+
+    boolean isSideProjectYn(AccountDto accountDto);
 }
