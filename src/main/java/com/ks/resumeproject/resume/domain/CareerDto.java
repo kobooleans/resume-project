@@ -21,4 +21,5 @@ public class CareerDto {
     private String salary;
     private String location;
     private String content;
+    private boolean sideProjectYn;
 }

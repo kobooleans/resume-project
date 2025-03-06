@@ -19,10 +19,11 @@
              , SALARY
              , LOCATION
              , CONTENT
+             , side_project_yn
         from RESUME_CAREER
         where ID = #{id}
           and RANDOM_ID = #{randomId}
-        ORDER BY start_day
+        ORDER BY side_project_yn desc, start_day
         ]]>
     </select>
 
@@ -41,7 +42,8 @@
                          , JOB
                          , SALARY
                          , LOCATION
-                         , CONTENT)
+                         , CONTENT
+                         , side_project_yn)
          SELECT  COALESCE(NULLIF(MAX(CAREER_ID), 0), 0) + 1
                , #{id}
                , #{randomId}
@@ -55,6 +57,7 @@
                , #{salary}
                , #{location}
                , #{content}
+               , #{sideProjectYn}
           FROM RESUME_CAREER
          WHERE ID = #{id}
            and RANDOM_ID = #{randomId}
@@ -74,6 +77,7 @@
               , salary = #{salary}
               , location = #{location}
               , content = #{content}
+              , side_project_yn = #{sideProjectYn}
           where ID = #{id}
             and RANDOM_ID = #{randomId}
             and career_id = #{careerId}
