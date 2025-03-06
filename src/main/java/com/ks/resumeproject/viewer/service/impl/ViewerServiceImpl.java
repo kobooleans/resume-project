@@ -76,6 +76,7 @@ public class ViewerServiceImpl implements ViewerService {
         portfolioDto.setId(accountDto.getId());
         portfolioDto.setCategoryId(new BigInteger("0"));
 
+        viewer.setIsSideProjectYn(careerService.isSideProjectYn(accountDto));
         viewer.setPortfolioDtos(portfolioService.portfolioAllList(portfolioDto));
         viewer.setPortfolioSkillDetailDtos(portfolioService.selectSkillDtailDtos(portfolioDto));
 
