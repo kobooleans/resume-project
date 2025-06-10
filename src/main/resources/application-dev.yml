@@ -20,7 +20,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: ***REMOVED***
-    password: ***REMOVED***
+    password: 00000000000000000000000000
     properties:
       mail:
         smtp:
@@ -67,5 +67,5 @@ aws:
   s3:
     bucket-name: cv-fit-s3
     region: ap-northeast-2
-    access-key: ***REMOVED***
-    secret-key: ***REMOVED***
+    access-key: 00000000000000000000000000
+    secret-key: 00000000000000000000000000
