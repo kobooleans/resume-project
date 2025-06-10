@@ -35,3 +35,14 @@
 <br/><br/>
 5. PostgreSQL Database 적용
 
+---
+
+### 모든 커밋내역에서 민감정보 삭제 하였습니다.
+
+1. git-filter-repo를 설치합니다.
+   1. `brew install git-filter-repo `
+2. 민감정보 내역을 입력합니다.
+    1. sensitive.txt 파일을 만듭니다.
+   2. 만든 파일 내 민감정보를 모두 입력합니다.
+3. `git filter-repo --replace-text sensitive.txt`을 입력하여 민감정보 내역을 모두 삭제합니다.
+4. git push origin --force --all 을 입력하여 해당 내용을 push합니다.
